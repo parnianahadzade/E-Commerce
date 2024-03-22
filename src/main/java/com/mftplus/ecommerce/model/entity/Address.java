@@ -1,4 +1,4 @@
-package com.mftplus.ecommerce.model;
+package com.mftplus.ecommerce.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name = "addressEntity")
 @Table(name = "address_tbl")
 public class Address {
     @Id

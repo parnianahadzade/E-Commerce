@@ -1,4 +1,4 @@
-package com.mftplus.ecommerce.model;
+package com.mftplus.ecommerce.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -10,12 +10,12 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "web_order_quantities")
+@Entity(name = "orderQuantitiesEntity")
+@Table(name = "order_quantities")
 public class WebOrderQuantities {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "web_order_quantities_seq")
-    @SequenceGenerator(name = "web_order_quantities_seq", sequenceName = "web_order_quantities_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_quantities_seq")
+    @SequenceGenerator(name = "order_quantities_seq", sequenceName = "order_quantities_seq")
     @Column(name = "id", nullable = false)
     private Long id;
 

@@ -1,4 +1,4 @@
-package com.mftplus.ecommerce.model;
+package com.mftplus.ecommerce.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name = "orderEntity")
 @Table(name = "order_tbl")
 public class WebOrder {
     @Id
