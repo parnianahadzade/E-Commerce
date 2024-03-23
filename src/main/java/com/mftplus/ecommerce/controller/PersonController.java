@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,13 +23,14 @@ public class PersonController {
         this.personService = personService;
     }
 
+    //person table
     @GetMapping("/personList")
     public String showPersonList(Model model){
         log.info("Person List - Get");
         try {
             //for th:object="${userObj}"
             model.addAttribute("person", new Person());
-            model.addAttribute("personList", personService.findAll());
+            model.addAttribute("personList", personService.findAllByDeletedFalse());
             return "/tables/personTable";
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -36,6 +38,7 @@ public class PersonController {
         }
     }
 
+    //personal info page
     @GetMapping ("/personalInfo")
     public String showPersonalInfo(Model model){
         log.info("Personal Info - Get");
@@ -50,6 +53,7 @@ public class PersonController {
         }
     }
 
+    //person form
     @GetMapping("/person")
     public String showForm(Model model) {
         log.info("Person Form - Get");
@@ -64,6 +68,7 @@ public class PersonController {
         }
     }
 
+    //person save
     @PostMapping(value = "/save",params = "action=save")
     public String save(@Valid Person person, BindingResult result,Model model){
         log.info("Person - Post");
@@ -83,7 +88,7 @@ public class PersonController {
         }
     }
 
-    //opens Edit page
+    //person edit page
     @GetMapping(value = "/person/edit")
     public String edit(@RequestParam Long id, Model model) {
         log.info("Person - edit page");
@@ -97,6 +102,7 @@ public class PersonController {
 
     }
 
+    //person edit
     @PostMapping(value = "/save",params = "action=edit")
     public String editForm(@Valid Person person, Model model){
         log.info("Person - Edit");
@@ -109,6 +115,25 @@ public class PersonController {
                 model.addAttribute("person", person);
                 model.addAttribute("msg", "Person Edited");
                 return "/forms/personEdit";
+            }
+            return "/forms/personForm";
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    //person logical remove
+    @PostMapping("/delete")
+    public String editForm(@ModelAttribute("id") Long id,Model model){
+        log.info("Person - Delete");
+        try {
+            Optional<Person> person = personService.findById(id);
+            if (person.isPresent()){
+                personService.logicalRemove(id);
+                log.info("Person Removed");
+                model.addAttribute("msg", "Person Removed");
+                return "/tables/personTable";
             }
             return "/forms/personForm";
         } catch (Exception e) {
