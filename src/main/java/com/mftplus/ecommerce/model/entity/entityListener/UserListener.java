@@ -1,41 +1,41 @@
 package com.mftplus.ecommerce.model.entity.entityListener;
 
-import com.mftplus.ecommerce.model.entity.LocalUser;
+import com.mftplus.ecommerce.model.entity.Person;
 import jakarta.persistence.*;
 
 public class UserListener {
     @PrePersist
-    public void prePersist(LocalUser user) {
+    public void prePersist(Person user) {
 
     }
 
     @PreUpdate
-    public void preUpdate(LocalUser user) {
+    public void preUpdate(Person user) {
 
     }
 
     @PreRemove
-    public void preRemove(LocalUser user) {
+    public void preRemove(Person user) {
 
     }
 
     @PostLoad
-    public void postLoad(LocalUser user) {
+    public void postLoad(Person user) {
 
     }
 
     @PostRemove
-    public void postRemove(LocalUser user) {
+    public void postRemove(Person user) {
 
     }
 
     @PostUpdate
-    public void postUpdate(LocalUser user) {
+    public void postUpdate(Person user) {
 
     }
 
     @PostPersist
-    public void postPersist(LocalUser user) {
+    public void postPersist(Person user) {
 
     }
 }

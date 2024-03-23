@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity(name = "orderEntity")
 @Table(name = "order_tbl")
 public class WebOrder {
@@ -24,7 +26,7 @@ public class WebOrder {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private LocalUser user;
+    private User user;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "address_id", nullable = false)

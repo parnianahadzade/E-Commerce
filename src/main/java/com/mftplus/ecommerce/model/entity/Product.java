@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity(name = "productEntity")
 @Table(name = "product_tbl")
 public class Product {
