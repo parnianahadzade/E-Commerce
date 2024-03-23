@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @SuperBuilder
@@ -21,7 +22,7 @@ import java.time.LocalDate;
 @Entity(name = "personEntity")
 @Table(name = "person_tbl")
 @EntityListeners(PersonListener.class)
-public class Person {
+public class Person extends Base implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
     @SequenceGenerator(name = "person_seq",sequenceName = "person_seq",allocationSize = 1)

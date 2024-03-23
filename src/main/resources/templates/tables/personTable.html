@@ -5,11 +5,11 @@
     <title>Person List</title>
 </head>
 <body>
-<h1 th:if="${#lists.size(personList) == 0}">
-    No Person
-</h1>
-
-<table  th:if="${#lists.size(personList)> 0}">
+<!--<h1 th:if="${#lists.size(personList) == 0}">-->
+<!--    No Person-->
+<!--</h1>-->
+<!--th:if="${#lists.size(personList)> 0}"-->
+<table>
     <thead>
     <th>Id</th>
     <th>First Name</th>
@@ -26,7 +26,15 @@
         <td th:text="${p.email}"></td>
         <td>
             <button th:onclick="edit('[[${p.id}]]')">Edit</button>
-            <button>Remove</button>
+            <form action="/delete" method="post">
+                <label>
+                    <input type="text" name="id" hidden="hidden" th:value="${p.id}">
+                </label>
+                <button type="submit">Delete</button>
+                <div class="success" th:if="${msg != null}">
+                    <span th:text="${msg}"></span>
+                </div>
+            </form>
         </td>
     </tr>
     </tbody>

@@ -47,8 +47,18 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public void logicalRemove(Long id) throws Exception {
+        personRepository.logicalRemove(id);
+    }
+
+    @Override
     public List<Person> findAll() throws Exception{
         return personRepository.findAll();
+    }
+
+    @Override
+    public List<Person> findAllByDeletedFalse() throws Exception {
+        return personRepository.findAllByDeletedFalse();
     }
 
     @Override
