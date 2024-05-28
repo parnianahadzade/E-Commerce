@@ -14,7 +14,7 @@ public class RegistrationBody {
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,15}$",message = "Minimum five characters, at least one letter and one number!")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "Minimum five characters, at least one letter and one number!")
     public String password;
 
 

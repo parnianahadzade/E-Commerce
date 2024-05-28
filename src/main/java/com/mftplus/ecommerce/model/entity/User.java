@@ -28,8 +28,7 @@ public class User extends Base{
     @Pattern(regexp = "^[a-z]{2,15}$",message = "incorrect username !")
     private String username;
 
-    @Column(name = "u_password", nullable = false, length = 15)
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,15}$",message = "Minimum five characters, at least one letter and one number!")
+    @Column(name = "u_password", nullable = false)
     private String password;
 
     @Email(message = "Incorrect Email Format!")
