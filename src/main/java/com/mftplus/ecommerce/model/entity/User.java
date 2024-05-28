@@ -29,7 +29,7 @@ public class User extends Base{
     private String username;
 
     @Column(name = "u_password", nullable = false, length = 15)
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "Minimum five characters, at least one letter and one number!")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,15}$",message = "Minimum five characters, at least one letter and one number!")
     private String password;
 
     @Email(message = "Incorrect Email Format!")
@@ -37,11 +37,11 @@ public class User extends Base{
     private String email;
 
     @Column(name = "u_first_name", nullable = false, length = 10)
-    @Pattern(regexp = "^[a-z]{2,10}$",message = "incorrect first name!")
+    @Pattern(regexp = "^[a-z]{3,10}$",message = "incorrect first name!")
     private String firstName;
 
     @Column(name = "u_last_name", nullable = false, length = 10)
-    @Pattern(regexp = "^[a-z]{2,10}$",message = "incorrect last name!")
+    @Pattern(regexp = "^[a-z]{3,10}$",message = "incorrect last name!")
     private String lastName;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
