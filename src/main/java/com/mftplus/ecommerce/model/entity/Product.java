@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @Entity(name = "productEntity")
 @Table(name = "product_tbl")
-public class Product {
+public class Product extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_seq")
     @SequenceGenerator(name = "product_seq", sequenceName = "product_seq")

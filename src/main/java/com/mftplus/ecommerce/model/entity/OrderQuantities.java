@@ -14,7 +14,9 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @Entity(name = "orderQuantitiesEntity")
 @Table(name = "order_quantities")
-public class WebOrderQuantities {
+public class OrderQuantities extends Base{
+    //invoice item
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_quantities_seq")
     @SequenceGenerator(name = "order_quantities_seq", sequenceName = "order_quantities_seq")
@@ -30,6 +32,6 @@ public class WebOrderQuantities {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id", nullable = false)
-    private WebOrder order;
+    private Order order;
 
 }

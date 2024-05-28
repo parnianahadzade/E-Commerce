@@ -17,7 +17,9 @@ import java.util.List;
 @ToString
 @Entity(name = "orderEntity")
 @Table(name = "order_tbl")
-public class WebOrder {
+public class Order extends Base{
+    //invoice
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
     @SequenceGenerator(name = "order_seq", sequenceName = "order_seq")
@@ -33,6 +35,6 @@ public class WebOrder {
     private Address address;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<WebOrderQuantities> quantities = new ArrayList<>();
+    private List<OrderQuantities> quantities = new ArrayList<>();
 
 }

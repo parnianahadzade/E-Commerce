@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @Entity(name = "addressEntity")
 @Table(name = "address_tbl")
-public class Address {
+public class Address extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
     @SequenceGenerator(name = "address_seq", sequenceName = "address_seq")
