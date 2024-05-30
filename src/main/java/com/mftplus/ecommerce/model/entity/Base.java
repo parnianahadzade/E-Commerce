@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,6 @@ public class Base {
 //    @JsonbTransient
 //    private  Long versionId;
 
-//    @JsonbTransient
+    @JsonIgnore
     private boolean deleted;
 }

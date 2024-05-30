@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -28,6 +29,7 @@ public class User extends Base{
     @Pattern(regexp = "^[a-z]{2,15}$",message = "incorrect username !")
     private String username;
 
+    @JsonIgnore
     @Column(name = "u_password", nullable = false)
     private String password;
 
@@ -43,6 +45,7 @@ public class User extends Base{
     @Pattern(regexp = "^[a-z]{3,10}$",message = "incorrect last name!")
     private String lastName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
 

@@ -4,14 +4,13 @@ import com.mftplus.ecommerce.api.dto.LoginBody;
 import com.mftplus.ecommerce.api.dto.LoginResponse;
 import com.mftplus.ecommerce.api.dto.RegistrationBody;
 import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
+import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -42,5 +41,10 @@ public class AuthenticationController {
             loginResponse.setJwt(jwt);
             return ResponseEntity.ok(loginResponse);
         }
+    }
+
+    @GetMapping("/me")
+    public User getLoggedInUserProfile(@AuthenticationPrincipal User user){
+        return user;
     }
 }
