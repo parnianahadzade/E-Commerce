@@ -5,6 +5,7 @@ import com.mftplus.ecommerce.api.dto.LoginResponse;
 import com.mftplus.ecommerce.api.dto.RegistrationBody;
 import com.mftplus.ecommerce.exception.EmailFailureException;
 import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
+import com.mftplus.ecommerce.exception.UserNotVerifiedException;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.service.UserService;
 import jakarta.validation.Valid;
@@ -36,13 +37,44 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginBody loginBody){
-        String jwt = userService.loginUser(loginBody);
+        String jwt = null;
+
+        try {
+            jwt = userService.loginUser(loginBody);
+
+
+        } catch (UserNotVerifiedException exception) {
+            LoginResponse loginResponse = new LoginResponse();
+            loginResponse.setSuccsess(false);
+            String reason = "USER_NOT_VERIFIED";
+            if (exception.isNewEmailSent()){
+                reason += "_EMAIL_RESENT";
+            }
+            loginResponse.setFailureReason(reason);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(loginResponse);
+
+
+        } catch (EmailFailureException exception) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+
+
         if (jwt == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }else {
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setJwt(jwt);
+            loginResponse.setSuccsess(true);
             return ResponseEntity.ok(loginResponse);
+        }
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity verifyEmail(@RequestParam String token){
+        if (userService.verifyUser(token)){
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 

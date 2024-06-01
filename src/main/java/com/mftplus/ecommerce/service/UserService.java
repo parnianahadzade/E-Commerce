@@ -4,13 +4,16 @@ import com.mftplus.ecommerce.api.dto.LoginBody;
 import com.mftplus.ecommerce.api.dto.RegistrationBody;
 import com.mftplus.ecommerce.exception.EmailFailureException;
 import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
+import com.mftplus.ecommerce.exception.UserNotVerifiedException;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.model.entity.VerificationToken;
 import com.mftplus.ecommerce.repository.UserRepository;
 import com.mftplus.ecommerce.repository.VerificationTokenRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,14 +60,47 @@ public class UserService {
         return verificationToken;
     }
 
-    public String loginUser(LoginBody loginBody){
+    public String loginUser(LoginBody loginBody) throws UserNotVerifiedException, EmailFailureException {
         Optional<User> optionalUser = userRepository.findByUsernameIgnoreCase(loginBody.getUsername());
         if (optionalUser.isPresent()){
             User user = optionalUser.get();
             if (encryptionService.verifyPassword(loginBody.getPassword(), user.getPassword())){
-                return jwtService.generateJWT(user);
+                //is user verified?
+                if (user.getEmailVerified()) {
+                    return jwtService.generateJWT(user);
+                } else {
+                    List<VerificationToken> verificationTokens = user.getVerificationTokens();
+                    boolean resend = verificationTokens.size() == 0 ||
+                            verificationTokens.get(0).getCreatedTimeStamp().before(new Timestamp(System.currentTimeMillis() - (60 * 60 * 1000)));
+                    if (resend){
+                        VerificationToken verificationToken = createVerificationToken(user);
+                        verificationTokenRepository.save(verificationToken);
+                        emailService.sendVerificationEmail(verificationToken);
+                    }
+
+                    throw new UserNotVerifiedException(resend);
+                }
             }
         }
         return null;
+    }
+
+    //because we are changing data not querying
+    @Transactional
+    public boolean verifyUser(String token){
+        Optional<VerificationToken> optionalVerificationToken = verificationTokenRepository.findByToken(token);
+
+        if (optionalVerificationToken.isPresent()){
+            VerificationToken verificationToken = optionalVerificationToken.get();
+            User user = verificationToken.getUser();
+
+            if(!user.getEmailVerified()){
+                user.setEmailVerified(true);
+                userRepository.save(user);
+                verificationTokenRepository.deleteByUser(user);
+                return true;
+            }
+        }
+        return false;
     }
 }
