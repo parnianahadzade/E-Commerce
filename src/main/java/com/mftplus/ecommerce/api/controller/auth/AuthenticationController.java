@@ -3,6 +3,7 @@ package com.mftplus.ecommerce.api.controller.auth;
 import com.mftplus.ecommerce.api.dto.LoginBody;
 import com.mftplus.ecommerce.api.dto.LoginResponse;
 import com.mftplus.ecommerce.api.dto.RegistrationBody;
+import com.mftplus.ecommerce.exception.EmailFailureException;
 import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.service.UserService;
@@ -28,6 +29,8 @@ public class AuthenticationController {
             return ResponseEntity.ok().build();
         } catch (UserAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }catch (EmailFailureException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

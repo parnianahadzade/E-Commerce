@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.api;
 
 import com.mftplus.ecommerce.api.dto.RegistrationBody;
+import com.mftplus.ecommerce.exception.EmailFailureException;
 import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
 import com.mftplus.ecommerce.model.entity.*;
 import com.mftplus.ecommerce.repository.*;
@@ -45,6 +46,8 @@ public class Test {
             userService.save(user);
         } catch (UserAlreadyExistsException e) {
             throw new RuntimeException(e);
+        }catch (EmailFailureException e) {
+            throw  new RuntimeException();
         }
 
         RegistrationBody user1 = RegistrationBody.builder()
@@ -58,6 +61,8 @@ public class Test {
             userService.save(user1);
         } catch (UserAlreadyExistsException e) {
             throw new RuntimeException(e);
+        } catch (EmailFailureException e) {
+            throw  new RuntimeException();
         }
 
         //product
