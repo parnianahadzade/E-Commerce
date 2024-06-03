@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 public class RegistrationBody {
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^[a-z]{2,15}$",message = "incorrect username !")
+    @Pattern(regexp = "^[A-Za-z]{2,15}$",message = "incorrect username !")
     public String username;
 
     @NotNull
@@ -31,11 +31,11 @@ public class RegistrationBody {
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^[a-z]{3,10}$",message = "incorrect first name!")
+    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect first name!")
     public String firstName;
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^[a-z]{3,10}$",message = "incorrect last name!")
+    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect last name!")
     public String lastName;
 }

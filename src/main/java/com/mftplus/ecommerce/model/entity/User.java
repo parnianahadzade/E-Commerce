@@ -26,7 +26,7 @@ public class User extends Base{
     private Long id;
 
     @Column(name = "u_username", nullable = false, unique = true, length = 15)
-    @Pattern(regexp = "^[a-z]{2,15}$",message = "incorrect username !")
+    @Pattern(regexp = "^[A-Za-z]{2,15}$",message = "incorrect username !")
     private String username;
 
     @JsonIgnore
@@ -37,12 +37,12 @@ public class User extends Base{
     @Column(name = "u_email", unique = true, length = 320)
     private String email;
 
-    @Column(name = "u_first_name", nullable = false, length = 10)
-    @Pattern(regexp = "^[a-z]{3,10}$",message = "incorrect first name!")
+    @Column(name = "u_first_name", nullable = false, length = 20)
+    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect first name!")
     private String firstName;
 
-    @Column(name = "u_last_name", nullable = false, length = 10)
-    @Pattern(regexp = "^[a-z]{3,10}$",message = "incorrect last name!")
+    @Column(name = "u_last_name", nullable = false, length = 20)
+    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect last name!")
     private String lastName;
 
     @JsonIgnore
