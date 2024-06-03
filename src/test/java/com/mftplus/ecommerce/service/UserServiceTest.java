@@ -8,6 +8,8 @@ import com.mftplus.ecommerce.api.dto.RegistrationBody;
 import com.mftplus.ecommerce.exception.EmailFailureException;
 import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
 import com.mftplus.ecommerce.exception.UserNotVerifiedException;
+import com.mftplus.ecommerce.model.entity.VerificationToken;
+import com.mftplus.ecommerce.repository.VerificationTokenRepository;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
@@ -16,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 public class UserServiceTest {
@@ -27,6 +31,9 @@ public class UserServiceTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
 
     @Test
     @Transactional
@@ -41,7 +48,7 @@ public class UserServiceTest {
         Assertions.assertThrows(UserAlreadyExistsException.class,
                 () -> userService.save(body), " username should already be in use.");
 
-        body.setUsername("UserServiceTest$testRegisterUser");
+        body.setUsername("UserServiceTestTestRegisterUser");
         body.setEmail("UserA@junit.com");
 
         Assertions.assertThrows(UserAlreadyExistsException.class,
@@ -96,5 +103,32 @@ public class UserServiceTest {
             Assertions.assertFalse(exception.isNewEmailSent(), " Email verification should be resent.");
             Assertions.assertEquals(1, greenMailExtension.getReceivedMessages().length);
         }
+    }
+
+
+    @Test
+    @Transactional
+    public void testVerifyUser() throws EmailFailureException {
+        Assertions.assertFalse(userService.verifyUser("Bad Token"),
+                " Token is bad or does not exist should return false.");
+
+        LoginBody body = new LoginBody();
+        body.setUsername("UserB");
+        body.setPassword("PasswordB123");
+
+        try {
+            userService.loginUser(body);
+            Assertions.assertTrue(false, " User should not have email verified.");
+
+        }catch (UserNotVerifiedException exception){
+            List<VerificationToken> tokens = verificationTokenRepository.findByUser_IdOrderByIdDesc(2L);
+            String token = tokens.get(0).getToken();
+            Assertions.assertTrue(userService.verifyUser(token), " Token should be valid.");
+
+            Assertions.assertNotNull(body, " The user should now be verified.");
+
+        }
+
+
     }
 }
