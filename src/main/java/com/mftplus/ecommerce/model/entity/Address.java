@@ -17,8 +17,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "address_tbl")
 public class Address extends Base{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
-    @SequenceGenerator(name = "address_seq", sequenceName = "address_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

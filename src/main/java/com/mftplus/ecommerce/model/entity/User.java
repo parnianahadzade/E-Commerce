@@ -19,14 +19,20 @@ import java.util.List;
 @Entity(name = "userEntity")
 @Table(name = "user_tbl")
 public class User extends Base{
+    //todo
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+//    @SequenceGenerator(name = "user_seq",sequenceName = "user_seq",allocationSize = 1)
+//    @Column(name = "u_id", nullable = false)
+//    private Long id;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-    @SequenceGenerator(name = "user_seq",sequenceName = "user_seq",allocationSize = 1)
-    @Column(name = "u_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "u_username", nullable = false, unique = true, length = 15)
-    @Pattern(regexp = "^[A-Za-z]{2,15}$",message = "incorrect username !")
+    @Column(name = "u_username", nullable = false, unique = true, length = 50)
+    @Pattern(regexp = "^[A-Za-z]{2,50}$",message = "incorrect username !")
     private String username;
 
     @JsonIgnore

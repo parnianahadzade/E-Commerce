@@ -19,8 +19,7 @@ public class OrderQuantities extends Base{
     //invoice item
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_quantities_seq")
-    @SequenceGenerator(name = "order_quantities_seq", sequenceName = "order_quantities_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

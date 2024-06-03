@@ -17,8 +17,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "inventory_tbl")
 public class Inventory extends Base{
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "inventory_seq")
-    @SequenceGenerator(name = "inventory_seq", sequenceName = "inventory_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

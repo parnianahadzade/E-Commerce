@@ -15,9 +15,14 @@ import java.sql.Timestamp;
 @Table(name = "verification_token_tbl")
 @Entity(name = "verificationTokenEntity")
 public class VerificationToken {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "verification_token_seq")
+//    @SequenceGenerator(name = "verification_token_seq",sequenceName = "verification_token_seq",allocationSize = 1)
+//    @Column(name = "id", nullable = false)
+//    private Long id;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "verification_token_seq")
-    @SequenceGenerator(name = "verification_token_seq",sequenceName = "verification_token_seq",allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -34,5 +39,6 @@ public class VerificationToken {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
 
 }
