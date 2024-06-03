@@ -21,6 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
+//run with coverage for more info
 @SpringBootTest
 public class UserServiceTest {
 
