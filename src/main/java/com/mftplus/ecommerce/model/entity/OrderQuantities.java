@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 @Entity(name = "orderQuantitiesEntity")
-@Table(name = "order_quantities")
+@Table(name = "order_quantities_tbl")
 public class OrderQuantities extends Base{
     //invoice item
 
