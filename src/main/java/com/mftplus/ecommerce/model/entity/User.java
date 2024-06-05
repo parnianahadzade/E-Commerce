@@ -8,8 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @SuperBuilder
@@ -18,7 +21,7 @@ import java.util.List;
 @Setter
 @Entity(name = "userEntity")
 @Table(name = "user_tbl")
-public class User extends Base{
+public class User extends Base implements UserDetails {
     //todo
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
@@ -63,4 +66,33 @@ public class User extends Base{
     @Column(name = "email_verified", nullable = false)
     private Boolean emailVerified = false;
 
+    @JsonIgnore
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
