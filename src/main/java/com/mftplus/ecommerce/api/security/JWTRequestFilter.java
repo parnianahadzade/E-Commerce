@@ -40,12 +40,15 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             try {
                 String username = jwtService.getUsername(token);
                 Optional<User> optionalUser = userRepository.findByUsernameIgnoreCase(username);
+
                 if (optionalUser.isPresent()){
                     User user = optionalUser.get();
-                    //inputs : authentication principal = user object , password , granted authorities
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null,new ArrayList<>());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    if (user.getEmailVerified()) {
+                        //inputs : authentication principal = user object , password , granted authorities
+                        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    }
                 }
             }catch (JWTDecodeException exception) {
 
