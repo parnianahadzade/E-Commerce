@@ -2,8 +2,10 @@ package com.mftplus.ecommerce.api.controller.auth;
 
 import com.mftplus.ecommerce.api.dto.LoginBody;
 import com.mftplus.ecommerce.api.dto.LoginResponse;
+import com.mftplus.ecommerce.api.dto.PasswordResetBody;
 import com.mftplus.ecommerce.api.dto.RegistrationBody;
 import com.mftplus.ecommerce.exception.EmailFailureException;
+import com.mftplus.ecommerce.exception.EmailNotFoundException;
 import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
 import com.mftplus.ecommerce.exception.UserNotVerifiedException;
 import com.mftplus.ecommerce.model.entity.User;
@@ -82,4 +84,25 @@ public class AuthenticationController {
     public User getLoggedInUserProfile(@AuthenticationPrincipal User user){
         return user;
     }
+
+    @PostMapping("/forgot")
+    public ResponseEntity forgotPassword(@RequestParam String email){
+        try {
+            userService.forgotPassword(email);
+            return ResponseEntity.ok().build();
+
+        } catch (EmailNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        } catch (EmailFailureException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity resetPassword(@Valid @RequestBody PasswordResetBody body){
+        userService.resetPassword(body);
+        return ResponseEntity.ok().build();
+    }
+
 }

@@ -24,7 +24,9 @@ public class SecurityConfig {
                 .addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/product","/auth/register","/auth/login","/auth/verify","/test/data","/error")
+                        .requestMatchers("/product","/auth/register","/auth/login",
+                                "/auth/verify","/test/data","/error","/auth/forgot",
+                                "/auth/reset")
                         .permitAll()
                         .anyRequest().authenticated()
                 );

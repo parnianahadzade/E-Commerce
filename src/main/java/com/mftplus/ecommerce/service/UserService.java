@@ -1,8 +1,10 @@
 package com.mftplus.ecommerce.service;
 
 import com.mftplus.ecommerce.api.dto.LoginBody;
+import com.mftplus.ecommerce.api.dto.PasswordResetBody;
 import com.mftplus.ecommerce.api.dto.RegistrationBody;
 import com.mftplus.ecommerce.exception.EmailFailureException;
+import com.mftplus.ecommerce.exception.EmailNotFoundException;
 import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
 import com.mftplus.ecommerce.exception.UserNotVerifiedException;
 import com.mftplus.ecommerce.model.entity.User;
@@ -102,5 +104,31 @@ public class UserService {
             }
         }
         return false;
+    }
+
+    public void forgotPassword(String email) throws EmailNotFoundException, EmailFailureException {
+        Optional<User> optionalUser = userRepository.findByEmailIgnoreCase(email);
+
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+            String token = jwtService.generatePasswordResetJwt(user);
+            emailService.sendPasswordResetEmail(user, token);
+
+        } else {
+            throw new EmailNotFoundException();
+        }
+    }
+
+    public void resetPassword(PasswordResetBody body){
+        String email = jwtService.getResetPasswordEmail(body.getToken());
+
+        Optional<User> optionalUser = userRepository.findByEmailIgnoreCase(email);
+
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+
+            user.setPassword(encryptionService.encryptPassword(body.getPassword()));
+            userRepository.save(user);
+        }
     }
 }

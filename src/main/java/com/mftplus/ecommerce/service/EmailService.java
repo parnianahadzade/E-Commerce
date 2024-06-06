@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.service;
 
 import com.mftplus.ecommerce.exception.EmailFailureException;
+import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.model.entity.VerificationToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -35,6 +36,20 @@ public class EmailService {
         message.setSubject("Verify your email to activate your account.");
         message.setText("Please follow the link below to verify your email to activate your account.\n +" +
                 url + "/auth/verify?token=" + verificationToken.getToken());
+        try {
+            javaMailSender.send(message);
+        }catch (MailException exception){
+            throw new EmailFailureException();
+        }
+    }
+
+    public void sendPasswordResetEmail(User user, String token) throws EmailFailureException{
+        SimpleMailMessage message = makeMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("Your password reset request link.");
+        message.setText("You requested a password reset in our website, " +
+                "Please find the link below to be able to reset your password.\n" + url +
+                "/auth/reset?token=" + token);
         try {
             javaMailSender.send(message);
         }catch (MailException exception){
