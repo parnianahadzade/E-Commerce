@@ -23,8 +23,11 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     private final ApplicationContext context;
 
-    public WebSocketConfiguration(ApplicationContext context) {
+    private final JWTRequestFilter jwtRequestFilter;
+
+    public WebSocketConfiguration(ApplicationContext context, JWTRequestFilter jwtRequestFilter) {
         this.context = context;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
 
     @Override
@@ -63,6 +66,6 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
         authInterceptor.setAuthorizationEventPublisher(publisher);
 
-        registration.interceptors(authInterceptor);
+        registration.interceptors(jwtRequestFilter, authInterceptor);
     }
 }
