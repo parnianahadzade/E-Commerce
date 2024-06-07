@@ -131,4 +131,8 @@ public class UserService {
             userRepository.save(user);
         }
     }
+
+    public boolean userHasPermissionToUser(User user, Long id){
+        return user.getId() == id;
+    }
 }

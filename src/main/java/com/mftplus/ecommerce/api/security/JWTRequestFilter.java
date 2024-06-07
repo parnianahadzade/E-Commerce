@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,10 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class JWTRequestFilter extends OncePerRequestFilter implements ChannelInterceptor {
@@ -81,19 +79,19 @@ public class JWTRequestFilter extends OncePerRequestFilter implements ChannelInt
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        //websocket headers
-        Map nativeHeaders = (Map) message.getHeaders().get("nativeHeaders");
+        if (Objects.equals(message.getHeaders().get("simpMessageType"), SimpMessageType.CONNECT)) {
+            //websocket headers
+            Map nativeHeaders = (Map) message.getHeaders().get("nativeHeaders");
 
-        //todo : limit this to only connect messages.
+            if (nativeHeaders != null) {
 
-        if (nativeHeaders != null) {
+                //now we get the authorization from that native header
+                List authTokenList = (List) nativeHeaders.get("Authorization");
 
-            //now we get the authorization from that native header
-            List authTokenList = (List) nativeHeaders.get("Authorization");
-
-            if (authTokenList != null){
-                String tokenHeader = (String) authTokenList.get(0);
-                checkToken(tokenHeader);
+                if (authTokenList != null) {
+                    String tokenHeader = (String) authTokenList.get(0);
+                    checkToken(tokenHeader);
+                }
             }
         }
 
