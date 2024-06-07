@@ -179,8 +179,6 @@ public class UserServiceTest {
 
         Assertions.assertTrue(encryptionService.verifyPassword("NewPassword1234",
                 user.getPassword()), "Password change should be written to DB");
-
-
     }
 
 }

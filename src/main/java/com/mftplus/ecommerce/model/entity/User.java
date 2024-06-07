@@ -66,6 +66,8 @@ public class User extends Base implements UserDetails {
     @Column(name = "email_verified", nullable = false)
     private Boolean emailVerified = false;
 
+
+    //for user details
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
