@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/product","/auth/register","/auth/login",
                                 "/auth/verify","/test/data","/error","/auth/forgot",
-                                "/auth/reset")
+                                "/auth/reset","/websocket", "/websocket/**")
                         .permitAll()
                         .anyRequest().authenticated()
                 );

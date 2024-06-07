@@ -79,12 +79,15 @@ public class JWTRequestFilter extends OncePerRequestFilter implements ChannelInt
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        if (Objects.equals(message.getHeaders().get("simpMessageType"), SimpMessageType.CONNECT)) {
+        SimpMessageType messageType =
+                (SimpMessageType) message.getHeaders().get("simpMessageType");
+
+        if (messageType.equals(SimpMessageType.SUBSCRIBE)
+                || messageType.equals(SimpMessageType.MESSAGE)) {
             //websocket headers
             Map nativeHeaders = (Map) message.getHeaders().get("nativeHeaders");
 
             if (nativeHeaders != null) {
-
                 //now we get the authorization from that native header
                 List authTokenList = (List) nativeHeaders.get("Authorization");
 

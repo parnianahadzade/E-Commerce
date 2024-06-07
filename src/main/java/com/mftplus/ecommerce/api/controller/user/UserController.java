@@ -1,10 +1,13 @@
 package com.mftplus.ecommerce.api.controller.user;
 
+import com.mftplus.ecommerce.api.dto.DataChange;
 import com.mftplus.ecommerce.model.entity.Address;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.repository.AddressRepository;
+import com.mftplus.ecommerce.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +20,20 @@ public class UserController {
 
     private final AddressRepository addressRepository;
 
-    public UserController(AddressRepository addressRepository) {
+    private final UserService userService;
+
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+    public UserController(AddressRepository addressRepository, UserService userService, SimpMessagingTemplate simpMessagingTemplate) {
         this.addressRepository = addressRepository;
+        this.userService = userService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @GetMapping("/{userId}/address")
     public ResponseEntity<List<Address>> getAddress
             (@AuthenticationPrincipal User user, @PathVariable Long userId){
-        if (!userHasPermission(user, userId)){
+        if (!userService.userHasPermissionToUser(user, userId)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -36,7 +45,7 @@ public class UserController {
     public ResponseEntity<Address> putAddress(
             @AuthenticationPrincipal User user, @PathVariable Long userId,
             @RequestBody Address address){
-        if (!userHasPermission(user, userId)){
+        if (!userService.userHasPermissionToUser(user, userId)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -45,7 +54,11 @@ public class UserController {
         refUser.setId(userId);
         address.setUser(refUser);
 
-        return ResponseEntity.ok(addressRepository.save(address));
+        Address savedAddress = addressRepository.save(address);
+        simpMessagingTemplate.convertAndSend("/topic/user/" + userId + "/address",
+                new DataChange<>(DataChange.ChangeType.INSERT, address));
+
+        return ResponseEntity.ok(savedAddress);
 
     }
 
@@ -54,7 +67,7 @@ public class UserController {
     public ResponseEntity<Address> patchAddress(
             @AuthenticationPrincipal User user, @PathVariable Long userId,
             @PathVariable Long addressId, @RequestBody Address address){
-        if (!userHasPermission(user, userId)){
+        if (!userService.userHasPermissionToUser(user, userId)){
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
@@ -67,7 +80,11 @@ public class UserController {
                 if (originalUser.getId().equals(userId)){
                     address.setUser(originalUser);
 
-                    return ResponseEntity.ok(addressRepository.save(address));
+                    Address savedAddress = addressRepository.save(address);
+                    simpMessagingTemplate.convertAndSend("/topic/user/" + userId + "/address",
+                            new DataChange<>(DataChange.ChangeType.UPDATE, address));
+
+                    return ResponseEntity.ok(savedAddress);
                 }
             }
         }
@@ -75,7 +92,4 @@ public class UserController {
         return ResponseEntity.badRequest().build();
     }
 
-    private boolean userHasPermission(User user, Long id){
-        return user.getId().equals(id);
-    }
 }
