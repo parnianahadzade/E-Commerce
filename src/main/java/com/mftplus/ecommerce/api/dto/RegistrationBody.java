@@ -15,27 +15,32 @@ import lombok.experimental.SuperBuilder;
 public class RegistrationBody {
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{2,50}$",message = "incorrect username !")
-    public String username;
+    @Pattern(regexp = "^[A-Za-z-0-9]{2,50}$",message = "incorrect username !")
+    private String username;
 
     @NotNull
     @NotBlank
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "Minimum five characters, at least one letter and one number!")
-    public String password;
+    private String password;
 
 
     @NotNull
     @NotBlank
     @Email(message = "Incorrect Email Format!")
-    public String email;
+    private String email;
 
     @NotNull
     @NotBlank
     @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect first name!")
-    public String firstName;
+    private String firstName;
 
     @NotNull
     @NotBlank
     @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect last name!")
-    public String lastName;
+    private String lastName;
+
+    @NotNull
+    @NotBlank
+    @Pattern(regexp = "^[0-9]{11}$",message = "incorrect phone number!")
+    private String phoneNumber;
 }

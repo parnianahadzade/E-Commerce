@@ -5,7 +5,7 @@ import com.mftplus.ecommerce.exception.EmailFailureException;
 import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
 import com.mftplus.ecommerce.model.entity.*;
 import com.mftplus.ecommerce.repository.*;
-import com.mftplus.ecommerce.service.UserService;
+import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test")
 public class Test {
-    private final UserService userService;
+    private final UserServiceImpl userService;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final InventoryRepository inventoryRepository;
@@ -21,7 +21,7 @@ public class Test {
     private final OrderRepository orderRepository;
     private final OrderQuantitiesRepository orderQuantitiesRepository;
 
-    public Test(UserService userService, UserRepository userRepository, ProductRepository productRepository, InventoryRepository inventoryRepository, AddressRepository addressRepository, OrderRepository orderRepository, OrderQuantitiesRepository orderQuantitiesRepository) {
+    public Test(UserServiceImpl userService, UserRepository userRepository, ProductRepository productRepository, InventoryRepository inventoryRepository, AddressRepository addressRepository, OrderRepository orderRepository, OrderQuantitiesRepository orderQuantitiesRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.productRepository = productRepository;

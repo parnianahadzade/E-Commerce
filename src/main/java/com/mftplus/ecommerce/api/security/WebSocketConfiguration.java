@@ -1,7 +1,7 @@
 package com.mftplus.ecommerce.api.security;
 
 import com.mftplus.ecommerce.model.entity.User;
-import com.mftplus.ecommerce.service.UserService;
+import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
@@ -38,9 +38,9 @@ public class WebSocketConfiguration implements WebSocketMessageBrokerConfigurer 
 
     private static final AntPathMatcher MATCHER = new AntPathMatcher();
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public WebSocketConfiguration(ApplicationContext context, JWTRequestFilter jwtRequestFilter, UserService userService) {
+    public WebSocketConfiguration(ApplicationContext context, JWTRequestFilter jwtRequestFilter, UserServiceImpl userService) {
         this.context = context;
         this.jwtRequestFilter = jwtRequestFilter;
         this.userService = userService;
