@@ -12,6 +12,8 @@ public interface UserService {
 
     void update(User user) throws NoContentException;
 
+    void logicalRemove(Long id) throws NoContentException;
+
     User findById(Long id) throws NoContentException;
 
 

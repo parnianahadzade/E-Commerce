@@ -64,12 +64,22 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Transactional
+    @Override
+    public void logicalRemove(Long id) throws NoContentException {
+        userRepository.findById(id).orElseThrow(
+                () -> new NoContentException("No User Found with id : " + id)
+        );
+        userRepository.logicalRemove(id);
+    }
+
     @Override
     public User findById(Long id) throws NoContentException {
         return userRepository.findById(id).orElseThrow(
                 () -> new NoContentException("No User Found with id : " + id)
         );
     }
+
 
     private VerificationToken createVerificationToken(User user){
         VerificationToken verificationToken = new VerificationToken();

@@ -100,7 +100,7 @@ public class AuthenticationController {
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity updateUserInfo(@Valid @RequestBody UserDataChange userDataChange
+    public ResponseEntity<User> updateUserInfo(@Valid @RequestBody UserDataChange userDataChange
             , @AuthenticationPrincipal User authUser, @PathVariable Long userId) throws NoContentException {
 
         if (!userService.userHasPermissionToUser(authUser, userId)){
@@ -115,6 +115,24 @@ public class AuthenticationController {
 
         userService.update(user);
         return ResponseEntity.ok().build();
+    }
+
+    //todo : should user have access to this? is it admin only?
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<User> logicalRemoveUser(@PathVariable Long userId
+            , @AuthenticationPrincipal User authUser) throws NoContentException {
+
+        if (!userService.userHasPermissionToUser(authUser, userId)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        User user = userService.findById(userId);
+        user.setEmailVerified(false);
+        userService.update(user);
+
+        userService.logicalRemove(userId);
+        return ResponseEntity.ok().build();
+
     }
 
 }
