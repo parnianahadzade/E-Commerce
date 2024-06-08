@@ -1,15 +1,9 @@
 package com.mftplus.ecommerce.api.controller.auth;
 
-import com.mftplus.ecommerce.api.dto.LoginBody;
-import com.mftplus.ecommerce.api.dto.LoginResponse;
-import com.mftplus.ecommerce.api.dto.PasswordResetBody;
-import com.mftplus.ecommerce.api.dto.RegistrationBody;
-import com.mftplus.ecommerce.exception.EmailFailureException;
-import com.mftplus.ecommerce.exception.EmailNotFoundException;
-import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
-import com.mftplus.ecommerce.exception.UserNotVerifiedException;
+import com.mftplus.ecommerce.api.dto.*;
+import com.mftplus.ecommerce.exception.*;
 import com.mftplus.ecommerce.model.entity.User;
-import com.mftplus.ecommerce.service.UserService;
+import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +13,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
-    public AuthenticationController(UserService userService) {
+    public AuthenticationController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -102,6 +96,24 @@ public class AuthenticationController {
     @PostMapping("/reset")
     public ResponseEntity resetPassword(@Valid @RequestBody PasswordResetBody body){
         userService.resetPassword(body);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/update/{userId}")
+    public ResponseEntity updateUserInfo(@Valid @RequestBody UserDataChange userDataChange
+            , @AuthenticationPrincipal User authUser, @PathVariable Long userId) throws NoContentException {
+
+        if (!userService.userHasPermissionToUser(authUser, userId)){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        User user = userService.findById(userId);
+        user.setFirstName(userDataChange.getFirstName());
+        user.setLastName(userDataChange.getLastName());
+        user.setUsername(userDataChange.getUsername());
+        user.setPhoneNumber(userDataChange.getPhoneNumber());
+
+        userService.update(user);
         return ResponseEntity.ok().build();
     }
 

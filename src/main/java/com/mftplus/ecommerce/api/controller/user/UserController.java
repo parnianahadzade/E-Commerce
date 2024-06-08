@@ -4,7 +4,7 @@ import com.mftplus.ecommerce.api.dto.DataChange;
 import com.mftplus.ecommerce.model.entity.Address;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.repository.AddressRepository;
-import com.mftplus.ecommerce.service.UserService;
+import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -20,11 +20,11 @@ public class UserController {
 
     private final AddressRepository addressRepository;
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    public UserController(AddressRepository addressRepository, UserService userService, SimpMessagingTemplate simpMessagingTemplate) {
+    public UserController(AddressRepository addressRepository, UserServiceImpl userService, SimpMessagingTemplate simpMessagingTemplate) {
         this.addressRepository = addressRepository;
         this.userService = userService;
         this.simpMessagingTemplate = simpMessagingTemplate;

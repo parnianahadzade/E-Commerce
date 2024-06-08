@@ -14,6 +14,7 @@ import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.model.entity.VerificationToken;
 import com.mftplus.ecommerce.repository.UserRepository;
 import com.mftplus.ecommerce.repository.VerificationTokenRepository;
+import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
@@ -37,7 +38,7 @@ public class UserServiceTest {
             .withPerMethodLifecycle(true);
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
