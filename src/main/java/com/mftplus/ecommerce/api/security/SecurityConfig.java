@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class SecurityConfig {
@@ -15,6 +16,7 @@ public class SecurityConfig {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -24,12 +26,35 @@ public class SecurityConfig {
                 .addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/product","/auth/register","/auth/login",
-                                "/auth/verify","/test/data","/error","/auth/forgot",
-                                "/auth/reset","/websocket", "/websocket/**")
+                        .requestMatchers("/product", "/auth/register", "/auth/login"
+                                ,"/error","/", "/auth/verify")
                         .permitAll()
+
+                        .requestMatchers("/admin")
+                            .hasAuthority("admin")
+
+                        .requestMatchers("/auth/forgot","/auth/reset",
+                                "/websocket","/websocket/**","/order")
+                                        .hasAuthority("user")
+
                         .anyRequest().authenticated()
-                );
+                )
+//        http
+//                .authorizeHttpRequests((requests) -> requests
+//                        .requestMatchers("/product","/auth/register","/auth/login","/",
+//                                "/auth/verify","/test/data","/error","/auth/forgot",
+//                                "/auth/reset","/websocket", "/websocket/**")
+//                        .permitAll()
+//                        .anyRequest().authenticated()
+//                )
+
+                .logout(
+                        (logout) -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+        );
 
         return http.build();
     }

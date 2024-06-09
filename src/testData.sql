@@ -7,11 +7,13 @@ VALUES ( 'UserA@junit.com', 'UserAFirstName', 'UserALastName', '$2a$10$hBn5gu6cG
      , ( 'UserB@junit.com', 'UserBFirstName', 'UserBLastName', '$2a$10$TlYbg57fqOy/1LJjispkjuSIvFJXbh3fy0J9fvHnCpuntZOITAjVG', 'UserB', false,09123858573 , false)
      , ('UserC@junit.com', 'UserCFirstName', 'UserCLastName', '$2a$10$SYiYAIW80gDh39jwSaPyiuKGuhrLi7xTUjocL..NOx/1COWe5P03.', 'UserC', false,09123858573, false);
 
-INSERT INTO role_tbl ( role_name, user_id)
-VALUES ('user', 1),
-       ('user', 3),
-       ('user', 4),
-       ('admin', 2);
+INSERT INTO role_tbl ( role_name)
+VALUES ('user'),
+       ('admin');
+
+INSERT INTO user_role (user_id, role_id)
+VALUES (1,1),
+       (2,2);
 
 
 INSERT INTO address_tbl (address_line_1, city, country, user_id, deleted)

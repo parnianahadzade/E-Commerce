@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.List;
 
 @SuperBuilder
-@NoArgsConstructor
 @Getter
 @Setter
 @Entity(name = "userEntity")
@@ -28,7 +27,7 @@ public class User extends Base implements UserDetails {
     private Long id;
 
     @Column(name = "u_username", nullable = false, unique = true, length = 50)
-    @Pattern(regexp = "^[A-Za-z-0-9]{2,50}$",message = "incorrect username !")
+    @Pattern(regexp = "^[a-z-0-9]{2,50}$",message = "incorrect username !")
     private String username;
 
     @JsonIgnore
@@ -64,15 +63,21 @@ public class User extends Base implements UserDetails {
     private Boolean emailVerified = false;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Role> roles = new ArrayList<>();
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = {@JoinColumn (name = "user_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn (name = "role_id", referencedColumnName = "id")})
+    private List<Role> roles;
 
 
     //for user details
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        List<GrantedAuthority> authorityList = new ArrayList<>();
+        this.getRoles().forEach(role -> {authorityList.add(new SimpleGrantedAuthority(role.getName()));
+        });
+        return authorityList;
     }
 
     @JsonIgnore
@@ -97,5 +102,23 @@ public class User extends Base implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User(){
+
+    }
+
+    public User(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.password = user.getPassword();
+        this.phoneNumber = user.getPhoneNumber();
+        this.addresses = user.getAddresses();
+        this.email = user.getEmail();
+        this.verificationTokens = user.getVerificationTokens();
+        this.emailVerified = user.getEmailVerified();
+        this.roles = user.getRoles();
     }
 }

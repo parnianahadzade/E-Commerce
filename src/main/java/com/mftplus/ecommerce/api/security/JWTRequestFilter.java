@@ -61,7 +61,7 @@ public class JWTRequestFilter extends OncePerRequestFilter implements ChannelInt
                     if (user.getEmailVerified()) {
                         //inputs : authentication principal = user object , password , granted authorities
                         UsernamePasswordAuthenticationToken authenticationToken =
-                                new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>());
+                                new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
                         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 

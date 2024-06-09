@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,8 +29,7 @@ public class Role {
     @Column(name = "role_name", nullable = false, length = 10)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
 }
