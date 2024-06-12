@@ -7,6 +7,9 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SuperBuilder
 @NoArgsConstructor
 @Getter
@@ -32,7 +35,13 @@ public class Product extends Base{
     @Column(name = "p_price", nullable = false)
     private Double price;
 
+    @Column(name = "p_off_percent")
+    private String offPercent;
+
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, optional = false, orphanRemoval = true)
     private Inventory inventory;
+
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private List<Category> categories = new ArrayList<>();
 
 }

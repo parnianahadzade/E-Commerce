@@ -3,6 +3,7 @@ package com.mftplus.ecommerce.api.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -16,7 +17,6 @@ public class SecurityConfig {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -26,8 +26,8 @@ public class SecurityConfig {
                 .addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/product", "/auth/register", "/auth/login"
-                                ,"/error","/", "/auth/verify")
+                        .requestMatchers("/product/**", "/auth/register", "/auth/login"
+                                ,"/error","/", "/auth/verify","/category/**")
                         .permitAll()
 
                         .requestMatchers("/admin")
@@ -57,6 +57,12 @@ public class SecurityConfig {
         );
 
         return http.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/resources/**", "/static/**", "/images/**","/productImages/**"
+                ,"/css/**", "/js/**");
     }
 
 }
