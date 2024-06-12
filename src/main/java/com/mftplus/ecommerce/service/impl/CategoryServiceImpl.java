@@ -16,11 +16,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findByProductId(Long id) {
-        return categoryRepository.findByProductId(id);
-    }
-
-    @Override
     public List<Category> findByName(String name) {
         return categoryRepository.findByName(name);
     }

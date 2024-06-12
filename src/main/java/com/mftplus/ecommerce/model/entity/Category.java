@@ -17,9 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity(name = "categoryEntity")
-@Table(name = "category_tbl", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"c_name", "product_id"})
-})
+@Table(name = "category_tbl")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,8 +35,7 @@ public class Category {
     private List<Category> categories = new ArrayList<>();
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @ManyToMany(mappedBy = "categories")
+    private List<Product> products = new ArrayList<>();
 
 }

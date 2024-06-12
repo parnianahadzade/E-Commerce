@@ -27,10 +27,15 @@ VALUES ('Product #1', 'Product one short description.', 'This is a very long des
      , ('Product #4', 'Product four short description.', 'This is a very long description of product #4.', 15.69 ,false)
      , ('Product #5', 'Product five short description.', 'This is a very long description of product #5.', 42.59 ,false);
 
-INSERT INTO category_tbl (c_name, product_id)
-VALUES ('men',1),
-       ('shorts',1),
-       ('woman',2);
+INSERT INTO category_tbl (c_name)
+VALUES ('men'),
+       ('shorts'),
+       ('woman');
+
+INSERT INTO product_categories_tbl (product_id, categories_id)
+VALUES (1,1),
+        (1,2),
+        (2,1);
 
 INSERT INTO inventory_tbl (product_id, quantity, deleted)
 VALUES (1, 5, false)

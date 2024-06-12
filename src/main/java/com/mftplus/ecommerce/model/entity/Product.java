@@ -41,7 +41,11 @@ public class Product extends Base{
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, optional = false, orphanRemoval = true)
     private Inventory inventory;
 
-    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    @ToString.Exclude
+    @ManyToMany
+    @JoinTable(name = "product_categories_tbl",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "categories_id"))
     private List<Category> categories = new ArrayList<>();
 
 }
