@@ -29,12 +29,24 @@ VALUES ('Product #1', 'Product one short description.', 'This is a very long des
 
 INSERT INTO category_tbl (c_name)
 VALUES ('men'),
+       ('woman'),
+       ('unisex'),
        ('shorts'),
-       ('woman');
+       ('tShirt'),
+       ('winterShorts');
+
+# men and shorts
+UPDATE category_tbl SET category_id=4 where id=1;
+UPDATE category_tbl SET category_id=1 where id=4;
+
+UPDATE category_tbl SET category_id=4 where id=6;
+
+
+UPDATE category_tbl SET category_id=3 where id=2;
 
 INSERT INTO product_categories_tbl (product_id, categories_id)
 VALUES (1,1),
-        (1,2),
+        (1,3),
         (2,1);
 
 INSERT INTO inventory_tbl (product_id, quantity, deleted)

@@ -2,12 +2,10 @@ package com.mftplus.ecommerce.api.controller.category;
 
 import com.mftplus.ecommerce.model.entity.Category;
 import com.mftplus.ecommerce.service.impl.CategoryServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/category")
@@ -19,9 +17,14 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("{categoryName}")
-    public List<Category> findCategoryByName(@PathVariable String categoryName){
-        return categoryService.findByName(categoryName);
+
+    @GetMapping
+    public List<Category> findCategories(@RequestParam(value = "categoryName", required = false) String categoryName){
+        Optional<Category> categoryOptional = categoryService.findByName(categoryName);
+        if (categoryOptional.isPresent()){
+            return categoryOptional.get().getCategories();
+        }
+        return null;
     }
 
 }

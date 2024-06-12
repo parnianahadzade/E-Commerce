@@ -2,10 +2,7 @@ package com.mftplus.ecommerce.api.controller.product;
 
 import com.mftplus.ecommerce.model.entity.Product;
 import com.mftplus.ecommerce.service.impl.ProductServiceImpl;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,12 +17,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findProducts(){
-        return productService.findProducts();
-    }
-
-    @GetMapping("/category/{categoryName}")
-    public List<Product> findByCategoryName(@PathVariable String categoryName){
+    public List<Product> findProducts(@RequestParam(value = "categoryName", required = false) String categoryName){
+        if (categoryName == null) {
+            return productService.findProducts();
+        }
         return productService.findByCategoriesName(categoryName);
     }
+
 }

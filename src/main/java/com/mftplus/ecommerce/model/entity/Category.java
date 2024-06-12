@@ -24,13 +24,15 @@ public class Category {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "c_name", nullable = false)
+    @Column(name = "c_name", nullable = false, unique = true)
     private String name;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category", orphanRemoval = true)
     private List<Category> categories = new ArrayList<>();
 

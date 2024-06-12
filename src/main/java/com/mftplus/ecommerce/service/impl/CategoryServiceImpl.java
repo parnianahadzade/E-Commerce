@@ -5,7 +5,8 @@ import com.mftplus.ecommerce.repository.CategoryRepository;
 import com.mftplus.ecommerce.service.CategoryService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -16,7 +17,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<Category> findByName(String name) {
+    public Optional<Category> findByName(String name) {
         return categoryRepository.findByName(name);
     }
+
 }
