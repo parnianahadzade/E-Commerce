@@ -12,35 +12,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuperBuilder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "categoryEntity")
-@Table(name = "category_tbl")
-public class Category {
+@Entity(name = "colorEntity")
+@Table(name = "color_tbl")
+public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "c_name", nullable = false, unique = true)
+    @Column(name = "c_name", nullable = false, unique = true, length = 20)
     private String name;
-
-    //todo
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "category", orphanRemoval = true)
-    private List<Category> categories = new ArrayList<>();
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "category_products_tbl",
-            joinColumns = @JoinColumn(name = "category_id"),
+    @JoinTable(name = "color_products_tbl",
+            joinColumns = @JoinColumn(name = "color_id"),
             inverseJoinColumns = @JoinColumn(name = "products_id"))
     private List<Product> products = new ArrayList<>();
 

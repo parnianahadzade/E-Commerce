@@ -41,11 +41,10 @@ public class Product extends Base{
     @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, optional = false, orphanRemoval = true)
     private Inventory inventory;
 
-    @ToString.Exclude
-    @ManyToMany
-    @JoinTable(name = "product_categories_tbl",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "categories_id"))
+    @ManyToMany(mappedBy = "products")
+    private List<Color> colors = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "products")
     private List<Category> categories = new ArrayList<>();
 
 }

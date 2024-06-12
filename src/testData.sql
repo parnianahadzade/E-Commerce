@@ -44,10 +44,23 @@ UPDATE category_tbl SET category_id=4 where id=6;
 
 UPDATE category_tbl SET category_id=3 where id=2;
 
-INSERT INTO product_categories_tbl (product_id, categories_id)
+INSERT INTO category_products_tbl (products_id, category_id)
 VALUES (1,1),
-        (1,3),
+        (1,4),
         (2,1);
+
+INSERT INTO color_tbl (c_name)
+VALUES ('blue'),
+        ('red'),
+        ('purple');
+
+INSERT INTO color_products_tbl (color_id, products_id)
+VALUES (1,1),
+       (2,1),
+       (3,1),
+       (1,2),
+       (2,2);
+
 
 INSERT INTO inventory_tbl (product_id, quantity, deleted)
 VALUES (1, 5, false)
