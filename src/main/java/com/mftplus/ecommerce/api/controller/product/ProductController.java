@@ -17,11 +17,17 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> findProducts(@RequestParam(value = "categoryName", required = false) String categoryName){
-        if (categoryName == null) {
-            return productService.findProducts();
+    public List<Product> findProducts(@RequestParam(value = "categoryName", required = false) String categoryName,
+                                      @RequestParam(value = "brandName", required = false) String brandName){
+        if (categoryName != null && brandName != null) {
+            return productService.findByBrandNameAndCategoriesName(brandName, categoryName);
+        }else if (categoryName != null) {
+            return productService.findByCategoriesName(categoryName);
+        }else if (brandName != null) {
+            return productService.findByBrandName(brandName);
         }
-        return productService.findByCategoriesName(categoryName);
+
+        return productService.findProducts();
     }
 
 }

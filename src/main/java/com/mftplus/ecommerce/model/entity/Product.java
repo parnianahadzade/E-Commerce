@@ -47,4 +47,9 @@ public class Product extends Base{
     @ManyToMany(mappedBy = "products")
     private List<Category> categories = new ArrayList<>();
 
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
 }

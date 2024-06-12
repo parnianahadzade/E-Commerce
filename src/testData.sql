@@ -20,12 +20,16 @@ INSERT INTO address_tbl (address_line_1, city, country, user_id, deleted)
 VALUES ('123 Tester Hill', 'Testerton', 'England', 1, false)
      , ('312 Spring Boot', 'Hibernate', 'England', 3, false);
 
-INSERT INTO product_tbl (p_name, short_description, long_description, p_price, deleted)
-VALUES ('Product #1', 'Product one short description.', 'This is a very long description of product #1.', 5.50, false)
-     , ('Product #2', 'Product two short description.', 'This is a very long description of product #2.', 10.56 ,false)
-     , ('Product #3', 'Product three short description.', 'This is a very long description of product #3.', 2.74 ,false)
-     , ('Product #4', 'Product four short description.', 'This is a very long description of product #4.', 15.69 ,false)
-     , ('Product #5', 'Product five short description.', 'This is a very long description of product #5.', 42.59 ,false);
+INSERT INTO brand_tbl (b_name)
+VALUES ('lcwaikiki'),
+       ('laboutin');
+
+INSERT INTO product_tbl (p_name, short_description, long_description, p_price, deleted,brand_id)
+VALUES ('Product #1', 'Product one short description.', 'This is a very long description of product #1.', 5.50, false,1)
+     , ('Product #2', 'Product two short description.', 'This is a very long description of product #2.', 10.56 ,false,1)
+     , ('Product #3', 'Product three short description.', 'This is a very long description of product #3.', 2.74 ,false,1)
+     , ('Product #4', 'Product four short description.', 'This is a very long description of product #4.', 15.69 ,false,2)
+     , ('Product #5', 'Product five short description.', 'This is a very long description of product #5.', 42.59 ,false,2);
 
 INSERT INTO category_tbl (c_name)
 VALUES ('men'),
@@ -60,7 +64,6 @@ VALUES (1,1),
        (3,1),
        (1,2),
        (2,2);
-
 
 INSERT INTO inventory_tbl (product_id, quantity, deleted)
 VALUES (1, 5, false)
