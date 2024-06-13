@@ -1,7 +1,9 @@
 package com.mftplus.ecommerce.service.impl;
 
+import com.mftplus.ecommerce.api.dto.SearchRequest;
 import com.mftplus.ecommerce.model.entity.Product;
 import com.mftplus.ecommerce.repository.ProductRepository;
+import com.mftplus.ecommerce.repository.ProductSearchRepository;
 import com.mftplus.ecommerce.service.ProductService;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,11 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ProductSearchRepository productSearchRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, ProductSearchRepository productSearchRepository) {
         this.productRepository = productRepository;
+        this.productSearchRepository = productSearchRepository;
     }
 
     public List<Product> findProducts(){
@@ -33,5 +37,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findByCategoriesName(String name) {
         return productRepository.findByCategoriesName(name);
+    }
+
+    @Override
+    public List<Product> findAllByCriteria(SearchRequest request) {
+        return productSearchRepository.findAllByCriteria(request);
     }
 }
