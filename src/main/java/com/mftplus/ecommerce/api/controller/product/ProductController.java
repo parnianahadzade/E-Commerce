@@ -29,6 +29,7 @@ public class ProductController {
         SearchRequest request = new SearchRequest();
         request.setName(name);
         request.setCategoryNames(categoryNames);
+        request.setBrandName(brandName);
         return productService.findAllByCriteria(request);
 
     }

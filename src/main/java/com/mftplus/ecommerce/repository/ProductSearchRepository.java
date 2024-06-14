@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.repository;
 
 import com.mftplus.ecommerce.api.dto.SearchRequest;
+import com.mftplus.ecommerce.model.entity.Brand;
 import com.mftplus.ecommerce.model.entity.Category;
 import com.mftplus.ecommerce.model.entity.Product;
 import jakarta.persistence.EntityManager;
@@ -52,6 +53,21 @@ public class ProductSearchRepository {
 
                 predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
             }
+        }
+
+        //brands
+        if (request.getBrandName() != null){
+            String brandName = request.getBrandName();
+
+            Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+            Root<Product> subQueryProduct = subquery.from(Product.class);
+            Join<Brand, Product> subQueryBrand = subQueryProduct.join("brand");
+
+            subquery.select(subQueryProduct.get("id")).where(
+                    criteriaBuilder.equal(subQueryBrand.get("name"), brandName));
+
+            predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
+
         }
 
 

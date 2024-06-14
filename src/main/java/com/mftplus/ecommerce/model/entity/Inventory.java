@@ -29,4 +29,9 @@ public class Inventory extends Base{
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    @ToString.Exclude
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "color_id", unique = true)
+    private Color color;
+
 }

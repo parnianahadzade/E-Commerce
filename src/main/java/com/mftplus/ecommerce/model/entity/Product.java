@@ -42,9 +42,6 @@ public class Product extends Base{
     private Inventory inventory;
 
     @ManyToMany(mappedBy = "products")
-    private List<Color> colors = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "products")
     private List<Category> categories = new ArrayList<>();
 
     @ToString.Exclude

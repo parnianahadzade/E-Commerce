@@ -14,9 +14,9 @@ public class SearchRequest {
 
     private List<String> categoryNames = new ArrayList<>();
 
-//    private Long colorId;
+    private String brandName;
 
-//    private Long brandId;
+//    private Long colorId;
 
 //    private String price;
 
