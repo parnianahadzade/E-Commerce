@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,7 +24,5 @@ public class Color {
     @Column(name = "c_name", nullable = false, unique = true, length = 20)
     private String name;
 
-    @OneToOne(mappedBy = "color", orphanRemoval = true)
-    private Inventory inventory;
 
 }

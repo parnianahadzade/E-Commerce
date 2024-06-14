@@ -38,9 +38,6 @@ public class Product extends Base{
     @Column(name = "p_off_percent")
     private String offPercent;
 
-    @OneToOne(mappedBy = "product", cascade = CascadeType.REMOVE, optional = false, orphanRemoval = true)
-    private Inventory inventory;
-
     @ManyToMany(mappedBy = "products")
     private List<Category> categories = new ArrayList<>();
 
@@ -48,5 +45,9 @@ public class Product extends Base{
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private List<Inventory> inventories = new ArrayList<>();
 
 }

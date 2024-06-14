@@ -58,19 +58,13 @@ VALUES ('blue'),
         ('red'),
         ('purple');
 
-INSERT INTO color_products_tbl (color_id, products_id)
-VALUES (1,1),
-       (2,1),
-       (3,1),
-       (1,2),
-       (2,2);
-
-INSERT INTO inventory_tbl (product_id, quantity, deleted)
-VALUES (1, 5, false)
-     , (2, 8, false)
-     , (3, 12, false)
-     , (4, 73, false)
-     , (5, 2, false);
+INSERT INTO inventory_tbl (product_id, quantity, deleted, color_id)
+VALUES (1, 5, false,1)
+     , (1,3,false,2)
+     , (2, 8, false,1)
+     , (3, 12, false,1)
+     , (4, 73, false,1)
+     , (5, 2, false,1);
 
 INSERT INTO order_tbl (address_id, user_id, deleted)
 VALUES (1, 1, false)
