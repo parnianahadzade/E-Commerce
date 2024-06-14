@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class Brand {
     private Long id;
 
     @Column(name = "b_name", nullable = false, unique = true, length = 20)
+    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect name!")
     private String name;
 
     @JsonIgnore

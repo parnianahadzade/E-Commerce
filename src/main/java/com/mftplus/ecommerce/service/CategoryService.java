@@ -8,6 +8,8 @@ public interface CategoryService {
 
     Optional<Category> findByName(String name);
 
+    void Save(Category category);
+
 
 
 }
