@@ -18,7 +18,11 @@ public class SearchRequest {
 
 //    private Long colorId;
 
-//    private String price;
+    private Integer minPrice;
 
-//    private String offPercent;
+    private Integer maxPrice;
+
+    private Integer minOffPercent;
+
+    private Integer maxOffPercent;
 }
