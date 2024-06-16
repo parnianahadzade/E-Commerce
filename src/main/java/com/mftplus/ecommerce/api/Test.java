@@ -70,7 +70,6 @@ public class Test {
                 .name("Product #1")
                 .shortDescription("Product one short description.")
                 .longDescription("This is a very long description of product #1")
-                .price(5.50)
                 .build();
         productRepository.save(product1);
 
@@ -78,7 +77,6 @@ public class Test {
                 .name("Product #2")
                 .shortDescription("Product two short description.")
                 .longDescription("This is a very long description of product #2")
-                .price(5.50)
                 .build();
         productRepository.save(product2);
 
@@ -86,7 +84,6 @@ public class Test {
                 .name("Product #3")
                 .shortDescription("Product three short description.")
                 .longDescription("This is a very long description of product #3")
-                .price(5.50)
                 .build();
         productRepository.save(product3);
 
@@ -94,7 +91,6 @@ public class Test {
                 .name("Product #4")
                 .shortDescription("Product four short description.")
                 .longDescription("This is a very long description of product #4")
-                .price(5.50)
                 .build();
         productRepository.save(product4);
 
@@ -102,7 +98,6 @@ public class Test {
                 .name("Product #5")
                 .shortDescription("Product five short description.")
                 .longDescription("This is a very long description of product #5")
-                .price(5.50)
                 .build();
         productRepository.save(product5);
 

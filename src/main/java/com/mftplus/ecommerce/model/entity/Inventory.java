@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,7 +23,8 @@ public class Inventory extends Base{
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "i_quantity", nullable = false)
+    @Min(value = 0, message = "Quantity must be equal or greater than 0.")
     private Integer quantity;
 
     @JsonIgnore
@@ -35,5 +37,13 @@ public class Inventory extends Base{
     @ManyToOne
     @JoinColumn(name = "color_id")
     private Color color;
+
+    @Column(name = "i_price")
+    @Min(value = 1, message = "Price must be equal or greater than 1.")
+    private Integer price;
+
+    @Column(name = "i_off_percent")
+    @Min(value = 0, message = "Off Percent must be equal or greater than 0.")
+    private Integer offPercent;
 
 }

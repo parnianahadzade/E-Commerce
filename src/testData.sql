@@ -24,12 +24,12 @@ INSERT INTO brand_tbl (b_name)
 VALUES ('lcwaikiki'),
        ('laboutin');
 
-INSERT INTO product_tbl (p_name, short_description, long_description, p_price, deleted,brand_id)
-VALUES ('Product #1', 'Product one short description.', 'This is a very long description of product #1.', 5.50, false,1)
-     , ('Product #2', 'Product two short description.', 'This is a very long description of product #2.', 10.56 ,false,1)
-     , ('Product #3', 'Product three short description.', 'This is a very long description of product #3.', 2.74 ,false,1)
-     , ('Product #4', 'Product four short description.', 'This is a very long description of product #4.', 15.69 ,false,2)
-     , ('Product #5', 'Product five short description.', 'This is a very long description of product #5.', 42.59 ,false,2);
+INSERT INTO product_tbl (p_name, short_description, long_description, deleted,brand_id)
+VALUES ('Product #1', 'Product one short description.', 'This is a very long description of product #1.', false,1)
+     , ('Product #2', 'Product two short description.', 'This is a very long description of product #2.' ,false,1)
+     , ('Product #3', 'Product three short description.', 'This is a very long description of product #3.' ,false,1)
+     , ('Product #4', 'Product four short description.', 'This is a very long description of product #4.' ,false,2)
+     , ('Product #5', 'Product five short description.', 'This is a very long description of product #5.' ,false,2);
 
 INSERT INTO category_tbl (c_name)
 VALUES ('men'),
@@ -48,7 +48,7 @@ UPDATE category_tbl SET category_id=4 where id=6;
 
 UPDATE category_tbl SET category_id=3 where id=2;
 
-INSERT INTO category_products_tbl (products_id, category_id)
+INSERT INTO category_products_tbl (product_id, categories_id)
 VALUES (1,1),
         (1,4),
         (2,1);
@@ -58,13 +58,13 @@ VALUES ('blue'),
         ('red'),
         ('purple');
 
-INSERT INTO inventory_tbl (product_id, quantity, deleted, color_id)
-VALUES (1, 5, false,1)
-     , (1,3,false,2)
-     , (2, 8, false,1)
-     , (3, 12, false,1)
-     , (4, 73, false,1)
-     , (5, 2, false,1);
+INSERT INTO inventory_tbl (product_id, i_quantity, deleted, color_id, i_price, i_off_percent)
+VALUES (1, 5, false,1, 6, 90)
+     , (1,3,false,2, 8, 78)
+     , (2, 8, false,1, 90, 20)
+     , (3, 12, false,1, 78, 0)
+     , (4, 73, false,1, 56, 0)
+     , (5, 2, false,1, 53, 10);
 
 INSERT INTO order_tbl (address_id, user_id, deleted)
 VALUES (1, 1, false)

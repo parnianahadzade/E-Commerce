@@ -30,7 +30,7 @@ public class SecurityConfig {
                                 ,"/error","/", "/auth/verify","/category/**")
                         .permitAll()
 
-                        .requestMatchers("/admin")
+                        .requestMatchers("/admin","/product/save")
                             .hasAuthority("admin")
 
                         .requestMatchers("/auth/forgot","/auth/reset",

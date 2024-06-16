@@ -40,10 +40,7 @@ public class Category {
     private List<Category> categories = new ArrayList<>();
 
     @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "category_products_tbl",
-            joinColumns = @JoinColumn(name = "category_id"),
-            inverseJoinColumns = @JoinColumn(name = "products_id"))
+    @ManyToMany(mappedBy = "categories")
     private List<Product> products = new ArrayList<>();
 
 }
