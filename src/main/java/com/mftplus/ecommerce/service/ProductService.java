@@ -7,11 +7,6 @@ import java.util.List;
 
 public interface ProductService {
 
-    List<Product> findByBrandName(String name);
-
-    List<Product> findByBrandNameAndCategoriesName(String brandName, String categoryName);
-
-    List<Product> findByCategoriesName(String name);
-
+    Product save(Product product);
     List<Product> findAllByCriteria(SearchRequest request);
 }

@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.service.impl;
 
+import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Brand;
 import com.mftplus.ecommerce.repository.BrandRepository;
 import com.mftplus.ecommerce.service.BrandService;
@@ -19,5 +20,12 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Optional<Brand> findByName(String name) {
         return brandRepository.findByName(name);
+    }
+
+    @Override
+    public Brand findById(Long id) throws NoContentException {
+        return brandRepository.findById(id).orElseThrow(
+                () -> new NoContentException("No Brand Found with id : " + id)
+        );
     }
 }

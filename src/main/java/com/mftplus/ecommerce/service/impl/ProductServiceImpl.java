@@ -20,23 +20,9 @@ public class ProductServiceImpl implements ProductService {
         this.productSearchRepository = productSearchRepository;
     }
 
-    public List<Product> findProducts(){
-        return productRepository.findAll();
-    }
-
     @Override
-    public List<Product> findByBrandName(String name) {
-        return productRepository.findByBrandName(name);
-    }
-
-    @Override
-    public List<Product> findByBrandNameAndCategoriesName(String brandName, String categoryName) {
-        return productRepository.findByBrandNameAndCategoriesName(brandName,categoryName);
-    }
-
-    @Override
-    public List<Product> findByCategoriesName(String name) {
-        return productRepository.findByCategoriesName(name);
+    public Product save(Product product) {
+        return productRepository.save(product);
     }
 
     @Override

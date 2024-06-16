@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.service.impl;
 
+import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Category;
 import com.mftplus.ecommerce.repository.CategoryRepository;
 import com.mftplus.ecommerce.service.CategoryService;
@@ -24,6 +25,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void Save(Category category) {
         categoryRepository.save(category);
+    }
+
+    @Override
+    public Category findById(Long id) throws NoContentException {
+        return categoryRepository.findById(id).orElseThrow(
+                () -> new NoContentException("No Category Found with id : " + id)
+        );
     }
 
 
