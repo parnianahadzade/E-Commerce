@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Entity(name = "colorEntity")
 @Table(name = "color_tbl")
-public class Color {
+public class Color extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
