@@ -24,15 +24,12 @@ public class ProductController {
 
     private final BrandServiceImpl brandService;
 
-    private final InventoryServiceImpl inventoryService;
-
     private final ColorServiceImpl colorService;
 
-    public ProductController(ProductServiceImpl productService, CategoryServiceImpl categoryService, BrandServiceImpl brandService, InventoryServiceImpl inventoryService, ColorServiceImpl colorService) {
+    public ProductController(ProductServiceImpl productService, CategoryServiceImpl categoryService, BrandServiceImpl brandService, ColorServiceImpl colorService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.brandService = brandService;
-        this.inventoryService = inventoryService;
         this.colorService = colorService;
     }
 
@@ -71,13 +68,13 @@ public class ProductController {
         List<Long> categoryIds = body.getCategoryIds();
         List<Category> categories = new ArrayList<>();
         for (Long categoryId : categoryIds) {
-            Category category = categoryService.findById(categoryId);
+            Category category = categoryService.findByIdAndDeletedFalse(categoryId);
             categories.add(category);
 
             product.setCategories(categories);
         }
 
-        Brand brand = brandService.findById(body.getBrandId());
+        Brand brand = brandService.findByIdAndDeletedFalse(body.getBrandId());
         product.setBrand(brand);
 
         Product product1 = productService.save(product);
@@ -85,7 +82,7 @@ public class ProductController {
         List<InventoryBody> inventoryBodies = body.getInventoryBodies();
         List<Inventory> inventories = new ArrayList<>();
         for (InventoryBody inventoryBody : inventoryBodies) {
-            Color color = colorService.findById(inventoryBody.getColorId());
+            Color color = colorService.findByIdAndDeletedFalse(inventoryBody.getColorId());
 
             Inventory inventory = new Inventory();
 
@@ -103,7 +100,6 @@ public class ProductController {
         productService.save(product);
 
         return ResponseEntity.ok().build();
-
     }
 
 }
