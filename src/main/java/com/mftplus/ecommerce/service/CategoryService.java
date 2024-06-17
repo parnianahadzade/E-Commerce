@@ -3,15 +3,28 @@ package com.mftplus.ecommerce.service;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Category;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CategoryService {
 
-    Optional<Category> findByName(String name);
+    Category save(Category category);
 
-    void Save(Category category);
+    Category update(Category category) throws NoContentException;
+
+    void logicalRemove(Long id) throws NoContentException;
+
+    void remove(Long id) throws NoContentException;
+
+    Category findByNameAndDeletedFalse(String name) throws NoContentException;
 
     Category findById(Long id) throws NoContentException;
+
+    Category findByIdAndDeletedFalse(Long id) throws NoContentException;
+
+    List<Category> findAll();
+
+    List<Category> findAllByDeletedFalse();
 
 
 

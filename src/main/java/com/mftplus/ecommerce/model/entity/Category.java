@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @Entity(name = "categoryEntity")
 @Table(name = "category_tbl")
-public class Category {
+public class Category extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

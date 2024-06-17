@@ -6,6 +6,7 @@ import com.mftplus.ecommerce.repository.CategoryRepository;
 import com.mftplus.ecommerce.service.CategoryService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,14 +18,41 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+
     @Override
-    public Optional<Category> findByName(String name) {
-        return categoryRepository.findByName(name);
+    public Category save(Category category) {
+        return categoryRepository.save(category);
     }
 
     @Override
-    public void Save(Category category) {
-        categoryRepository.save(category);
+    public Category update(Category category) throws NoContentException {
+        categoryRepository.findByIdAndDeletedFalse(category.getId()).orElseThrow(
+                () -> new NoContentException("No Active Category Found with id : " + category.getId())
+        );
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public void logicalRemove(Long id) throws NoContentException {
+        categoryRepository.findByIdAndDeletedFalse(id).orElseThrow(
+                () -> new NoContentException("No Active Category Found with id : " + id)
+        );
+        categoryRepository.logicalRemove(id);
+    }
+
+    @Override
+    public void remove(Long id) throws NoContentException {
+        categoryRepository.findById(id).orElseThrow(
+                () -> new NoContentException("No Category Found with id : " + id)
+        );
+        categoryRepository.deleteById(id);
+    }
+
+    @Override
+    public Category findByNameAndDeletedFalse(String name) throws NoContentException {
+        return categoryRepository.findByNameAndDeletedFalse(name).orElseThrow(
+                () -> new NoContentException("No Category Found with name : " + name)
+        );
     }
 
     @Override
@@ -34,5 +62,20 @@ public class CategoryServiceImpl implements CategoryService {
         );
     }
 
+    @Override
+    public Category findByIdAndDeletedFalse(Long id) throws NoContentException {
+        return categoryRepository.findByIdAndDeletedFalse(id).orElseThrow(
+                () -> new NoContentException("No Active Category Found with id : " + id)
+        );
+    }
 
+    @Override
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public List<Category> findAllByDeletedFalse() {
+        return categoryRepository.findAllByDeletedFalse();
+    }
 }
