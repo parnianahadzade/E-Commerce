@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @Entity(name = "brandEntity")
 @Table(name = "brand_tbl")
-public class Brand {
+public class Brand extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

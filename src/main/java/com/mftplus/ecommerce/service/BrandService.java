@@ -3,10 +3,25 @@ package com.mftplus.ecommerce.service;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Brand;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface BrandService {
-    Optional<Brand> findByName(String name);
+
+    Brand save(Brand brand);
+
+    Brand update(Brand brand) throws NoContentException;
+
+    void logicalRemove(Long id) throws NoContentException;
+
+    void remove(Long id) throws NoContentException;
+
+    Brand findByName(String name) throws NoContentException;
 
     Brand findById(Long id) throws NoContentException;
+
+    Brand findByIdAndDeletedFalse(Long id) throws NoContentException;
+
+    List<Brand> findAll();
+
+    List<Brand> findAllByDeletedFalse();
 }
