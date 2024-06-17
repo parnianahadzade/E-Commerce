@@ -15,7 +15,7 @@ public interface BrandService {
 
     void remove(Long id) throws NoContentException;
 
-    Brand findByName(String name) throws NoContentException;
+    Brand findByNameAndDeletedFalse(String name) throws NoContentException;
 
     Brand findById(Long id) throws NoContentException;
 

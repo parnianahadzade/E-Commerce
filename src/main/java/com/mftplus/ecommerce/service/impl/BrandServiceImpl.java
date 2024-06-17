@@ -47,8 +47,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand findByName(String name) throws NoContentException{
-        return brandRepository.findByName(name).orElseThrow(
+    public Brand findByNameAndDeletedFalse(String name) throws NoContentException{
+        return brandRepository.findByNameAndDeletedFalse(name).orElseThrow(
                 () -> new NoContentException("No Brand Found with name : " + name)
         );
     }
