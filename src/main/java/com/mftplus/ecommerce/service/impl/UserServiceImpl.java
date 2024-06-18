@@ -35,11 +35,11 @@ public class UserServiceImpl implements UserService {
         this.verificationTokenRepository = verificationTokenRepository;
     }
 
-
+//todo : default user role
     @Override
     public User save(RegistrationBody registrationBody) throws UserAlreadyExistsException, EmailFailureException {
-        if (userRepository.findByEmailIgnoreCase(registrationBody.getEmail()).isPresent()
-        || userRepository.findByUsernameIgnoreCase(registrationBody.getUsername()).isPresent()){
+        if (userRepository.findByEmailIgnoreCaseAndDeletedFalse(registrationBody.getEmail()).isPresent()
+        || userRepository.findByUsernameIgnoreCaseAndDeletedFalse(registrationBody.getUsername()).isPresent()){
             throw new UserAlreadyExistsException();
         }
         User user = new User();
@@ -58,8 +58,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User user) throws NoContentException {
-        userRepository.findById(user.getId()).orElseThrow(
-                () -> new NoContentException("No User Found with id : " + user.getId())
+        userRepository.findByIdAndDeletedFalse(user.getId()).orElseThrow(
+                () -> new NoContentException("No Active User Found with id : " + user.getId())
         );
         userRepository.save(user);
     }
@@ -67,10 +67,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void logicalRemove(Long id) throws NoContentException {
+        userRepository.findByIdAndDeletedFalse(id).orElseThrow(
+                () -> new NoContentException("No Active User Found with id : " + id)
+        );
+        userRepository.logicalRemove(id);
+    }
+
+    @Override
+    public void remove(Long id) throws NoContentException {
         userRepository.findById(id).orElseThrow(
                 () -> new NoContentException("No User Found with id : " + id)
         );
-        userRepository.logicalRemove(id);
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -78,6 +86,37 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(
                 () -> new NoContentException("No User Found with id : " + id)
         );
+    }
+
+    @Override
+    public User findByIdAndDeletedFalse(Long id) throws NoContentException {
+        return userRepository.findByIdAndDeletedFalse(id).orElseThrow(
+                () -> new NoContentException("No Active User Found with id : " + id)
+        );
+    }
+
+    @Override
+    public User findByUsernameIgnoreCaseAndDeletedFalse(String username) throws NoContentException {
+        return userRepository.findByUsernameIgnoreCaseAndDeletedFalse(username).orElseThrow(
+                () -> new NoContentException("No Active User Found with username : " + username)
+        );
+    }
+
+    @Override
+    public User findByEmailIgnoreCaseAndDeletedFalse(String email) throws NoContentException {
+        return userRepository.findByEmailIgnoreCaseAndDeletedFalse(email).orElseThrow(
+                () -> new NoContentException("No Active User Found with email : " + email)
+        );
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> findAllByDeletedFalse() {
+        return userRepository.findAllByDeletedFalse();
     }
 
 
@@ -92,7 +131,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public String loginUser(LoginBody loginBody) throws UserNotVerifiedException, EmailFailureException {
-        Optional<User> optionalUser = userRepository.findByUsernameIgnoreCase(loginBody.getUsername());
+        Optional<User> optionalUser = userRepository.findByUsernameIgnoreCaseAndDeletedFalse(loginBody.getUsername());
         if (optionalUser.isPresent()){
             User user = optionalUser.get();
             if (encryptionService.verifyPassword(loginBody.getPassword(), user.getPassword())){
@@ -136,7 +175,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public void forgotPassword(String email) throws EmailNotFoundException, EmailFailureException {
-        Optional<User> optionalUser = userRepository.findByEmailIgnoreCase(email);
+        Optional<User> optionalUser = userRepository.findByEmailIgnoreCaseAndDeletedFalse(email);
 
         if (optionalUser.isPresent()){
             User user = optionalUser.get();
@@ -151,7 +190,7 @@ public class UserServiceImpl implements UserService {
     public void resetPassword(PasswordResetBody body){
         String email = jwtService.getResetPasswordEmail(body.getToken());
 
-        Optional<User> optionalUser = userRepository.findByEmailIgnoreCase(email);
+        Optional<User> optionalUser = userRepository.findByEmailIgnoreCaseAndDeletedFalse(email);
 
         if (optionalUser.isPresent()){
             User user = optionalUser.get();
