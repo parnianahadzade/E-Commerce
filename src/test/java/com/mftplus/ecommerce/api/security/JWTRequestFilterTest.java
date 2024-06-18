@@ -45,7 +45,7 @@ public class JWTRequestFilterTest {
 
     @Test
     public void testUnVerifiedUser() throws Exception{
-        User user =userRepository.findByUsernameIgnoreCase("UserB").get();
+        User user =userRepository.findByUsernameIgnoreCaseAndDeletedFalse("UserB").get();
         String token = jwtService.generateJWT(user);
 
         mvc.perform(get(AUTHENTICATED_PATH)
@@ -55,7 +55,7 @@ public class JWTRequestFilterTest {
 
     @Test
     public void testSuccessful() throws Exception{
-        User user =userRepository.findByUsernameIgnoreCase("UserA").get();
+        User user =userRepository.findByUsernameIgnoreCaseAndDeletedFalse("UserA").get();
         String token = jwtService.generateJWT(user);
 
         mvc.perform(get(AUTHENTICATED_PATH)

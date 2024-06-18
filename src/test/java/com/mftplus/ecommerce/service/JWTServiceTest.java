@@ -28,7 +28,7 @@ public class JWTServiceTest {
 
     @Test
     public void testVerificationTokenNotUsableForLogin(){
-        User user = userRepository.findByUsernameIgnoreCase("UserA").get();
+        User user = userRepository.findByUsernameIgnoreCaseAndDeletedFalse("UserA").get();
         String token = jwtService.generateVerificationJwt(user);
 
         Assertions.assertNull(jwtService.getUsername(token),
@@ -38,7 +38,7 @@ public class JWTServiceTest {
 
     @Test
     public void testAuthTokenReturnUsername(){
-        User user = userRepository.findByUsernameIgnoreCase("UserA").get();
+        User user = userRepository.findByUsernameIgnoreCaseAndDeletedFalse("UserA").get();
         String token = jwtService.generateJWT(user);
 
         Assertions.assertEquals(user.getUsername(),
@@ -89,7 +89,7 @@ public class JWTServiceTest {
 
     @Test
     public void testPasswordResetToken() {
-        User user = userRepository.findByUsernameIgnoreCase("UserA").get();
+        User user = userRepository.findByUsernameIgnoreCaseAndDeletedFalse("UserA").get();
         String token = jwtService.generatePasswordResetJwt(user);
         Assertions.assertEquals(user.getEmail()
                 , jwtService.getResetPasswordEmail(token)

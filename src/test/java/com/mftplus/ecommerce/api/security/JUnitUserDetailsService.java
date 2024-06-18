@@ -21,7 +21,7 @@ public class JUnitUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> optionalUser = userRepository.findByUsernameIgnoreCase(username);
+        Optional<User> optionalUser = userRepository.findByUsernameIgnoreCaseAndDeletedFalse(username);
         if (optionalUser.isPresent()){
             return optionalUser.get();
         }

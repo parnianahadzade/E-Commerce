@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsernameIgnoreCase(username);
+        Optional<User> user = userRepository.findByUsernameIgnoreCaseAndDeletedFalse(username);
         user.orElseThrow(() -> new UsernameNotFoundException("No User"));
         return user.map(User::new).get();
     }

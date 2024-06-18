@@ -122,7 +122,7 @@ public class Test {
                 .addressLine1("123 Tester Hill")
                 .city("Testerton")
                 .country("England")
-                .user(userRepository.findByUsernameIgnoreCase(user.getUsername()).get())
+                .user(userRepository.findByUsernameIgnoreCaseAndDeletedFalse(user.getUsername()).get())
                 .build();
         addressRepository.save(address1);
 
@@ -130,24 +130,24 @@ public class Test {
                 .addressLine1("124 Tester Hill")
                 .city("Hibernate")
                 .country("England")
-                .user(userRepository.findByUsernameIgnoreCase(user1.getUsername()).get())
+                .user(userRepository.findByUsernameIgnoreCaseAndDeletedFalse(user1.getUsername()).get())
                 .build();
         addressRepository.save(address2);
 
         //order
-        Order order1 = Order.builder().user(userRepository.findByUsernameIgnoreCase(user.getUsername()).get()).address(address1).build();
+        Order order1 = Order.builder().user(userRepository.findByUsernameIgnoreCaseAndDeletedFalse(user.getUsername()).get()).address(address1).build();
         orderRepository.save(order1);
 
-        Order order2 = Order.builder().user(userRepository.findByUsernameIgnoreCase(user.getUsername()).get()).address(address1).build();
+        Order order2 = Order.builder().user(userRepository.findByUsernameIgnoreCaseAndDeletedFalse(user.getUsername()).get()).address(address1).build();
         orderRepository.save(order2);
 
-        Order order3 = Order.builder().user(userRepository.findByUsernameIgnoreCase(user.getUsername()).get()).address(address1).build();
+        Order order3 = Order.builder().user(userRepository.findByUsernameIgnoreCaseAndDeletedFalse(user.getUsername()).get()).address(address1).build();
         orderRepository.save(order3);
 
-        Order order4 = Order.builder().user(userRepository.findByUsernameIgnoreCase(user1.getUsername()).get()).address(address2).build();
+        Order order4 = Order.builder().user(userRepository.findByUsernameIgnoreCaseAndDeletedFalse(user1.getUsername()).get()).address(address2).build();
         orderRepository.save(order4);
 
-        Order order5 = Order.builder().user(userRepository.findByUsernameIgnoreCase(user1.getUsername()).get()).address(address2).build();
+        Order order5 = Order.builder().user(userRepository.findByUsernameIgnoreCaseAndDeletedFalse(user1.getUsername()).get()).address(address2).build();
         orderRepository.save(order5);
 
         //order quantities

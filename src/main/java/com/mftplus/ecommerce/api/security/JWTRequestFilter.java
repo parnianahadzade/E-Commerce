@@ -53,7 +53,7 @@ public class JWTRequestFilter extends OncePerRequestFilter implements ChannelInt
             // .decode throws jwtDecodeException
             try {
                 String username = jwtService.getUsername(token);
-                Optional<User> optionalUser = userRepository.findByUsernameIgnoreCase(username);
+                Optional<User> optionalUser = userRepository.findByUsernameIgnoreCaseAndDeletedFalse(username);
 
                 if (optionalUser.isPresent()) {
                     User user = optionalUser.get();

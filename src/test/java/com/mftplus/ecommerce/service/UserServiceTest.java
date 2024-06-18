@@ -165,7 +165,7 @@ public class UserServiceTest {
     @Test
     @Transactional
     public void testResetPassword(){
-        User user = userRepository.findByUsernameIgnoreCase("UserA").get();
+        User user = userRepository.findByUsernameIgnoreCaseAndDeletedFalse("UserA").get();
 
         String token =
                 jwtService.generatePasswordResetJwt(user);
@@ -176,7 +176,7 @@ public class UserServiceTest {
 
         userService.resetPassword(body);
 
-        user = userRepository.findByUsernameIgnoreCase("UserA").get();
+        user = userRepository.findByUsernameIgnoreCaseAndDeletedFalse("UserA").get();
 
         Assertions.assertTrue(encryptionService.verifyPassword("NewPassword1234",
                 user.getPassword()), "Password change should be written to DB");
