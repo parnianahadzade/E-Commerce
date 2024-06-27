@@ -28,7 +28,7 @@ public class ProductBody {
     private String longDescription;
 
 
-    private List<Long> categoryIds;
+    private String categoryName;
 
     private Long brandId;
 

@@ -20,9 +20,9 @@ INSERT INTO address_tbl (address_line_1, city, country, user_id, deleted)
 VALUES ('123 Tester Hill', 'Testerton', 'England', 1, false)
      , ('312 Spring Boot', 'Hibernate', 'England', 3, false);
 
-INSERT INTO brand_tbl (b_name)
-VALUES ('lcwaikiki'),
-       ('laboutin');
+INSERT INTO brand_tbl (b_name, deleted)
+VALUES ('lcwaikiki',0),
+       ('laboutin',0);
 
 INSERT INTO product_tbl (p_name, short_description, long_description, deleted,brand_id)
 VALUES ('Product #1', 'Product one short description.', 'This is a very long description of product #1.', false,1)
@@ -31,32 +31,29 @@ VALUES ('Product #1', 'Product one short description.', 'This is a very long des
      , ('Product #4', 'Product four short description.', 'This is a very long description of product #4.' ,false,2)
      , ('Product #5', 'Product five short description.', 'This is a very long description of product #5.' ,false,2);
 
-INSERT INTO category_tbl (c_name)
-VALUES ('men'),
-       ('woman'),
-       ('unisex'),
-       ('shorts'),
-       ('tShirt'),
-       ('winterShorts');
+INSERT INTO category_tbl (c_name, deleted)
+VALUES ('men',0),
+       ('woman',0),
+       ('unisex',0),
+       ('shorts',0),
+       ('tShirt',0),
+       ('winterShorts',0);
 
 # men and shorts
-UPDATE category_tbl SET category_id=4 where id=1;
 UPDATE category_tbl SET category_id=1 where id=4;
 
 UPDATE category_tbl SET category_id=4 where id=6;
 
-
-UPDATE category_tbl SET category_id=3 where id=2;
 
 INSERT INTO category_products_tbl (product_id, categories_id)
 VALUES (1,1),
         (1,4),
         (2,1);
 
-INSERT INTO color_tbl (c_name)
-VALUES ('blue'),
-        ('red'),
-        ('purple');
+INSERT INTO color_tbl (c_name,deleted)
+VALUES ('blue',0),
+        ('red',0),
+        ('purple',0);
 
 INSERT INTO inventory_tbl (product_id, i_quantity, deleted, color_id, i_price, i_off_percent)
 VALUES (1, 5, false,1, 6, 90)

@@ -65,10 +65,11 @@ public class ProductController {
         product.setShortDescription(body.getShortDescription());
         product.setLongDescription(body.getLongDescription());
 
-        List<Long> categoryIds = body.getCategoryIds();
+        String categoryName = body.getCategoryName();
+        Category mainCategory = categoryService.findByNameAndDeletedFalse(categoryName);
         List<Category> categories = new ArrayList<>();
-        for (Long categoryId : categoryIds) {
-            Category category = categoryService.findByIdAndDeletedFalse(categoryId);
+        for (String categoryNameOriginal : mainCategory.getCategoryPath()) {
+            Category category = categoryService.findByNameAndDeletedFalse(categoryNameOriginal);
             categories.add(category);
 
             product.setCategories(categories);

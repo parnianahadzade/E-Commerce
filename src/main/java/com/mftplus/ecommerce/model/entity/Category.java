@@ -33,14 +33,27 @@ public class Category extends Base{
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Category parentCategory;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "category", orphanRemoval = true)
-    private List<Category> categories = new ArrayList<>();
+    @OneToMany(mappedBy = "parentCategory", orphanRemoval = true)
+    private List<Category> childCategories = new ArrayList<>();
 
     @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private List<Product> products = new ArrayList<>();
+
+    public List<String> getCategoryPath() {
+        List<String> categoryPath = new ArrayList<>();
+        categoryPath.add(this.getName());
+        Category currentCategory = this;
+
+        while (currentCategory.getParentCategory() != null) {
+            categoryPath.add(currentCategory.getParentCategory().getName());
+//            categoryPath = currentCategory.getParentCategory().getName() + " > " + categoryPath;
+            currentCategory = currentCategory.getParentCategory();
+        }
+
+        return categoryPath;
+    }
 
 }
