@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.api.controller.product;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.InventoryBody;
 import com.mftplus.ecommerce.api.dto.ProductBody;
 import com.mftplus.ecommerce.api.dto.SearchRequest;
@@ -39,6 +40,7 @@ public class ProductController {
         this.imageService = imageService;
     }
 
+    @JsonView(Views.Product.class)
     @GetMapping
     public List<Product> findProducts
             (@RequestParam(value = "category", required = false) List<String> categoryNames,

@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 @Setter
 @Entity(name = "brandEntity")
 @Table(name = "brand_tbl")
+@JsonView(Views.Product.class)
 public class Brand extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -20,11 +21,13 @@ import java.util.List;
 @Entity(name = "categoryEntity")
 @Table(name = "category_tbl")
 public class Category extends Base{
+    @JsonView({Views.Product.class, Views.Category.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @JsonView({Views.Product.class, Views.Category.class})
     @Column(name = "c_name", nullable = false, unique = true, length = 20)
     @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect name!")
     private String name;
@@ -35,10 +38,11 @@ public class Category extends Base{
     @JoinColumn(name = "category_id")
     private Category parentCategory;
 
+    @JsonView(Views.Category.class)
     @OneToMany(mappedBy = "parentCategory", orphanRemoval = true)
     private List<Category> childCategories = new ArrayList<>();
 
-    @JsonIgnore
+    @JsonView(Views.Category.class)
     @ManyToMany(mappedBy = "categories")
     private List<Product> products = new ArrayList<>();
 

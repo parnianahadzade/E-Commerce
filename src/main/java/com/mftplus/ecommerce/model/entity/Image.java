@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Entity(name = "imageEntity")
 @Table(name = "image_tbl")
+@JsonView({Views.Product.class,Views.Category.class})
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

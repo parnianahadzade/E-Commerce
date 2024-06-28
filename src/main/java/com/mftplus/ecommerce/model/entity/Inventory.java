@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @Entity(name = "inventoryEntity")
 @Table(name = "inventory_tbl", uniqueConstraints = {@UniqueConstraint(columnNames = {"product_id", "color_id"})})
+@JsonView({Views.Product.class,Views.Category.class})
 public class Inventory extends Base{
     //todo : is this a proper way for the relations? (color and product)
     @Id
