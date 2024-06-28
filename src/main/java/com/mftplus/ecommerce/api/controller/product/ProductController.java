@@ -8,9 +8,12 @@ import com.mftplus.ecommerce.model.entity.*;
 import com.mftplus.ecommerce.service.impl.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +29,14 @@ public class ProductController {
 
     private final ColorServiceImpl colorService;
 
-    public ProductController(ProductServiceImpl productService, CategoryServiceImpl categoryService, BrandServiceImpl brandService, ColorServiceImpl colorService) {
+    private final ImageServiceImpl imageService;
+
+    public ProductController(ProductServiceImpl productService, CategoryServiceImpl categoryService, BrandServiceImpl brandService, ColorServiceImpl colorService, ImageServiceImpl imageService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.brandService = brandService;
         this.colorService = colorService;
+        this.imageService = imageService;
     }
 
     @GetMapping
@@ -57,14 +63,25 @@ public class ProductController {
 
     //todo : needs re check for efficiency
     @Transactional
-    @PostMapping("/save")
-    public ResponseEntity<Product> saveProduct(@Valid @RequestBody ProductBody body) throws NoContentException {
+    @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Product> saveProduct(@Valid @RequestPart("productBody") ProductBody body,
+                                               @RequestPart("files")MultipartFile[] files) throws NoContentException, IOException {
         Product product = new Product();
 
         product.setName(body.getProductName());
         product.setShortDescription(body.getShortDescription());
         product.setLongDescription(body.getLongDescription());
 
+        //image
+        List<Image> images = new ArrayList<>();
+        for (MultipartFile file : files) {
+            Image image = imageService.uploadImageToFileSystem(file);
+            images.add(image);
+
+            product.setImages(images);
+        }
+
+        //category
         String categoryName = body.getCategoryName();
         Category mainCategory = categoryService.findByNameAndDeletedFalse(categoryName);
         List<Category> categories = new ArrayList<>();
@@ -75,11 +92,13 @@ public class ProductController {
             product.setCategories(categories);
         }
 
+        //brand
         Brand brand = brandService.findByIdAndDeletedFalse(body.getBrandId());
         product.setBrand(brand);
 
         Product product1 = productService.save(product);
 
+        //inventory
         List<InventoryBody> inventoryBodies = body.getInventoryBodies();
         List<Inventory> inventories = new ArrayList<>();
         for (InventoryBody inventoryBody : inventoryBodies) {
