@@ -87,17 +87,15 @@ public class ProductSearchRepository {
 
         }
 
-        //min off percent
-        if (request.getMinOffPercent() != null){
-            Integer minOffPercent = request.getMinOffPercent();
-            Integer maxOffPercent = 99;
+        //enable off percent
+        if (request.isEnableOff()){
 
             Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
             Root<Product> subQueryProduct = subquery.from(Product.class);
             Join<Inventory, Product> subQueryInventory = subQueryProduct.join("inventories");
 
             subquery.select(subQueryProduct.get("id")).where(
-                    criteriaBuilder.between(subQueryInventory.get("offPercent"),minOffPercent,maxOffPercent)
+                    criteriaBuilder.greaterThan(subQueryInventory.get("offPercent"),0)
             );
 
             predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));

@@ -22,7 +22,9 @@ public class SearchRequest {
 
     private Integer maxPrice;
 
-    private Integer minOffPercent;
+    private boolean enableOff;
 
-    private Integer maxOffPercent;
+//    private Integer minOffPercent;
+//
+//    private Integer maxOffPercent;
 }

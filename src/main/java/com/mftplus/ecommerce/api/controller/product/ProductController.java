@@ -46,10 +46,9 @@ public class ProductController {
             (@RequestParam(value = "category", required = false) List<String> categoryNames,
              @RequestParam(value = "brand", required = false) String brandName,
              @RequestParam(value = "name", required = false) String name,
-             @RequestParam(value = "color", required = false) String color,
              @RequestParam(value = "minPrice", required = false) Integer minPrice,
              @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
-             @RequestParam(value = "minOffPercent", required = false) Integer minOffPercent){
+             @RequestParam(value = "enableOff", required = false) boolean enableOff){
 
         SearchRequest request = new SearchRequest();
         request.setName(name);
@@ -57,7 +56,8 @@ public class ProductController {
         request.setBrandName(brandName);
         request.setMinPrice(minPrice);
         request.setMaxPrice(maxPrice);
-        request.setMinOffPercent(minOffPercent);
+        request.setEnableOff(enableOff);
+
         return productService.findAllByCriteria(request);
 
     }
