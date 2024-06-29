@@ -55,7 +55,14 @@ public class Product extends Base{
             inverseJoinColumns = @JoinColumn(name = "categories_id"))
     private List<Category> categories = new ArrayList<>();
 
+    @JsonView({Views.Product.class,Views.Category.class})
     @OneToMany
     @JoinTable(name = "product_images_tbl")
     private List<Image> images;
+
+    @JsonView({Views.Product.class,Views.Category.class})
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "p_main_image_id")
+    private Image mainImage;
+
 }

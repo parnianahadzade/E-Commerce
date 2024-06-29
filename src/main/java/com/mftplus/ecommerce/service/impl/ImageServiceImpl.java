@@ -25,8 +25,6 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Image uploadImageToFileSystem(MultipartFile file) throws IOException {
-//        String filePath = FOLDER_PATH+file.getOriginalFilename();
-
         Path fileNameAndPath = Paths.get(FOLDER_PATH , file.getOriginalFilename());
         Files.write(fileNameAndPath, file.getBytes());
 
@@ -36,17 +34,7 @@ public class ImageServiceImpl implements ImageService {
                 .filePath(String.valueOf(fileNameAndPath))
                 .build();
 
-//        file.transferTo(new File(filePath));
-
         return imageRepository.save(image);
-
-//        if (image != null){
-//            imageRepository.save(image);
-//            file.transferTo(new File(filePath));
-//            return "file uploaded successfully : " + filePath;
-//        }
-//
-//        return null;
     }
 
 }

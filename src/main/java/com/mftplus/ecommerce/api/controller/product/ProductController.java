@@ -66,15 +66,18 @@ public class ProductController {
     //todo : needs re check for efficiency
     @Transactional
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Product> saveProduct(@Valid @RequestPart("productBody") ProductBody body,
-                                               @RequestPart("files")MultipartFile[] files) throws NoContentException, IOException {
+    public ResponseEntity<Product> saveProduct(
+            @Valid @RequestPart("productBody") ProductBody body,
+                @RequestPart("files")MultipartFile[] files,
+                    @RequestPart("mainFile")MultipartFile mainFile) throws NoContentException, IOException {
+
         Product product = new Product();
 
         product.setName(body.getProductName());
         product.setShortDescription(body.getShortDescription());
         product.setLongDescription(body.getLongDescription());
 
-        //image
+        //images
         List<Image> images = new ArrayList<>();
         for (MultipartFile file : files) {
             Image image = imageService.uploadImageToFileSystem(file);
@@ -82,6 +85,10 @@ public class ProductController {
 
             product.setImages(images);
         }
+
+        //main image
+        Image mainImage = imageService.uploadImageToFileSystem(mainFile);
+        product.setMainImage(mainImage);
 
         //category
         String categoryName = body.getCategoryName();
