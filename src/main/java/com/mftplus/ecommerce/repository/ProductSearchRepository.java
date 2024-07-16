@@ -15,6 +15,7 @@ import java.util.List;
 @Repository
 public class ProductSearchRepository {
 
+    // TODO: 7/17/2024 deleted false and paging/sorting
     private final EntityManager entityManager;
 
     public ProductSearchRepository(EntityManager entityManager) {
