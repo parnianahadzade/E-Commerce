@@ -8,7 +8,7 @@ import com.mftplus.ecommerce.service.impl.CategoryServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("${apiPrefix}/category")
 public class CategoryController {
 
     private final CategoryServiceImpl categoryService;

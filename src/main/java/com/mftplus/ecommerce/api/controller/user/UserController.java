@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("${apiPrefix}/user")
 public class UserController {
 
     private final AddressRepository addressRepository;

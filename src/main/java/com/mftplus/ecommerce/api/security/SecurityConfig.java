@@ -21,20 +21,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable()).cors(cors -> cors.disable());
+                .csrf(csrf -> csrf.disable());
         http
                 .addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/product", "/auth/register", "/auth/login"
-                                ,"/error","/", "/auth/verify","/category/**")
+                        .requestMatchers("api/product/**","/search", "api/auth/register", "api/auth/login"
+                                ,"/error","/", "api/auth/verify","api/category/**")
                         .permitAll()
 
-                        .requestMatchers("/admin","/product/save")
+                        .requestMatchers("/admin","api/product/save")
                             .hasAuthority("admin")
 
-                        .requestMatchers("/auth/forgot","/auth/reset",
-                                "/websocket","/websocket/**","/order")
+                        .requestMatchers("api/auth/forgot","api/auth/reset",
+                                "/websocket","/websocket/**","api/order")
                                         .hasAuthority("user")
 
                         .anyRequest().authenticated()
@@ -62,7 +62,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().requestMatchers("/resources/**", "/static/**", "/images/**","/productImages/**"
-                ,"/css/**", "/js/**");
+                ,"/css/**", "/js/**","/dist/**","/assets/**");
     }
 
 }

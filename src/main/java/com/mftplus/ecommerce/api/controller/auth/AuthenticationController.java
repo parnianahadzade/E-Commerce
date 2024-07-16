@@ -8,10 +8,11 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("${apiPrefix}/auth")
 public class AuthenticationController {
     private final UserServiceImpl userService;
 
@@ -20,8 +21,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @RequestBody RegistrationBody registrationBody){
+    public ResponseEntity registerUser(@Valid @RequestBody RegistrationBody registrationBody, BindingResult bindingResult){
         try {
+            if (bindingResult.hasErrors()) {
+                // do something
+            }
             userService.save(registrationBody);
             return ResponseEntity.ok().build();
         } catch (UserAlreadyExistsException e) {

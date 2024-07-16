@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("${apiPrefix}/product")
 public class ProductController {
 
     private final ProductServiceImpl productService;
