@@ -8,6 +8,8 @@ public enum Size {
     XS("XS"),
     L("L"),
     XL("XL"),
+    XL2("2XL"),
+    XL3("3XL"),
     M("M")
     ;
 
@@ -16,4 +18,5 @@ public enum Size {
     Size(String title) {
         this.title = title;
     }
+
 }
