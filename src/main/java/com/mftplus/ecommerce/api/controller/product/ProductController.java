@@ -6,6 +6,7 @@ import com.mftplus.ecommerce.api.dto.ProductBody;
 import com.mftplus.ecommerce.api.dto.SearchRequest;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.*;
+import com.mftplus.ecommerce.model.entity.enums.Size;
 import com.mftplus.ecommerce.service.impl.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -43,7 +44,7 @@ public class ProductController {
     @JsonView(Views.Product.class)
     @GetMapping
     public List<Product> findProducts
-            (@RequestParam(value = "category", required = false) List<String> categoryNames,
+            (@RequestParam(value = "categoryId", required = false) Integer categoryId,
              @RequestParam(value = "brand", required = false) String brandName,
              @RequestParam(value = "name", required = false) String name,
              @RequestParam(value = "minPrice", required = false) Integer minPrice,
@@ -52,7 +53,7 @@ public class ProductController {
 
         SearchRequest request = new SearchRequest();
         request.setName(name);
-        request.setCategoryNames(categoryNames);
+        request.setCategoryId(categoryId);
         request.setBrandName(brandName);
         request.setMinPrice(minPrice);
         request.setMaxPrice(maxPrice);
@@ -73,9 +74,12 @@ public class ProductController {
 
         Product product = new Product();
 
+        product.setCode(body.getCode());
         product.setName(body.getProductName());
         product.setShortDescription(body.getShortDescription());
         product.setLongDescription(body.getLongDescription());
+        product.setPrice(body.getPrice());
+        product.setOffPercent(body.getOffPercent());
 
         //images
         List<Image> images = new ArrayList<>();
@@ -105,20 +109,22 @@ public class ProductController {
         Brand brand = brandService.findByIdAndDeletedFalse(body.getBrandId());
         product.setBrand(brand);
 
+        //color
+        Color color = colorService.findByIdAndDeletedFalse(body.getColorId());
+        product.setColor(color);
+
+
         Product product1 = productService.save(product);
 
         //inventory
         List<InventoryBody> inventoryBodies = body.getInventoryBodies();
         List<Inventory> inventories = new ArrayList<>();
         for (InventoryBody inventoryBody : inventoryBodies) {
-            Color color = colorService.findByIdAndDeletedFalse(inventoryBody.getColorId());
 
             Inventory inventory = new Inventory();
 
-            inventory.setColor(color);
             inventory.setQuantity(inventoryBody.getQuantity());
-            inventory.setPrice(inventoryBody.getPrice());
-            inventory.setOffPercent(inventoryBody.getOffPercent());
+            inventory.setSize(Size.valueOf(inventoryBody.getSize()));
             inventory.setProduct(product1);
 
             inventories.add(inventory);

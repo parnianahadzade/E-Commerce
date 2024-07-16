@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.mftplus.ecommerce.model.entity.enums.Size;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @ToString
 @Entity(name = "inventoryEntity")
-@Table(name = "inventory_tbl", uniqueConstraints = {@UniqueConstraint(columnNames = {"product_id", "color_id"})})
+@Table(name = "inventory_tbl")
 @JsonView({Views.Product.class,Views.Category.class})
 public class Inventory extends Base{
     //todo : is this a proper way for the relations? (color and product)
@@ -35,17 +36,8 @@ public class Inventory extends Base{
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ToString.Exclude
-    @ManyToOne
-    @JoinColumn(name = "color_id")
-    private Color color;
-
-    @Column(name = "i_price")
-    @Min(value = 1, message = "Price must be equal or greater than 1.")
-    private Integer price;
-
-    @Column(name = "i_off_percent")
-    @Min(value = 0, message = "Off Percent must be equal or greater than 0.")
-    private Integer offPercent;
+    @Enumerated(EnumType.ORDINAL)
+    @Column(name = "product_size")
+    private Size size;
 
 }

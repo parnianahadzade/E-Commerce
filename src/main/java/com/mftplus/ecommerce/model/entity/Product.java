@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,13 +17,18 @@ import java.util.List;
 @Getter
 @Setter
 @Entity(name = "productEntity")
-@Table(name = "product_tbl")
+@Table(name = "product_tbl", uniqueConstraints = {@UniqueConstraint(columnNames = {"p_name", "color_id"})})
 public class Product extends Base{
     @JsonView({Views.Product.class,Views.Category.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
+    @JsonView({Views.Product.class,Views.Category.class})
+    @Column(name = "p_code", length = 25)
+    @Pattern(regexp = "^[0-9]{5,50}$",message = "incorrect code!")
+    private String code;
 
     @JsonView({Views.Product.class,Views.Category.class})
     @Column(name = "p_name", nullable = false, unique = true, length = 20)
@@ -64,5 +70,21 @@ public class Product extends Base{
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "p_main_image_id")
     private Image mainImage;
+
+    @JsonView({Views.Product.class,Views.Category.class})
+    @ManyToOne
+    @JoinColumn(name = "color_id")
+    private Color color;
+
+    @JsonView({Views.Product.class,Views.Category.class})
+    @Column(name = "p_price")
+    @Min(value = 1, message = "Price must be equal or greater than 1.")
+    private Integer price;
+
+    @JsonView({Views.Product.class,Views.Category.class})
+    @Column(name = "p_off_percent")
+    @Min(value = 0, message = "Off Percent must be equal or greater than 0.")
+    private Integer offPercent;
+
 
 }

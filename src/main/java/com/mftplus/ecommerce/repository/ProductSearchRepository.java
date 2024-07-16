@@ -3,7 +3,6 @@ package com.mftplus.ecommerce.repository;
 import com.mftplus.ecommerce.api.dto.SearchRequest;
 import com.mftplus.ecommerce.model.entity.Brand;
 import com.mftplus.ecommerce.model.entity.Category;
-import com.mftplus.ecommerce.model.entity.Inventory;
 import com.mftplus.ecommerce.model.entity.Product;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -40,20 +39,19 @@ public class ProductSearchRepository {
         }
 
         //categories
-        if (request.getCategoryNames() != null){
-            List<String> categoryNames = request.getCategoryNames();
+        if (request.getCategoryId() != null){
+            Integer categoryId = request.getCategoryId();
 
-            for(String categoryName : categoryNames) {
 
                 Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
                 Root<Product> subQueryProduct = subquery.from(Product.class);
                 Join<Category, Product> subQueryCategory = subQueryProduct.join("categories");
 
                 subquery.select(subQueryProduct.get("id")).where(
-                        criteriaBuilder.equal(subQueryCategory.get("name"), categoryName));
+                        criteriaBuilder.equal(subQueryCategory.get("id"), categoryId));
 
                 predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
-            }
+
         }
 
         //brands
@@ -75,30 +73,38 @@ public class ProductSearchRepository {
             Integer minPrice = request.getMinPrice();
             Integer maxPrice = request.getMaxPrice();
 
-            Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
-            Root<Product> subQueryProduct = subquery.from(Product.class);
-            Join<Inventory, Product> subQueryInventory = subQueryProduct.join("inventories");
+            Predicate pricePredicate = criteriaBuilder
+                    .between(root.get("price"),minPrice,maxPrice);
+            predicates.add(pricePredicate);
 
-            subquery.select(subQueryProduct.get("id")).where(
-                    criteriaBuilder.between(subQueryInventory.get("price"),minPrice,maxPrice)
-            );
-
-            predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
+//            Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+//            Root<Product> subQueryProduct = subquery.from(Product.class);
+//            Join<Inventory, Product> subQueryInventory = subQueryProduct.join("inventories");
+//
+//            subquery.select(subQueryProduct.get("id")).where(
+//                    criteriaBuilder.between(subQueryInventory.get("price"),minPrice,maxPrice)
+//            );
+//
+//            predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
 
         }
 
         //enable off percent
         if (request.isEnableOff()){
 
-            Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
-            Root<Product> subQueryProduct = subquery.from(Product.class);
-            Join<Inventory, Product> subQueryInventory = subQueryProduct.join("inventories");
+            Predicate offPercentPredicate = criteriaBuilder
+                    .greaterThan(root.get("offPercent"),0);
+            predicates.add(offPercentPredicate);
 
-            subquery.select(subQueryProduct.get("id")).where(
-                    criteriaBuilder.greaterThan(subQueryInventory.get("offPercent"),0)
-            );
-
-            predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
+//            Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+//            Root<Product> subQueryProduct = subquery.from(Product.class);
+//            Join<Inventory, Product> subQueryInventory = subQueryProduct.join("inventories");
+//
+//            subquery.select(subQueryProduct.get("id")).where(
+//                    criteriaBuilder.greaterThan(subQueryInventory.get("offPercent"),0)
+//            );
+//
+//            predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
 
         }
 

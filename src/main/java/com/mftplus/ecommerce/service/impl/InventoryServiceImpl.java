@@ -7,7 +7,6 @@ import com.mftplus.ecommerce.service.InventoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
@@ -71,8 +70,4 @@ public class InventoryServiceImpl implements InventoryService {
         return inventoryRepository.findAllByDeletedFalse();
     }
 
-    @Override
-    public Optional<Inventory> findByProductIdAndColorIdAndDeletedFalse(Long productId, Long colorId) {
-        return Optional.empty();
-    }
 }

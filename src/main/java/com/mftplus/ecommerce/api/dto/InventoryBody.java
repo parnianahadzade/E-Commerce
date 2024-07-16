@@ -7,11 +7,8 @@ import lombok.Setter;
 @Setter
 public class InventoryBody {
 
-    private Long colorId;
+    private String size;
 
     private Integer quantity;
 
-    private Integer price;
-
-    private Integer offPercent;
 }

@@ -24,25 +24,41 @@ INSERT INTO brand_tbl (b_name, deleted)
 VALUES ('lcwaikiki',0),
        ('laboutin',0);
 
-INSERT INTO product_tbl (p_name, short_description, long_description, deleted,brand_id)
-VALUES ('Product #1', 'Product one short description.', 'This is a very long description of product #1.', false,1)
-     , ('Product #2', 'Product two short description.', 'This is a very long description of product #2.' ,false,1)
-     , ('Product #3', 'Product three short description.', 'This is a very long description of product #3.' ,false,1)
-     , ('Product #4', 'Product four short description.', 'This is a very long description of product #4.' ,false,2)
-     , ('Product #5', 'Product five short description.', 'This is a very long description of product #5.' ,false,2);
+INSERT INTO color_tbl (c_name,deleted)
+VALUES ('blue',0),
+       ('red',0),
+       ('purple',0);
+
+INSERT INTO product_tbl (p_code,p_name, short_description, long_description, deleted,brand_id,color_id,p_price,p_off_percent)
+VALUES ('1','Product1', 'Product one short description.', 'This is a very long description of product #1.', false,1,1,10,0)
+     , ('2','Product2', 'Product two short description.', 'This is a very long description of product #2.' ,false,1,1,100,80)
+     , ('3','Product3', 'Product three short description.', 'This is a very long description of product #3.' ,false,1,2,1000,50)
+     , ('4','Product4', 'Product four short description.', 'This is a very long description of product #4.' ,false,2,2,10000,30)
+     , ('5','Product5', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72);
 
 INSERT INTO category_tbl (c_name, deleted)
-VALUES ('men',0),
+VALUES ('digikala',0),
+       ('men',0),
        ('woman',0),
        ('unisex',0),
-       ('shorts',0),
+       ('shortsMen',0),
+       ('shortsWomen',0),
        ('tShirt',0),
-       ('winterShorts',0);
+       ('winterShortsMen',0),
+       ('winterShortsWomen',0);
 
 # men and shorts
-UPDATE category_tbl SET category_id=1 where id=4;
+UPDATE category_tbl SET category_id=1 where id=2;
 
-UPDATE category_tbl SET category_id=4 where id=6;
+UPDATE category_tbl SET category_id=1 where id=3;
+
+UPDATE category_tbl SET category_id=2 where id=5;
+
+UPDATE category_tbl SET category_id=3 where id=6;
+
+UPDATE category_tbl SET category_id=5 where id=8;
+
+UPDATE category_tbl SET category_id=6 where id=9;
 
 
 INSERT INTO category_products_tbl (product_id, categories_id)
@@ -50,18 +66,12 @@ VALUES (1,1),
         (1,4),
         (2,1);
 
-INSERT INTO color_tbl (c_name,deleted)
-VALUES ('blue',0),
-        ('red',0),
-        ('purple',0);
-
-INSERT INTO inventory_tbl (product_id, i_quantity, deleted, color_id, i_price, i_off_percent)
-VALUES (1, 5, false,1, 6, 90)
-     , (1,3,false,2, 8, 78)
-     , (2, 8, false,1, 90, 20)
-     , (3, 12, false,1, 78, 0)
-     , (4, 73, false,1, 56, 0)
-     , (5, 2, false,1, 53, 10);
+INSERT INTO inventory_tbl (product_id, i_quantity, deleted,product_size)
+VALUES (1, 5, false,0)
+     , (1,3,false,1)
+     , (2, 8, false,2)
+     , (3, 12, false,3)
+     , (4, 73, false,4);
 
 INSERT INTO order_tbl (address_id, user_id, deleted)
 VALUES (1, 1, false)

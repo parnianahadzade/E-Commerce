@@ -4,7 +4,6 @@ import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Inventory;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface InventoryService {
 
@@ -24,5 +23,4 @@ public interface InventoryService {
 
     List<Inventory> findAllByDeletedFalse();
 
-    Optional<Inventory> findByProductIdAndColorIdAndDeletedFalse(Long productId, Long colorId);
 }

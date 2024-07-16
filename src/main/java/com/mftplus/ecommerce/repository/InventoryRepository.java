@@ -12,8 +12,6 @@ import java.util.Optional;
 @Repository
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
-    Optional<Inventory> findByProductIdAndColorIdAndDeletedFalse(Long productId, Long colorId);
-
     List<Inventory> findAllByDeletedFalse();
 
     Optional<Inventory> findByIdAndDeletedFalse(Long id);
