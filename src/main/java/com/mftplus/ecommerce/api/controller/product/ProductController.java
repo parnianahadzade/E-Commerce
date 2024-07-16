@@ -41,7 +41,7 @@ public class ProductController {
         this.imageService = imageService;
     }
 
-    @JsonView(Views.Product.class)
+    @JsonView(Views.ProductList.class)
     @GetMapping
     public List<Product> findProducts
             (@RequestParam(value = "categoryId", required = false) Integer categoryId,

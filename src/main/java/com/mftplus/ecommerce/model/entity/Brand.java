@@ -20,7 +20,7 @@ import java.util.List;
 @Setter
 @Entity(name = "brandEntity")
 @Table(name = "brand_tbl")
-@JsonView(Views.Product.class)
+@JsonView(Views.singleProduct.class)
 public class Brand extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

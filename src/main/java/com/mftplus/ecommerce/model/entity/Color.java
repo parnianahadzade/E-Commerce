@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Entity(name = "colorEntity")
 @Table(name = "color_tbl")
-@JsonView({Views.Product.class,Views.Category.class})
+@JsonView({Views.singleProduct.class,Views.Category.class})
 public class Color extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

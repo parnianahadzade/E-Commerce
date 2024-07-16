@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Entity(name = "imageEntity")
 @Table(name = "image_tbl")
-@JsonView({Views.Product.class,Views.Category.class})
+@JsonView({Views.singleProduct.class,Views.Category.class})
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

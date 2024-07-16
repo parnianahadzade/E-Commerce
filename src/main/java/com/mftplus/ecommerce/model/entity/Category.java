@@ -21,13 +21,13 @@ import java.util.List;
 @Entity(name = "categoryEntity")
 @Table(name = "category_tbl")
 public class Category extends Base{
-    @JsonView({Views.Product.class, Views.Category.class})
+    @JsonView({Views.singleProduct.class, Views.Category.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JsonView({Views.Product.class, Views.Category.class})
+    @JsonView({Views.singleProduct.class, Views.Category.class})
     @Column(name = "c_name", nullable = false, unique = true, length = 20)
     @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect name!")
     private String name;

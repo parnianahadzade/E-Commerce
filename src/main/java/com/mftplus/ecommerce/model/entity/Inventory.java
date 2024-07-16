@@ -18,7 +18,7 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @Entity(name = "inventoryEntity")
 @Table(name = "inventory_tbl")
-@JsonView({Views.Product.class,Views.Category.class})
+@JsonView({Views.ProductList.class,Views.Category.class})
 public class Inventory extends Base{
     //todo : is this a proper way for the relations? (color and product)
     @Id
