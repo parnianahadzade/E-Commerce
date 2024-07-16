@@ -63,6 +63,12 @@ public class ProductController {
 
     }
 
+    @JsonView(Views.singleProduct.class)
+    @GetMapping(value = "/{id}")
+    public Product findById(@PathVariable Long id) throws NoContentException {
+        return productService.findByIdAndDeletedFalse(id);
+    }
+
 
     //todo : needs re check for efficiency
     @Transactional
@@ -136,5 +142,7 @@ public class ProductController {
 
         return ResponseEntity.ok().build();
     }
+
+
 
 }
