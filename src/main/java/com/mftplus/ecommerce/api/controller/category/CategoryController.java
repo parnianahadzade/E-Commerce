@@ -20,8 +20,8 @@ public class CategoryController {
 
     @JsonView(Views.Category.class)
     @GetMapping
-    public Category findCategories(@RequestParam(value = "categoryName", required = false) String categoryName) throws NoContentException {
-        return categoryService.findByNameAndDeletedFalse(categoryName);
+    public Category findCategories(String categoryName) throws NoContentException {
+        return categoryService.findByNameAndDeletedFalse("digikala");
     }
 
 }

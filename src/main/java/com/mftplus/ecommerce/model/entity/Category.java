@@ -42,10 +42,11 @@ public class Category extends Base{
     @OneToMany(mappedBy = "parentCategory", orphanRemoval = true)
     private List<Category> childCategories = new ArrayList<>();
 
-    @JsonView(Views.Category.class)
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     private List<Product> products = new ArrayList<>();
 
+    @JsonView(Views.Category.class)
     public List<String> getCategoryPath() {
         List<String> categoryPath = new ArrayList<>();
         categoryPath.add(this.getName());
