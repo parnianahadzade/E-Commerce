@@ -18,11 +18,14 @@ public class RegistrationBody {
     @Pattern(regexp = "^[A-Za-z-0-9]{2,50}$",message = "incorrect username !")
     private String username;
 
-    @NotNull
+    @NotEmpty
     @NotBlank
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "Minimum five characters, at least one letter and one number!")
     private String password;
 
+    @NotEmpty
+    @NotBlank
+    private String confirmPassword;
 
     @NotNull
     @NotBlank

@@ -1,33 +1,51 @@
 package com.mftplus.ecommerce.api.controller.auth;
 
 import com.mftplus.ecommerce.api.dto.*;
+import com.mftplus.ecommerce.api.validation.PasswordMatch;
 import com.mftplus.ecommerce.exception.*;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("${apiPrefix}/auth")
+@Slf4j
 public class AuthenticationController {
+
+    private final MessageSource messageSource;
     private final UserServiceImpl userService;
 
-    public AuthenticationController(UserServiceImpl userService) {
+    public AuthenticationController(MessageSource messageSource, UserServiceImpl userService) {
+        this.messageSource = messageSource;
         this.userService = userService;
     }
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @RequestBody RegistrationBody registrationBody, BindingResult bindingResult){
+    public ResponseEntity registerUser(@Valid @PasswordMatch @RequestBody RegistrationBody registrationBody, BindingResult result){
+        // TODO: 7/17/2024 problem with password mismatch error msg
         try {
-            if (bindingResult.hasErrors()) {
-                // do something
+            if (result.hasErrors()) {
+                List<String> errors = result.getAllErrors()
+                        .stream()
+                        .map(error -> messageSource.getMessage(error, Locale.getDefault()))
+                        .collect(Collectors.toList());
+
+                return ResponseEntity.badRequest().body(errors);
             }
+
             userService.save(registrationBody);
             return ResponseEntity.ok().build();
+
         } catch (UserAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }catch (EmailFailureException e) {
