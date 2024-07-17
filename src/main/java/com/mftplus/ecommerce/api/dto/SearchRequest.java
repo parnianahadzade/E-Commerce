@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class SearchRequest {
 
+    private int pageNumber;
+
     private String name;
 
     private Integer categoryId;

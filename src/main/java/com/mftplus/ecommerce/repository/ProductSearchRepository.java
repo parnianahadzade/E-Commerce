@@ -15,9 +15,6 @@ import java.util.List;
 @Repository
 public class ProductSearchRepository {
 
-    // TODO: 7/17/2024 deleted false
-
-    // TODO: 7/18/2024 paging added but needs recheck 
     private final EntityManager entityManager;
 
     public ProductSearchRepository(EntityManager entityManager) {
@@ -25,17 +22,12 @@ public class ProductSearchRepository {
     }
 
     public List<Product> findAllByCriteria(SearchRequest request){
-        int pageNumber = 1;
+
+        int pageNumber = request.getPageNumber();
         int pageSize = 10;
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-        CriteriaQuery<Long> countQuery = criteriaBuilder
-                .createQuery(Long.class);
-        countQuery.select(criteriaBuilder
-                .count(countQuery.from(Product.class)));
-        Long count = entityManager.createQuery(countQuery)
-                .getSingleResult();
 
         CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
 
@@ -99,6 +91,11 @@ public class ProductSearchRepository {
             predicates.add(offPercentPredicate);
         }
 
+        //deleted false
+        Predicate deletedFalse = criteriaBuilder
+                .equal(root.get("deleted"),false);
+        predicates.add(deletedFalse);
+
 
         criteriaQuery.where(
                 criteriaBuilder.and(predicates.toArray(new Predicate[0]))
@@ -106,12 +103,11 @@ public class ProductSearchRepository {
 
         TypedQuery<Product> typedQuery = entityManager.createQuery(criteriaQuery);
 
-        while (pageNumber < count.intValue()) {
-            typedQuery.setFirstResult(pageNumber - 1);
-            typedQuery.setMaxResults(pageSize);
-            System.out.println("Current page: " + typedQuery.getResultList());
-            pageNumber += pageSize;
-        }
+        //for paging
+        int firstResult = (pageNumber - 1) * pageSize;
+        typedQuery.setFirstResult(firstResult);
+        typedQuery.setMaxResults(pageSize);
+
 
         return typedQuery.getResultList();
     }

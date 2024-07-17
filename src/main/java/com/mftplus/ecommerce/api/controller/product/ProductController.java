@@ -49,7 +49,8 @@ public class ProductController {
              @RequestParam(value = "name", required = false) String name,
              @RequestParam(value = "minPrice", required = false) Integer minPrice,
              @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
-             @RequestParam(value = "enableOff", required = false) boolean enableOff){
+             @RequestParam(value = "enableOff", required = false) boolean enableOff,
+             @RequestParam(value = "pageNumber")int pageNumber){
 
         SearchRequest request = new SearchRequest();
         request.setName(name);
@@ -58,6 +59,7 @@ public class ProductController {
         request.setMinPrice(minPrice);
         request.setMaxPrice(maxPrice);
         request.setEnableOff(enableOff);
+        request.setPageNumber(pageNumber);
 
         return productService.findAllByCriteria(request);
 
