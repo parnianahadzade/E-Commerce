@@ -15,7 +15,9 @@ import java.util.List;
 @Repository
 public class ProductSearchRepository {
 
-    // TODO: 7/17/2024 deleted false and paging/sorting
+    // TODO: 7/17/2024 deleted false
+
+    // TODO: 7/18/2024 paging added but needs recheck 
     private final EntityManager entityManager;
 
     public ProductSearchRepository(EntityManager entityManager) {
@@ -23,8 +25,18 @@ public class ProductSearchRepository {
     }
 
     public List<Product> findAllByCriteria(SearchRequest request){
+        int pageNumber = 1;
+        int pageSize = 10;
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Long> countQuery = criteriaBuilder
+                .createQuery(Long.class);
+        countQuery.select(criteriaBuilder
+                .count(countQuery.from(Product.class)));
+        Long count = entityManager.createQuery(countQuery)
+                .getSingleResult();
+
         CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
 
         List<Predicate> predicates = new ArrayList<>();
@@ -77,17 +89,6 @@ public class ProductSearchRepository {
             Predicate pricePredicate = criteriaBuilder
                     .between(root.get("price"),minPrice,maxPrice);
             predicates.add(pricePredicate);
-
-//            Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
-//            Root<Product> subQueryProduct = subquery.from(Product.class);
-//            Join<Inventory, Product> subQueryInventory = subQueryProduct.join("inventories");
-//
-//            subquery.select(subQueryProduct.get("id")).where(
-//                    criteriaBuilder.between(subQueryInventory.get("price"),minPrice,maxPrice)
-//            );
-//
-//            predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
-
         }
 
         //enable off percent
@@ -96,17 +97,6 @@ public class ProductSearchRepository {
             Predicate offPercentPredicate = criteriaBuilder
                     .greaterThan(root.get("offPercent"),0);
             predicates.add(offPercentPredicate);
-
-//            Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
-//            Root<Product> subQueryProduct = subquery.from(Product.class);
-//            Join<Inventory, Product> subQueryInventory = subQueryProduct.join("inventories");
-//
-//            subquery.select(subQueryProduct.get("id")).where(
-//                    criteriaBuilder.greaterThan(subQueryInventory.get("offPercent"),0)
-//            );
-//
-//            predicates.add(criteriaBuilder.in(root.get("id")).value(subquery));
-
         }
 
 
@@ -115,6 +105,13 @@ public class ProductSearchRepository {
         );
 
         TypedQuery<Product> typedQuery = entityManager.createQuery(criteriaQuery);
+
+        while (pageNumber < count.intValue()) {
+            typedQuery.setFirstResult(pageNumber - 1);
+            typedQuery.setMaxResults(pageSize);
+            System.out.println("Current page: " + typedQuery.getResultList());
+            pageNumber += pageSize;
+        }
 
         return typedQuery.getResultList();
     }

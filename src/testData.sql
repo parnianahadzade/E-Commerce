@@ -34,7 +34,29 @@ VALUES ('1','Product1', 'Product one short description.', 'This is a very long d
      , ('2','Product2', 'Product two short description.', 'This is a very long description of product #2.' ,false,1,1,100,80)
      , ('3','Product3', 'Product three short description.', 'This is a very long description of product #3.' ,false,1,2,1000,50)
      , ('4','Product4', 'Product four short description.', 'This is a very long description of product #4.' ,false,2,2,10000,30)
-     , ('5','Product5', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72);
+     , ('5','Product5', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('6','Product6', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('7','Product7', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('8','Product8', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('9','Product9', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('10','Product10', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('11','Product11', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('12','Product12', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('13','Product13', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('14','Product14', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('15','Product15', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('16','Product16', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('17','Product17', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('18','Product18', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('19','Product19', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('20','Product20', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('21','Product21', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('22','Product22', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('23','Product23', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('24','Product24', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('25','Product25', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('26','Product26', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72)
+     , ('27','Product27', 'Product five short description.', 'This is a very long description of product #5.' ,false,2,3,100000,72);
 
 INSERT INTO category_tbl (c_name, deleted)
 VALUES ('digikala',0),
@@ -71,7 +93,7 @@ VALUES (1, 5, false,0)
      , (1,3,false,1)
      , (2, 8, false,2)
      , (3, 12, false,3)
-     , (4, 73, false,4);
+     , (4, 73, false,5);
 
 INSERT INTO order_tbl (address_id, user_id, deleted)
 VALUES (1, 1, false)
