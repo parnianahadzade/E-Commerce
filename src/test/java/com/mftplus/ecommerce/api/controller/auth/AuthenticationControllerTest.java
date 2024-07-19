@@ -40,8 +40,6 @@ public class AuthenticationControllerTest {
         //null username
         body.setUsername(null);
         body.setEmail("AuthenticationControllerTest$testRegister@junit.com");
-        body.setFirstName("FirstName");
-        body.setLastName("LastName");
         body.setPassword("Password123");
 
         mvc.perform(post("/auth/register")
@@ -95,54 +93,8 @@ public class AuthenticationControllerTest {
                         .content(mapper.writeValueAsString(body)))
                 .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
 
-
-
-        //null firstname
-        body.setPassword("Password123");
-        body.setFirstName(null);
-
-        mvc.perform(post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(body)))
-                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
-
-        //blank firstname
-        body.setFirstName("");
-
-        mvc.perform(post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(body)))
-                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
-
-
-
-        //null lastname
-        body.setFirstName("FirstName");
-        body.setLastName(null);
-
-        mvc.perform(post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(body)))
-                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
-
-        //blank lastname
-        body.setLastName("");
-
-        mvc.perform(post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(body)))
-                .andExpect(status().is(HttpStatus.BAD_REQUEST.value()));
-
-
         //todo : test patterns, length and email format
 
-        //valid
-        body.setLastName("LastName");
-
-        mvc.perform(post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(body)))
-                .andExpect(status().is(HttpStatus.OK.value()));
 
     }
 }

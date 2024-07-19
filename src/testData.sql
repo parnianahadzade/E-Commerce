@@ -1,11 +1,11 @@
 -- Password : PasswordA123
 -- encrypted using https://www.javainuse.com/onlineBcrypt
 
-INSERT INTO user_tbl ( u_email, u_first_name, u_last_name, u_password, u_username, email_verified,u_phone_number, deleted)
-VALUES ( 'UserA@junit.com', 'UserAFirstName', 'UserALastName', '$2a$10$hBn5gu6cGelJNiE6DDsaBOmZgyumCSzVwrOK/37FWgJ6aLIdZSSI2', 'UserA', true,09123858573, false)
-    , ( 'Admin@junit.com', 'AdminFirstName', 'AdminLastName', '$2a$10$hBn5gu6cGelJNiE6DDsaBOmZgyumCSzVwrOK/37FWgJ6aLIdZSSI2', 'Admin', true,09123858573, false)
-     , ( 'UserB@junit.com', 'UserBFirstName', 'UserBLastName', '$2a$10$TlYbg57fqOy/1LJjispkjuSIvFJXbh3fy0J9fvHnCpuntZOITAjVG', 'UserB', false,09123858573 , false)
-     , ('UserC@junit.com', 'UserCFirstName', 'UserCLastName', '$2a$10$SYiYAIW80gDh39jwSaPyiuKGuhrLi7xTUjocL..NOx/1COWe5P03.', 'UserC', false,09123858573, false);
+INSERT INTO user_tbl ( u_email, u_password, u_username, email_verified, deleted)
+VALUES ( 'UserA@junit.com', '$2a$10$hBn5gu6cGelJNiE6DDsaBOmZgyumCSzVwrOK/37FWgJ6aLIdZSSI2', 'UserA', true, false)
+    , ( 'Admin@junit.com', '$2a$10$hBn5gu6cGelJNiE6DDsaBOmZgyumCSzVwrOK/37FWgJ6aLIdZSSI2', 'Admin', true, false)
+     , ( 'UserB@junit.com', '$2a$10$TlYbg57fqOy/1LJjispkjuSIvFJXbh3fy0J9fvHnCpuntZOITAjVG', 'UserB', false , false)
+     , ('UserC@junit.com', '$2a$10$SYiYAIW80gDh39jwSaPyiuKGuhrLi7xTUjocL..NOx/1COWe5P03.', 'UserC', false, false);
 
 INSERT INTO role_tbl ( role_name)
 VALUES ('user'),

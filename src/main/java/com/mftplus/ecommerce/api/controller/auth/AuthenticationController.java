@@ -49,9 +49,6 @@ public class AuthenticationController {
             user.setUsername(registrationBody.getUsername());
             user.setPassword(encryptionService.encryptPassword(registrationBody.getPassword()));
             user.setEmail(registrationBody.getEmail());
-            user.setFirstName(registrationBody.getFirstName());
-            user.setLastName(registrationBody.getLastName());
-            user.setPhoneNumber(registrationBody.getPhoneNumber());
 
             userService.save(user);
             return ResponseEntity.ok().build();
@@ -135,10 +132,7 @@ public class AuthenticationController {
         }
 
         User user = userService.findById(userId);
-        user.setFirstName(userDataChange.getFirstName());
-        user.setLastName(userDataChange.getLastName());
         user.setUsername(userDataChange.getUsername());
-        user.setPhoneNumber(userDataChange.getPhoneNumber());
 
         userService.update(user);
         return ResponseEntity.ok().build();

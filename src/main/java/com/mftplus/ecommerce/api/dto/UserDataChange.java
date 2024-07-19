@@ -21,18 +21,4 @@ public class UserDataChange {
     @Pattern(regexp = "^[A-Za-z-0-9]{2,50}$",message = "incorrect username !")
     private String username;
 
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect first name!")
-    private String firstName;
-
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect last name!")
-    private String lastName;
-
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = "^[0-9]{11}$",message = "incorrect phone number!")
-    private String phoneNumber;
 }

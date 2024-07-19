@@ -32,18 +32,4 @@ public class RegistrationBody {
     @Email(message = "Incorrect Email Format!")
     private String email;
 
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect first name!")
-    private String firstName;
-
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect last name!")
-    private String lastName;
-
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = "^[0-9]{11}$",message = "incorrect phone number!")
-    private String phoneNumber;
 }

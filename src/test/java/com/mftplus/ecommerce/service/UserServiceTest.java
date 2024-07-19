@@ -57,8 +57,6 @@ public class UserServiceTest {
         User user = new User();
         user.setUsername("UserA");
         user.setEmail("UserServiceTest$testRegisterUser@junit.com");
-        user.setFirstName("FirstName");
-        user.setLastName("lastName");
         user.setPassword("MySecretPassword123");
 
         Assertions.assertThrows(DuplicateException.class,

@@ -38,18 +38,6 @@ public class User extends Base implements UserDetails {
     @Column(name = "u_email", unique = true, length = 320)
     private String email;
 
-    @Column(name = "u_first_name", nullable = false, length = 20)
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect first name!")
-    private String firstName;
-
-    @Column(name = "u_last_name", nullable = false, length = 20)
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect last name!")
-    private String lastName;
-
-    @Column(name = "u_phone_number", nullable = false, length = 11)
-    @Pattern(regexp = "^[0-9]{11}$",message = "incorrect phone number!")
-    private String phoneNumber;
-
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Address> addresses = new ArrayList<>();
@@ -69,6 +57,8 @@ public class User extends Base implements UserDetails {
             inverseJoinColumns = {@JoinColumn (name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    private Person person;
 
     //for user details
     @JsonIgnore
@@ -111,10 +101,7 @@ public class User extends Base implements UserDetails {
     public User(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
-        this.firstName = user.getFirstName();
-        this.lastName = user.getLastName();
         this.password = user.getPassword();
-        this.phoneNumber = user.getPhoneNumber();
         this.addresses = user.getAddresses();
         this.email = user.getEmail();
         this.verificationTokens = user.getVerificationTokens();
