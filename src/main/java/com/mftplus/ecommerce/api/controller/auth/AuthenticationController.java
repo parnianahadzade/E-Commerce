@@ -9,16 +9,15 @@ import com.mftplus.ecommerce.service.EncryptionService;
 import com.mftplus.ecommerce.service.impl.RoleServiceImpl;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,24 +31,29 @@ public class AuthenticationController {
 
     private final RoleServiceImpl roleService;
 
-    public AuthenticationController(EncryptionService encryptionService, UserServiceImpl userService, RoleServiceImpl roleService) {
+    private final MessageSource messageSource;
+
+    public AuthenticationController(EncryptionService encryptionService, UserServiceImpl userService, RoleServiceImpl roleService, MessageSource messageSource) {
         this.encryptionService = encryptionService;
         this.userService = userService;
         this.roleService = roleService;
+        this.messageSource = messageSource;
     }
 
 
+    // TODO: 7/20/2024 problem with password mismatch error msg 
     @PostMapping("/register")
     public ResponseEntity registerUser(@Valid @PasswordMatch @RequestBody RegistrationBody registrationBody, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException {
 
             if (result.hasErrors()) {
-                throw new ValidationException(
-                        result
-                                .getAllErrors()
-                                .stream()
-                                .map((event) -> event.getDefaultMessage())
-                                .collect(Collectors.toList()).toString()
-                );
+
+                List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
+                        .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
+                        .collect(Collectors.toList());
+
+                ValidationResponse validationResponse = new ValidationResponse(fieldErrorList);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
+
             }
 
             User user = new User();
