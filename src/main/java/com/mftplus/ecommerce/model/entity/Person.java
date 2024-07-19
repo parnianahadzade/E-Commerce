@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Entity(name = "personEntity")
 @Table(name = "person_tbl")
-public class Person {
+public class Person extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

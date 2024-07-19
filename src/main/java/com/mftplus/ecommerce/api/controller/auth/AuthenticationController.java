@@ -3,8 +3,10 @@ package com.mftplus.ecommerce.api.controller.auth;
 import com.mftplus.ecommerce.api.dto.*;
 import com.mftplus.ecommerce.api.validation.PasswordMatch;
 import com.mftplus.ecommerce.exception.*;
+import com.mftplus.ecommerce.model.entity.Role;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.service.EncryptionService;
+import com.mftplus.ecommerce.service.impl.RoleServiceImpl;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
@@ -15,6 +17,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,14 +30,17 @@ public class AuthenticationController {
 
     private final UserServiceImpl userService;
 
-    public AuthenticationController(EncryptionService encryptionService, UserServiceImpl userService) {
+    private final RoleServiceImpl roleService;
+
+    public AuthenticationController(EncryptionService encryptionService, UserServiceImpl userService, RoleServiceImpl roleService) {
         this.encryptionService = encryptionService;
         this.userService = userService;
+        this.roleService = roleService;
     }
 
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @PasswordMatch @RequestBody RegistrationBody registrationBody, BindingResult result) throws DuplicateException, EmailFailureException {
+    public ResponseEntity registerUser(@Valid @PasswordMatch @RequestBody RegistrationBody registrationBody, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException {
 
             if (result.hasErrors()) {
                 throw new ValidationException(
@@ -50,6 +57,8 @@ public class AuthenticationController {
             user.setPassword(encryptionService.encryptPassword(registrationBody.getPassword()));
             user.setEmail(registrationBody.getEmail());
 
+            List<Role> roles = Collections.singletonList(roleService.findByIdAndDeletedFalse(1L));
+            user.setRoles(roles);
             userService.save(user);
             return ResponseEntity.ok().build();
 

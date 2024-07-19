@@ -57,7 +57,7 @@ public class User extends Base implements UserDetails {
             inverseJoinColumns = {@JoinColumn (name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 
-    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private Person person;
 
     //for user details
@@ -107,5 +107,6 @@ public class User extends Base implements UserDetails {
         this.verificationTokens = user.getVerificationTokens();
         this.emailVerified = user.getEmailVerified();
         this.roles = user.getRoles();
+        this.person = user.getPerson();
     }
 }

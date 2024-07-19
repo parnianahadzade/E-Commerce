@@ -34,7 +34,6 @@ public class UserServiceImpl implements UserService {
         this.verificationTokenRepository = verificationTokenRepository;
     }
 
-//todo : default user role
     @Override
     public User save(User user) throws DuplicateException, EmailFailureException {
         if (userRepository.findByEmailIgnoreCaseAndDeletedFalse(user.getEmail()).isPresent()

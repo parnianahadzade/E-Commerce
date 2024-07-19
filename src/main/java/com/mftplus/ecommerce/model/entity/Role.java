@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @Entity(name = "roleEntity")
 @Table(name = "role_tbl")
-public class Role {
+public class Role extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
