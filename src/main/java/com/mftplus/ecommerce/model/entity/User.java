@@ -27,7 +27,7 @@ public class User extends Base implements UserDetails {
     private Long id;
 
     @Column(name = "u_username", nullable = false, unique = true, length = 50)
-    @Pattern(regexp = "^[a-z-0-9]{2,50}$",message = "incorrect username !")
+    @Pattern(regexp = "^[A-Za-z-0-9]{2,50}$",message = "incorrect username !")
     private String username;
 
     @JsonIgnore

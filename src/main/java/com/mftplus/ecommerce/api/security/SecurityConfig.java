@@ -26,11 +26,11 @@ public class SecurityConfig {
                 .addFilterBefore(jwtRequestFilter, AuthorizationFilter.class);
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("api/product/**","/search", "api/auth/register", "api/auth/login"
+                        .requestMatchers("api/product","/search", "api/auth/register", "api/auth/login"
                                 ,"/error","/", "api/auth/verify","api/category/**")
                         .permitAll()
 
-                        .requestMatchers("/admin","api/product/save")
+                        .requestMatchers("/admin","/api/product/save")
                             .hasAuthority("admin")
 
                         .requestMatchers("api/auth/forgot","api/auth/reset",
