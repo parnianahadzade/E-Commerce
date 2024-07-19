@@ -4,17 +4,17 @@ import com.mftplus.ecommerce.api.dto.*;
 import com.mftplus.ecommerce.api.validation.PasswordMatch;
 import com.mftplus.ecommerce.exception.*;
 import com.mftplus.ecommerce.model.entity.User;
+import com.mftplus.ecommerce.service.EncryptionService;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -22,35 +22,40 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AuthenticationController {
 
-    private final MessageSource messageSource;
+    private final EncryptionService encryptionService;
+
     private final UserServiceImpl userService;
 
-    public AuthenticationController(MessageSource messageSource, UserServiceImpl userService) {
-        this.messageSource = messageSource;
+    public AuthenticationController(EncryptionService encryptionService, UserServiceImpl userService) {
+        this.encryptionService = encryptionService;
         this.userService = userService;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @PasswordMatch @RequestBody RegistrationBody registrationBody, BindingResult result){
-        // TODO: 7/17/2024 problem with password mismatch error msg
-        try {
-            if (result.hasErrors()) {
-                List<String> errors = result.getAllErrors()
-                        .stream()
-                        .map(error -> messageSource.getMessage(error, Locale.getDefault()))
-                        .collect(Collectors.toList());
 
-                return ResponseEntity.badRequest().body(errors);
+    @PostMapping("/register")
+    public ResponseEntity registerUser(@Valid @PasswordMatch @RequestBody RegistrationBody registrationBody, BindingResult result) throws DuplicateException, EmailFailureException {
+
+            if (result.hasErrors()) {
+                throw new ValidationException(
+                        result
+                                .getAllErrors()
+                                .stream()
+                                .map((event) -> event.getDefaultMessage())
+                                .collect(Collectors.toList()).toString()
+                );
             }
 
-            userService.save(registrationBody);
+            User user = new User();
+            user.setUsername(registrationBody.getUsername());
+            user.setPassword(encryptionService.encryptPassword(registrationBody.getPassword()));
+            user.setEmail(registrationBody.getEmail());
+            user.setFirstName(registrationBody.getFirstName());
+            user.setLastName(registrationBody.getLastName());
+            user.setPhoneNumber(registrationBody.getPhoneNumber());
+
+            userService.save(user);
             return ResponseEntity.ok().build();
 
-        } catch (UserAlreadyExistsException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }catch (EmailFailureException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
     }
 
     @PostMapping("/login")

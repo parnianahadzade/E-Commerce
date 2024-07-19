@@ -39,7 +39,7 @@ public class EmailService {
         try {
             javaMailSender.send(message);
         }catch (MailException exception){
-            throw new EmailFailureException();
+            throw new EmailFailureException("Email Failure");
         }
     }
 
@@ -53,7 +53,7 @@ public class EmailService {
         try {
             javaMailSender.send(message);
         }catch (MailException exception){
-            throw new EmailFailureException();
+            throw new EmailFailureException("Email Failure");
         }
     }
 }

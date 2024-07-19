@@ -5,10 +5,9 @@ import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import com.mftplus.ecommerce.api.dto.LoginBody;
 import com.mftplus.ecommerce.api.dto.PasswordResetBody;
-import com.mftplus.ecommerce.api.dto.RegistrationBody;
 import com.mftplus.ecommerce.exception.EmailFailureException;
 import com.mftplus.ecommerce.exception.EmailNotFoundException;
-import com.mftplus.ecommerce.exception.UserAlreadyExistsException;
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.UserNotVerifiedException;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.model.entity.VerificationToken;
@@ -55,28 +54,28 @@ public class UserServiceTest {
     @Test
     @Transactional
     public void testRegisterUser() throws MessagingException {
-        RegistrationBody body = new RegistrationBody();
-        body.setUsername("UserA");
-        body.setEmail("UserServiceTest$testRegisterUser@junit.com");
-        body.setFirstName("FirstName");
-        body.setLastName("lastName");
-        body.setPassword("MySecretPassword123");
+        User user = new User();
+        user.setUsername("UserA");
+        user.setEmail("UserServiceTest$testRegisterUser@junit.com");
+        user.setFirstName("FirstName");
+        user.setLastName("lastName");
+        user.setPassword("MySecretPassword123");
 
-        Assertions.assertThrows(UserAlreadyExistsException.class,
-                () -> userService.save(body), " username should already be in use.");
+        Assertions.assertThrows(DuplicateException.class,
+                () -> userService.save(user), " username should already be in use.");
 
-        body.setUsername("UserServiceTestTestRegisterUser");
-        body.setEmail("UserA@junit.com");
+        user.setUsername("UserServiceTestTestRegisterUser");
+        user.setEmail("UserA@junit.com");
 
-        Assertions.assertThrows(UserAlreadyExistsException.class,
-                () -> userService.save(body), " email should already be in use.");
+        Assertions.assertThrows(DuplicateException.class,
+                () -> userService.save(user), " email should already be in use.");
 
-        body.setEmail("UserServiceTest$testRegisterUser@junit.com");
+        user.setEmail("UserServiceTest$testRegisterUser@junit.com");
 
         Assertions.assertDoesNotThrow(
-                () -> userService.save(body), " user should register successfully");
+                () -> userService.save(user), " user should register successfully");
 
-        Assertions.assertEquals(body.getEmail(),
+        Assertions.assertEquals(user.getEmail(),
                 greenMailExtension.getReceivedMessages()[0]
                         .getRecipients(Message.RecipientType.TO)[0].toString());
     }

@@ -2,7 +2,6 @@ package com.mftplus.ecommerce.service.impl;
 
 import com.mftplus.ecommerce.api.dto.LoginBody;
 import com.mftplus.ecommerce.api.dto.PasswordResetBody;
-import com.mftplus.ecommerce.api.dto.RegistrationBody;
 import com.mftplus.ecommerce.exception.*;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.model.entity.VerificationToken;
@@ -37,18 +36,11 @@ public class UserServiceImpl implements UserService {
 
 //todo : default user role
     @Override
-    public User save(RegistrationBody registrationBody) throws UserAlreadyExistsException, EmailFailureException {
-        if (userRepository.findByEmailIgnoreCaseAndDeletedFalse(registrationBody.getEmail()).isPresent()
-        || userRepository.findByUsernameIgnoreCaseAndDeletedFalse(registrationBody.getUsername()).isPresent()){
-            throw new UserAlreadyExistsException();
+    public User save(User user) throws DuplicateException, EmailFailureException {
+        if (userRepository.findByEmailIgnoreCaseAndDeletedFalse(user.getEmail()).isPresent()
+        || userRepository.findByUsernameIgnoreCaseAndDeletedFalse(user.getUsername()).isPresent()){
+            throw new DuplicateException("User Already Exists");
         }
-        User user = new User();
-        user.setUsername(registrationBody.getUsername());
-        user.setPassword(encryptionService.encryptPassword(registrationBody.getPassword()));
-        user.setEmail(registrationBody.getEmail());
-        user.setFirstName(registrationBody.getFirstName());
-        user.setLastName(registrationBody.getLastName());
-        user.setPhoneNumber(registrationBody.getPhoneNumber());
 
         VerificationToken verificationToken = createVerificationToken(user);
         emailService.sendVerificationEmail(verificationToken);
