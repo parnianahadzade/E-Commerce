@@ -1,9 +1,6 @@
 package com.mftplus.ecommerce.exception.controllerAdvice;
 
-import com.mftplus.ecommerce.exception.ApiException;
-import com.mftplus.ecommerce.exception.ApiRequestException;
-import com.mftplus.ecommerce.exception.DuplicateException;
-import com.mftplus.ecommerce.exception.EmailFailureException;
+import com.mftplus.ecommerce.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -16,6 +13,7 @@ public class ApiExceptionHandler {
     HttpStatus badRequest = HttpStatus.BAD_REQUEST;
     HttpStatus conflict = HttpStatus.CONFLICT;
     HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
+    HttpStatus notFound = HttpStatus.NOT_FOUND;
 
     //if we are catching ApiRequestException
     @ExceptionHandler(value = {ApiRequestException.class})
@@ -56,6 +54,19 @@ public class ApiExceptionHandler {
         );
 
         return new ResponseEntity<>(apiException, internalServerError);
+
+    }
+
+    @ExceptionHandler(value = {NoContentException.class})
+    public ResponseEntity<Object> handleNoContentException(NoContentException e){
+
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                notFound,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, notFound);
 
     }
 }
