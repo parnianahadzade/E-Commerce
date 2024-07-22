@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,9 +22,11 @@ public class Address extends Base{
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @JsonView(Views.Order.class)
     @Column(name = "address_line_1", nullable = false)
     private String addressLine1;
 
+    @JsonView(Views.Order.class)
     @Column(name = "address_line_2")
     private String addressLine2;
 

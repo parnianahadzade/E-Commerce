@@ -19,7 +19,7 @@ import java.util.List;
 @Entity(name = "productEntity")
 @Table(name = "product_tbl", uniqueConstraints = {@UniqueConstraint(columnNames = {"p_name", "color_id"})})
 public class Product extends Base{
-    @JsonView({Views.ProductList.class,Views.Category.class})
+    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -30,7 +30,7 @@ public class Product extends Base{
     @Pattern(regexp = "^[0-9]{5,50}$",message = "incorrect code!")
     private String code;
 
-    @JsonView({Views.ProductList.class,Views.Category.class})
+    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
     @Column(name = "p_name", nullable = false, unique = true, length = 20)
     @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect name!")
     private String name;
@@ -66,7 +66,7 @@ public class Product extends Base{
     @JoinTable(name = "product_images_tbl")
     private List<Image> images;
 
-    @JsonView({Views.singleProduct.class,Views.Category.class})
+    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "p_main_image_id")
     private Image mainImage;
@@ -76,12 +76,12 @@ public class Product extends Base{
     @JoinColumn(name = "color_id")
     private Color color;
 
-    @JsonView({Views.ProductList.class,Views.Category.class})
+    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
     @Column(name = "p_price")
     @Min(value = 1, message = "Price must be equal or greater than 1.")
     private Integer price;
 
-    @JsonView({Views.ProductList.class,Views.Category.class})
+    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
     @Column(name = "p_off_percent")
     @Min(value = 0, message = "Off Percent must be equal or greater than 0.")
     private Integer offPercent;

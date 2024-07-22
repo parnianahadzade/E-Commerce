@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -26,6 +27,7 @@ public class User extends Base implements UserDetails {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @JsonView(Views.Order.class)
     @Column(name = "u_username", nullable = false, unique = true, length = 50)
     @Pattern(regexp = "^[A-Za-z-0-9]{2,50}$",message = "incorrect username !")
     private String username;

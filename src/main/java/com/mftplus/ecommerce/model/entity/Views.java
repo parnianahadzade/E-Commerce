@@ -14,4 +14,8 @@ public class Views {
     public static class Category {
 
     }
+
+    public static class Order {
+
+    }
 }
