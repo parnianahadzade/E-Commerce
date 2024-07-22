@@ -7,9 +7,9 @@ VALUES ( 'UserA@junit.com', '$2a$10$hBn5gu6cGelJNiE6DDsaBOmZgyumCSzVwrOK/37FWgJ6
      , ( 'UserB@junit.com', '$2a$10$TlYbg57fqOy/1LJjispkjuSIvFJXbh3fy0J9fvHnCpuntZOITAjVG', 'UserB', false , false)
      , ('UserC@junit.com', '$2a$10$SYiYAIW80gDh39jwSaPyiuKGuhrLi7xTUjocL..NOx/1COWe5P03.', 'UserC', false, false);
 
-INSERT INTO role_tbl ( role_name)
-VALUES ('user'),
-       ('admin');
+INSERT INTO role_tbl ( role_name,deleted)
+VALUES ('user',false),
+       ('admin',false);
 
 INSERT INTO user_role (user_id, role_id)
 VALUES (1,1),
@@ -95,14 +95,14 @@ VALUES (1, 5, false,0)
      , (3, 12, false,3)
      , (4, 73, false,5);
 
-INSERT INTO order_tbl (address_id, user_id, deleted)
-VALUES (1, 1, false)
-     , (1, 1, false)
-     , (1, 1, false)
-     , (2, 3, false)
-     , (2, 3, false);
+INSERT INTO order_tbl (address_id, user_id, deleted,date_created,order_status)
+VALUES (1, 1, false,localtime,0)
+     , (1, 1, false,localtime,0)
+     , (1, 1, false,localtime,0)
+     , (2, 3, false,localtime,0)
+     , (2, 3, false,localtime,0);
 
-INSERT INTO order_quantities_tbl (order_id, product_id, quantity, deleted)
+INSERT INTO order_inventory_tbl (order_id, inventory_id, quantity, deleted)
 VALUES (1, 1, 5, false)
      , (1, 2, 5, false)
      , (2, 3, 5, false)
