@@ -83,6 +83,7 @@ public class ProductController {
             @RequestPart("mainFile")MultipartFile mainFile,
             BindingResult result) throws NoContentException, IOException {
 
+        // TODO: 7/26/2024 not working 
         if (result.hasErrors()) {
 
             List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
