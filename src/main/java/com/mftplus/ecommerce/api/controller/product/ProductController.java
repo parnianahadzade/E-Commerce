@@ -1,23 +1,24 @@
 package com.mftplus.ecommerce.api.controller.product;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mftplus.ecommerce.api.dto.InventoryBody;
-import com.mftplus.ecommerce.api.dto.ProductBody;
-import com.mftplus.ecommerce.api.dto.SearchRequest;
+import com.mftplus.ecommerce.api.dto.*;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.*;
 import com.mftplus.ecommerce.model.entity.enums.Size;
 import com.mftplus.ecommerce.service.impl.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${apiPrefix}/product")
@@ -76,17 +77,31 @@ public class ProductController {
     //todo : needs re check for efficiency
     @Transactional
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<Product> saveProduct(
+    public ResponseEntity saveProduct(
             @Valid @RequestPart("productBody") ProductBody body,
-                @RequestPart("files")MultipartFile[] files,
-                    @RequestPart("mainFile")MultipartFile mainFile) throws NoContentException, IOException {
+            @RequestPart("files")MultipartFile[] files,
+            @RequestPart("mainFile")MultipartFile mainFile,
+            BindingResult result) throws NoContentException, IOException {
+
+        if (result.hasErrors()) {
+
+            List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
+                    .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
+                    .collect(Collectors.toList());
+
+            ValidationResponse validationResponse = new ValidationResponse(fieldErrorList);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
+
+        }
 
         Product product = new Product();
 
         product.setCode(body.getCode());
         product.setName(body.getProductName());
-        product.setShortDescription(body.getShortDescription());
-        product.setLongDescription(body.getLongDescription());
+        product.setDescription(body.getDescription());
+        product.setMaterial(body.getMaterial());
+        product.setPattern(body.getPattern());
+        product.setHeight(body.getHeight());
         product.setPrice(body.getPrice());
         product.setOffPercent(body.getOffPercent());
 

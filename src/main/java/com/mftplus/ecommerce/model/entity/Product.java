@@ -27,23 +27,18 @@ public class Product extends Base{
 
     @JsonView({Views.singleProduct.class,Views.Category.class})
     @Column(name = "p_code", length = 25)
-    @Pattern(regexp = "^[0-9]{5,50}$",message = "incorrect code!")
+    @Pattern(regexp = "^[0-9]{1,50}$",message = "کد کالا اشتباه وارد شده است!")
     private String code;
 
     @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
     @Column(name = "p_name", nullable = false, unique = true, length = 20)
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect name!")
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام کالا اشتباه وارد شده است!")
     private String name;
 
     @JsonView({Views.singleProduct.class,Views.Category.class})
-    @Column(name = "short_description", nullable = false)
-    @Pattern(regexp = "^[A-Za-z]{5,}$",message = "incorrect short description!")
-    private String shortDescription;
-
-    @JsonView({Views.singleProduct.class,Views.Category.class})
-    @Column(name = "long_description", nullable = false)
-    @Pattern(regexp = "^[A-Za-z]{10,}$",message = "incorrect long description!")
-    private String longDescription;
+    @Column(name = "p_description", nullable = false)
+    @Pattern(regexp = "^[A-Za-zآ-ی]{10,}$",message = "توضیحات کالا اشتباه وارد شده است!")
+    private String description;
 
     @JsonView({Views.singleProduct.class,Views.Category.class})
     @ManyToOne
@@ -78,13 +73,24 @@ public class Product extends Base{
 
     @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
     @Column(name = "p_price")
-    @Min(value = 1, message = "Price must be equal or greater than 1.")
+    @Min(value = 1, message = "قیمت کالا باید بیشتر یا برابر یک باشد!")
     private Integer price;
 
     @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
     @Column(name = "p_off_percent")
-    @Min(value = 0, message = "Off Percent must be equal or greater than 0.")
+    @Min(value = 0, message = "درصد تخفیف کالا باید بیشتر یا برابر صفر باشد!")
     private Integer offPercent;
 
+    @Column(name = "p_material", length = 20)
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "جنس کالا اشتباه وارد شده است!")
+    private String material;
+
+    @Column(name = "p_pattern", length = 20)
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "طرح کالا اشتباه وارد شده است!")
+    private String pattern;
+
+    @Column(name = "p_height", length = 20)
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "قد کلا اشتباه وارد شده است!")
+    private String height;
 
 }

@@ -1,9 +1,6 @@
 package com.mftplus.ecommerce.api.dto;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,29 +9,33 @@ import java.util.List;
 @Getter
 @Setter
 public class ProductBody {
-    @Pattern(regexp = "^[0-9]{5,50}$",message = "incorrect code!")
+    @Pattern(regexp = "^[0-9]{1,50}$",message = "کد کالا اشتباه وارد شده است!")
     private String code;
 
-    @NotNull
+    @NotEmpty
     @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect name!")
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام کالا اشتباه وارد شده است!")
     private String productName;
 
-    @NotNull
+    @NotEmpty
     @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{5,}$",message = "incorrect short description!")
-    private String shortDescription;
+    @Pattern(regexp = "^[A-Za-zآ-ی]{10,}$",message = "توضیحات کالا اشتباه وارد شده است!")
+    private String description;
 
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = "^[A-Za-z]{10,}$",message = "incorrect long description!")
-    private String longDescription;
-
-    @Min(value = 1, message = "Price must be equal or greater than 1.")
+    @Min(value = 1, message = "قیمت کالا باید بیشتر یا برابر یک باشد!")
     private Integer price;
 
-    @Min(value = 0, message = "Off Percent must be equal or greater than 0.")
+    @Min(value = 0, message = "درصد تخفیف کالا باید بیشتر یا برابر صفر باشد!")
     private Integer offPercent;
+
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "جنس کالا اشتباه وارد شده است!")
+    private String material;
+
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "طرح کالا اشتباه وارد شده است!")
+    private String pattern;
+
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "قد کلا اشتباه وارد شده است!")
+    private String height;
 
     private String categoryName;
 
