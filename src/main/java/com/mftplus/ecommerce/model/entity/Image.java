@@ -22,12 +22,6 @@ public class Image {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "i_name", length = 50)
-    private String name;
-
-    @Column(name = "i_type", length = 50)
-    private String type;
-
     @Lob
     @Column(name = "i_file_path")
     private String filePath;

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -25,15 +26,14 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Image uploadImageToFileSystem(MultipartFile file) throws IOException {
-        Path fileNameAndPath = Paths.get(FOLDER_PATH , file.getOriginalFilename());
+        String uniqueFileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        Path fileNameAndPath = Paths.get(FOLDER_PATH , uniqueFileName);
         Files.write(fileNameAndPath, file.getBytes());
 
+
         Image image = Image.builder()
-                .name(file.getOriginalFilename())
-                .type(file.getContentType())
-                .filePath("/productImages/"+file.getOriginalFilename())
+                .filePath("/productImages/"+uniqueFileName)
                 .build();
-//        .filePath(String.valueOf(fileNameAndPath))
 
         return imageRepository.save(image);
     }
