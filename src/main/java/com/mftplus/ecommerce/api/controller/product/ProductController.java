@@ -21,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${apiPrefix}/product")
+@CrossOrigin
 public class ProductController {
 
     private final ProductServiceImpl productService;
