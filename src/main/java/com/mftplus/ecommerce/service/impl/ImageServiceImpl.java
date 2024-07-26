@@ -31,8 +31,9 @@ public class ImageServiceImpl implements ImageService {
         Image image = Image.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
-                .filePath(String.valueOf(fileNameAndPath))
+                .filePath("/productImages/"+file.getOriginalFilename())
                 .build();
+//        .filePath(String.valueOf(fileNameAndPath))
 
         return imageRepository.save(image);
     }
