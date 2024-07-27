@@ -73,8 +73,13 @@ public class ProductController {
         return productService.findByIdAndDeletedFalse(id);
     }
 
+    @GetMapping(value = "/{id}/code/{code}")
+    public List<Product> findByIdNotAndCode(@PathVariable String code, @PathVariable Long id) {
+        return productService.findByIdNotAndCode(id,code);
+    }
 
-    //todo : needs re check for efficiency
+
+    //todo : needs re check for efficiency, security problem
     @Transactional
     @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity saveProduct(

@@ -68,4 +68,14 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findAllByCriteria(SearchRequest request) {
         return productSearchRepository.findAllByCriteria(request);
     }
+
+    @Override
+    public List<Product> findByCodeAndDeletedFalse(String code) {
+        return productRepository.findByCodeAndDeletedFalse(code);
+    }
+
+    @Override
+    public List<Product> findByIdNotAndCode(Long id, String code) {
+        return productRepository.findByIdNotAndCode(id,code);
+    }
 }

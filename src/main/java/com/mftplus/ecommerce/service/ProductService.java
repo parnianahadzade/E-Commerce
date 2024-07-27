@@ -21,4 +21,8 @@ public interface ProductService {
     Product findByIdAndDeletedFalse(Long id) throws NoContentException;
 
     List<Product> findAllByCriteria(SearchRequest request);
+
+    List<Product> findByCodeAndDeletedFalse(String code);
+
+    List<Product> findByIdNotAndCode(Long id, String code);
 }
