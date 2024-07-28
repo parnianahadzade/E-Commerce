@@ -1,22 +1,29 @@
 package com.mftplus.ecommerce.service;
 
+import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Order;
 import com.mftplus.ecommerce.model.entity.User;
-import com.mftplus.ecommerce.repository.OrderRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class OrderService {
+public interface OrderService {
 
-    private final OrderRepository orderRepository;
+    Order save(Order order);
 
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
+    Order update(Order order) throws NoContentException;
 
-    public List<Order> findOrdersByUser(User user) {
-        return orderRepository.findByUser(user);
-    }
+    void logicalRemove(Long id) throws NoContentException;
+
+    void remove(Long id) throws NoContentException;
+
+    Order findById(Long id) throws NoContentException;
+
+    Order findByIdAndDeletedFalse(Long id) throws NoContentException;
+
+    List<Order> findAll();
+
+    List<Order> findAllByDeletedFalse();
+
+    List<Order> findByUserAndDeletedFalse(User user);
+
 }
