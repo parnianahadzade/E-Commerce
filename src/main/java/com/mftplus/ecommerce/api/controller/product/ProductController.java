@@ -79,9 +79,9 @@ public class ProductController {
     }
 
 
-    //todo : needs re check for efficiency, security problem
+    //todo : needs re check for efficiency
     @Transactional
-    @PostMapping(value = "/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/admin/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity saveProduct(
             @Valid @RequestPart("productBody") ProductBody body,
             @RequestPart("files")MultipartFile[] files,
