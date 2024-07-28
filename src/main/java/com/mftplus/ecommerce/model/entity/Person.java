@@ -34,4 +34,8 @@ public class Person extends Base{
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
 }

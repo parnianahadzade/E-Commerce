@@ -14,11 +14,14 @@ VALUES ('user',false),
 INSERT INTO user_role (user_id, role_id)
 VALUES (1,1),
        (2,2);
+INSERT INTO address_tbl (address_line, city,postal_code, deleted)
+VALUES ('123 Tester Hill', 'Testerton', '1', false)
+     , ('312 Spring Boot', 'Hibernate', '3', false);
 
+INSERT INTO person_tbl (p_first_name, p_last_name, p_phone_number, deleted,address_id)
+VALUES ('veze','vezeee','09365006724',false,1),
+       ('veze','vezeee','09365006724',false,2);
 
-INSERT INTO address_tbl (address_line_1, city, country, user_id, deleted)
-VALUES ('123 Tester Hill', 'Testerton', 'England', 1, false)
-     , ('312 Spring Boot', 'Hibernate', 'England', 3, false);
 
 INSERT INTO brand_tbl (b_name, deleted)
 VALUES ('lcwaikiki',0),

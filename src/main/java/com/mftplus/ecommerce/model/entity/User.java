@@ -41,10 +41,6 @@ public class User extends Base implements UserDetails {
     private String email;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Address> addresses = new ArrayList<>();
-
-    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id desc")
     private List<VerificationToken> verificationTokens = new ArrayList<>();
@@ -104,7 +100,6 @@ public class User extends Base implements UserDetails {
         this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.addresses = user.getAddresses();
         this.email = user.getEmail();
         this.verificationTokens = user.getVerificationTokens();
         this.emailVerified = user.getEmailVerified();
