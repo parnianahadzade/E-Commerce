@@ -26,6 +26,7 @@ public class ProductBody {
     private Integer price;
 
     @Min(value = 0, message = "درصد تخفیف کالا باید بیشتر یا برابر صفر باشد!")
+    @Max(value = 99, message = "درصد تخفیف کالا باید کمتر  یا برابر نود و نه باشد!")
     private Integer offPercent;
 
     @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "جنس کالا اشتباه وارد شده است!")

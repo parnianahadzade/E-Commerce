@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.api.controller.product;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.*;
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.*;
 import com.mftplus.ecommerce.model.entity.enums.Size;
@@ -34,6 +35,7 @@ public class ProductController {
     private final ColorServiceImpl colorService;
 
     private final ImageServiceImpl imageService;
+
 
     public ProductController(ProductServiceImpl productService, CategoryServiceImpl categoryService, BrandServiceImpl brandService, ColorServiceImpl colorService, ImageServiceImpl imageService) {
         this.productService = productService;
@@ -68,7 +70,7 @@ public class ProductController {
     }
 
     @JsonView(Views.singleProduct.class)
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/id/{id}")
     public Product findById(@PathVariable Long id) throws NoContentException {
         return productService.findByIdAndDeletedFalse(id);
     }
@@ -80,15 +82,15 @@ public class ProductController {
 
 
     //todo : needs re check for efficiency
-    @Transactional
+    @Transactional(rollbackOn = {NoContentException.class, IOException.class, DuplicateException.class})
     @PostMapping(value = "/admin/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity saveProduct(
             @Valid @RequestPart("productBody") ProductBody body,
+            BindingResult result,
             @RequestPart("files")MultipartFile[] files,
-            @RequestPart("mainFile")MultipartFile mainFile,
-            BindingResult result) throws NoContentException, IOException {
+            @RequestPart("mainFile")MultipartFile mainFile
+            ) throws NoContentException, IOException, DuplicateException {
 
-        // TODO: 7/26/2024 not working 
         if (result.hasErrors()) {
 
             List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
@@ -102,8 +104,10 @@ public class ProductController {
 
         Product product = new Product();
 
-        product.setCode(body.getCode());
+        productService.findByNameAndDeletedFalse(body.getProductName());
         product.setName(body.getProductName());
+
+        product.setCode(body.getCode());
         product.setDescription(body.getDescription());
         product.setMaterial(body.getMaterial());
         product.setPattern(body.getPattern());

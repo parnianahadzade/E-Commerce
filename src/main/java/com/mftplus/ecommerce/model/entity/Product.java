@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
@@ -26,7 +27,7 @@ public class Product extends Base{
     private Long id;
 
     @JsonView({Views.singleProduct.class,Views.Category.class})
-    @Column(name = "p_code", length = 25)
+    @Column(name = "p_code", length = 25, nullable = false)
     @Pattern(regexp = "^[0-9]{1,50}$",message = "کد کالا اشتباه وارد شده است!")
     private String code;
 
@@ -72,13 +73,14 @@ public class Product extends Base{
     private Color color;
 
     @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
-    @Column(name = "p_price")
+    @Column(name = "p_price",nullable = false)
     @Min(value = 1, message = "قیمت کالا باید بیشتر یا برابر یک باشد!")
     private Integer price;
 
     @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
-    @Column(name = "p_off_percent")
+    @Column(name = "p_off_percent",nullable = false)
     @Min(value = 0, message = "درصد تخفیف کالا باید بیشتر یا برابر صفر باشد!")
+    @Max(value = 99, message = "درصد تخفیف کالا باید کمتر  یا برابر نود و نه باشد!")
     private Integer offPercent;
 
     @Column(name = "p_material", length = 20)

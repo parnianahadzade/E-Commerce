@@ -1,10 +1,12 @@
 package com.mftplus.ecommerce.service;
 
 import com.mftplus.ecommerce.api.dto.SearchRequest;
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Product;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
 
@@ -25,4 +27,6 @@ public interface ProductService {
     List<Product> findByCodeAndDeletedFalse(String code);
 
     List<Product> findByIdNotAndCode(Long id, String code);
+
+    Optional<Product> findByNameAndDeletedFalse(String name) throws DuplicateException;
 }

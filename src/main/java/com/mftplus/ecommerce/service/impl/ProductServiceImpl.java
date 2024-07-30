@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.service.impl;
 
 import com.mftplus.ecommerce.api.dto.SearchRequest;
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Product;
 import com.mftplus.ecommerce.repository.ProductRepository;
@@ -9,6 +10,7 @@ import com.mftplus.ecommerce.service.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -77,5 +79,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findByIdNotAndCode(Long id, String code) {
         return productRepository.findByIdNotAndCode(id,code);
+    }
+
+    @Override
+    public Optional<Product> findByNameAndDeletedFalse(String name) throws DuplicateException {
+        Optional<Product> optional = productRepository.findByNameAndDeletedFalse(name);
+        if (optional.isEmpty()) {
+            return optional;
+        } else {
+            throw new DuplicateException("A product with name : " + name + " already exists.");
+        }
     }
 }
