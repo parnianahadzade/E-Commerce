@@ -23,7 +23,7 @@ public class Image {
     private Long id;
 
     @Lob
-    @Column(name = "i_file_path")
+    @Column(name = "i_file_path",nullable = false)
     private String filePath;
 
 }

@@ -3,6 +3,7 @@ package com.mftplus.ecommerce.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,10 +30,10 @@ public class Category extends Base{
 
     @JsonView({Views.singleProduct.class, Views.Category.class})
     @Column(name = "c_name", nullable = false, unique = true, length = 20)
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect name!")
+    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام دسته بندی نادرست است.")
     private String name;
 
-    //todo
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")

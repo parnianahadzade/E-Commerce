@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,14 +30,18 @@ public class User extends Base implements UserDetails {
 
     @JsonView(Views.Order.class)
     @Column(name = "u_username", nullable = false, unique = true, length = 50)
-    @Pattern(regexp = "^[A-Za-z-0-9]{2,50}$",message = "incorrect username !")
+    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
+    @Pattern(regexp = "^[A-Za-z-0-9]{2,50}$",message = "نام کاربری نادرست است.")
     private String username;
 
     @JsonIgnore
     @Column(name = "u_password", nullable = false)
+    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "حداقل 5 حرف ، حداقل یک حرف و یک عدد.")
     private String password;
 
-    @Email(message = "Incorrect Email Format!")
+    @Email(message = "ایمیل نادرست است.")
+    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
     @Column(name = "u_email", unique = true, length = 320)
     private String email;
 
@@ -55,13 +60,12 @@ public class User extends Base implements UserDetails {
             inverseJoinColumns = {@JoinColumn (name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 
-
-
     @Column(name = "u_is_identified", nullable = false)
     private boolean isIdentified;
 
     @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private Person person;
+
 
     //for user details
     @JsonIgnore
@@ -110,5 +114,6 @@ public class User extends Base implements UserDetails {
         this.emailVerified = user.getEmailVerified();
         this.roles = user.getRoles();
         this.person = user.getPerson();
+        this.isIdentified = user.isIdentified;
     }
 }

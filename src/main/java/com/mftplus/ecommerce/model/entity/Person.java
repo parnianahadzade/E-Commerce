@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -19,15 +20,18 @@ public class Person extends Base{
     private Long id;
 
     @Column(name = "p_first_name", nullable = false, length = 20)
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect first name!")
+    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام نادرست است.")
     private String firstName;
 
     @Column(name = "p_last_name", nullable = false, length = 20)
-    @Pattern(regexp = "^[A-Za-z]{3,20}$",message = "incorrect last name!")
+    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
+    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام خانوادگی نادرست است.")
     private String lastName;
 
     @Column(name = "p_phone_number", nullable = false, length = 11)
-    @Pattern(regexp = "^[0-9]{11}$",message = "incorrect phone number!")
+    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
+    @Pattern(regexp = "^[0-9]{11}$",message = "تلفن همراه نادرست است.")
     private String phoneNumber;
 
     @OneToOne(orphanRemoval = true)

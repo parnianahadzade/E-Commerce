@@ -15,9 +15,9 @@ INSERT INTO user_role (user_id, role_id)
 VALUES (1,1),
        (2,1),
         (2,2);
-INSERT INTO address_tbl (address_line, city,postal_code, deleted)
-VALUES ('123 Tester Hill', 'Testerton', '1', false)
-     , ('312 Spring Boot', 'Hibernate', '3', false);
+INSERT INTO address_tbl (a_address_line,a_postal_code, deleted)
+VALUES ('123 Tester Hill', '1234567890', false)
+     , ('312 Spring Boot', '1234567890', false);
 
 INSERT INTO person_tbl (p_first_name, p_last_name, p_phone_number, deleted,address_id,user_id)
 VALUES ('veze','vezeee','09365006724',false,1,2);
@@ -32,17 +32,12 @@ VALUES ('blue',0),
        ('red',0),
        ('purple',0);
 
-INSERT INTO product_tbl (p_code,p_name, p_description, deleted,brand_id,color_id,p_price,p_off_percent)
-VALUES ('1','Product1', 'This is a very long description of product #1.', false,1,1,10,0)
-     , ('2','Product2', 'This is a very long description of product #2.' ,false,1,1,100,80)
-     , ('3','Product3', 'This is a very long description of product #3.' ,false,1,2,1000,50)
-     , ('4','Product4','This is a very long description of product #4.' ,false,2,2,10000,30)
-     , ('5','Product5', 'This is a very long description of product #5.' ,false,2,3,100000,72)
-     , ('6','Product6', 'This is a very long description of product #5.' ,false,2,3,100000,72)
-     , ('7','Product7', 'This is a very long description of product #5.' ,false,2,3,100000,72)
-     , ('8','Product8', 'This is a very long description of product #5.' ,false,2,3,100000,72)
-     , ('9','Product9', 'This is a very long description of product #5.' ,false,2,3,100000,72)
-     , ('10','Product10', 'This is a very long description of product #5.' ,false,2,3,100000,72);
+INSERT INTO product_tbl (p_code,p_name, p_description, deleted,brand_id,color_id,p_price,p_off_percent,p_material,p_pattern,p_height)
+VALUES ('1','Product1', 'This is a very long description of product #1.', false,1,1,10,0,'material','pattern','height')
+     , ('2','Product2', 'This is a very long description of product #2.' ,false,1,1,100,80,'material','pattern','height')
+     , ('3','Product3', 'This is a very long description of product #3.' ,false,1,2,1000,50,'material','pattern','height')
+     , ('4','Product4','This is a very long description of product #4.' ,false,2,2,10000,30,'material','pattern','height')
+     , ('5','Product5', 'This is a very long description of product #5.' ,false,2,3,100000,72,'material','pattern','height');
 
 INSERT INTO category_tbl (c_name, deleted)
 VALUES ('digikala',0),
@@ -80,9 +75,4 @@ VALUES (1, 5, false,0)
      , (2, 8, false,2)
      , (3, 12, false,3)
      , (4, 73, false,5)
-     , (5, 73, false,5)
-     , (6, 73, false,5)
-     , (7, 73, false,5)
-     , (8, 73, false,5)
-     , (9, 73, false,5)
-     , (10, 73, false,5);
+     , (5, 73, false,5);

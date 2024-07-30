@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.github.mfathi91.time.PersianDate;
 import com.mftplus.ecommerce.model.entity.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -39,9 +40,20 @@ public class Order extends Base{
     private Address address;
 
     @JsonView(Views.Order.class)
-    @Column(name = "date_created", nullable = false)
+    @Column(name = "o_date_created", nullable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateCreated;
+
+    @Transient
+    private String faDateCreated;
+
+    public String getFaDateCreated() {
+        return String.valueOf(PersianDate.fromGregorian(dateCreated));
+    }
+
+    public void setFaDateCreated(String faDateCreated) {
+        this.dateCreated = PersianDate.parse(faDateCreated).toGregorian();
+    }
 
     @JsonView(Views.Order.class)
     @Enumerated(EnumType.ORDINAL)
