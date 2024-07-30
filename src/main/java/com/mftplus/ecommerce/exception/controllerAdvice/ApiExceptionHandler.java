@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.exception.controllerAdvice;
 
 import com.mftplus.ecommerce.exception.*;
+import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,6 +15,7 @@ public class ApiExceptionHandler {
     HttpStatus conflict = HttpStatus.CONFLICT;
     HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
     HttpStatus notFound = HttpStatus.NOT_FOUND;
+    HttpStatus notAcceptable = HttpStatus.NOT_ACCEPTABLE;
 
     //if we are catching ApiRequestException
     @ExceptionHandler(value = {ApiRequestException.class})
@@ -67,6 +69,32 @@ public class ApiExceptionHandler {
         );
 
         return new ResponseEntity<>(apiException, notFound);
+
+    }
+
+    @ExceptionHandler(value = {ValidationException.class})
+    public ResponseEntity<Object> handleValidationException(ValidationException e){
+
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, badRequest);
+
+    }
+
+    @ExceptionHandler(value = {UserNotIdentified.class})
+    public ResponseEntity<Object> handleUserNotIdentified(UserNotIdentified e){
+
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                notAcceptable,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, notAcceptable);
 
     }
 }
