@@ -1,7 +1,6 @@
 package com.mftplus.ecommerce.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,14 +13,12 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordResetBody {
-    @NotNull
-    @NotBlank
+public class PasswordResetDTO {
+    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
     private String token;
 
     //new password
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "Minimum five characters, at least one letter and one number!")
+    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "حداقل 5 حرف ، حداقل یک حرف و یک عدد.")
     private String password;
 }
