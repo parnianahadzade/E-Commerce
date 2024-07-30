@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -23,7 +24,8 @@ public class OrderInventory extends Base{
     private Long id;
 
     @JsonView(Views.Order.class)
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "o_quantity", nullable = false)
+    @Min(value = 0, message = "تعداد سفارش باید برابر یا بیشتر از صفر باشد.")
     private Integer quantity;
 
     @ToString.Exclude
