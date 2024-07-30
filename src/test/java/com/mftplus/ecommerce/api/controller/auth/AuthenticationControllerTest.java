@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetupTest;
-import com.mftplus.ecommerce.api.dto.RegistrationBody;
+import com.mftplus.ecommerce.api.dto.RegistrationDTO;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -35,7 +35,7 @@ public class AuthenticationControllerTest {
     public void testRegister() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
 
-        RegistrationBody body = new RegistrationBody();
+        RegistrationDTO body = new RegistrationDTO();
 
         //null username
         body.setUsername(null);

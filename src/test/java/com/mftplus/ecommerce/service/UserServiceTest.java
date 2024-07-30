@@ -3,8 +3,8 @@ package com.mftplus.ecommerce.service;
 import com.icegreen.greenmail.configuration.GreenMailConfiguration;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetupTest;
-import com.mftplus.ecommerce.api.dto.LoginBody;
-import com.mftplus.ecommerce.api.dto.PasswordResetBody;
+import com.mftplus.ecommerce.api.dto.LoginDTO;
+import com.mftplus.ecommerce.api.dto.PasswordResetDTO;
 import com.mftplus.ecommerce.exception.EmailFailureException;
 import com.mftplus.ecommerce.exception.EmailNotFoundException;
 import com.mftplus.ecommerce.exception.DuplicateException;
@@ -82,7 +82,7 @@ public class UserServiceTest {
     @Test
     @Transactional
     public void testLoginUser() throws UserNotVerifiedException, EmailFailureException {
-        LoginBody body = new LoginBody();
+        LoginDTO body = new LoginDTO();
 
         body.setUsername("UserA-NotExists");
         body.setPassword("PasswordA123");
@@ -126,7 +126,7 @@ public class UserServiceTest {
         Assertions.assertFalse(userService.verifyUser("Bad Token"),
                 " Token is bad or does not exist should return false.");
 
-        LoginBody body = new LoginBody();
+        LoginDTO body = new LoginDTO();
         body.setUsername("UserB");
         body.setPassword("PasswordB123");
 
@@ -167,7 +167,7 @@ public class UserServiceTest {
         String token =
                 jwtService.generatePasswordResetJwt(user);
 
-        PasswordResetBody body = new PasswordResetBody();
+        PasswordResetDTO body = new PasswordResetDTO();
         body.setToken(token);
         body.setPassword("NewPassword1234");
 

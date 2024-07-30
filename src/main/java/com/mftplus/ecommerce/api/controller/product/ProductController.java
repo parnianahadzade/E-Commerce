@@ -85,7 +85,7 @@ public class ProductController {
     @Transactional(rollbackOn = {NoContentException.class, IOException.class, DuplicateException.class})
     @PostMapping(value = "/admin/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity saveProduct(
-            @Valid @RequestPart("productBody") ProductBody body,
+            @Valid @RequestPart("productBody") ProductSaveDTO productSaveDTO,
             BindingResult result,
             @RequestPart("files")MultipartFile[] files,
             @RequestPart("mainFile")MultipartFile mainFile
@@ -104,16 +104,16 @@ public class ProductController {
 
         Product product = new Product();
 
-        productService.findByNameAndDeletedFalse(body.getProductName());
-        product.setName(body.getProductName());
+        productService.findByNameAndDeletedFalse(productSaveDTO.getProductName());
+        product.setName(productSaveDTO.getProductName());
 
-        product.setCode(body.getCode());
-        product.setDescription(body.getDescription());
-        product.setMaterial(body.getMaterial());
-        product.setPattern(body.getPattern());
-        product.setHeight(body.getHeight());
-        product.setPrice(body.getPrice());
-        product.setOffPercent(body.getOffPercent());
+        product.setCode(productSaveDTO.getCode());
+        product.setDescription(productSaveDTO.getDescription());
+        product.setMaterial(productSaveDTO.getMaterial());
+        product.setPattern(productSaveDTO.getPattern());
+        product.setHeight(productSaveDTO.getHeight());
+        product.setPrice(productSaveDTO.getPrice());
+        product.setOffPercent(productSaveDTO.getOffPercent());
 
         //images
         List<Image> images = new ArrayList<>();
@@ -129,7 +129,7 @@ public class ProductController {
         product.setMainImage(mainImage);
 
         //category
-        String categoryName = body.getCategoryName();
+        String categoryName = productSaveDTO.getCategoryName();
         Category mainCategory = categoryService.findByNameAndDeletedFalse(categoryName);
         List<Category> categories = new ArrayList<>();
         for (String categoryNameOriginal : mainCategory.getCategoryPath()) {
@@ -140,25 +140,29 @@ public class ProductController {
         }
 
         //brand
-        Brand brand = brandService.findByIdAndDeletedFalse(body.getBrandId());
+        Brand brand = brandService.findByIdAndDeletedFalse(productSaveDTO.getBrandId());
         product.setBrand(brand);
 
         //color
-        Color color = colorService.findByIdAndDeletedFalse(body.getColorId());
+        Color color = colorService.findByIdAndDeletedFalse(productSaveDTO.getColorId());
         product.setColor(color);
 
 
         Product product1 = productService.save(product);
 
         //inventory
-        List<InventoryBody> inventoryBodies = body.getInventoryBodies();
+        List<InventorySaveDTO> inventorySaveDTOS = productSaveDTO.getInventorySaveDTOS();
         List<Inventory> inventories = new ArrayList<>();
-        for (InventoryBody inventoryBody : inventoryBodies) {
+        for (InventorySaveDTO inventorySaveDTO : inventorySaveDTOS) {
 
             Inventory inventory = new Inventory();
 
-            inventory.setQuantity(inventoryBody.getQuantity());
-            inventory.setSize(Size.valueOf(inventoryBody.getSize()));
+            inventory.setQuantity(inventorySaveDTO.getQuantity());
+
+            Size.findByTitle(inventorySaveDTO.getSize());
+            inventory.setSize(Size.valueOf(inventorySaveDTO.getSize()));
+
+
             inventory.setProduct(product1);
 
             inventories.add(inventory);

@@ -1,7 +1,7 @@
 package com.mftplus.ecommerce.service.impl;
 
-import com.mftplus.ecommerce.api.dto.LoginBody;
-import com.mftplus.ecommerce.api.dto.PasswordResetBody;
+import com.mftplus.ecommerce.api.dto.LoginDTO;
+import com.mftplus.ecommerce.api.dto.PasswordResetDTO;
 import com.mftplus.ecommerce.exception.*;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.model.entity.VerificationToken;
@@ -128,11 +128,11 @@ public class UserServiceImpl implements UserService {
         return verificationToken;
     }
 
-    public String loginUser(LoginBody loginBody) throws UserNotVerifiedException, EmailFailureException {
-        Optional<User> optionalUser = userRepository.findByUsernameIgnoreCaseAndDeletedFalse(loginBody.getUsername());
+    public String loginUser(LoginDTO loginDTO) throws UserNotVerifiedException, EmailFailureException {
+        Optional<User> optionalUser = userRepository.findByUsernameIgnoreCaseAndDeletedFalse(loginDTO.getUsername());
         if (optionalUser.isPresent()){
             User user = optionalUser.get();
-            if (encryptionService.verifyPassword(loginBody.getPassword(), user.getPassword())){
+            if (encryptionService.verifyPassword(loginDTO.getPassword(), user.getPassword())){
                 //is user verified?
                 if (user.getEmailVerified()) {
                     return jwtService.generateJWT(user);
@@ -185,7 +185,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void resetPassword(PasswordResetBody body){
+    public void resetPassword(PasswordResetDTO body){
         String email = jwtService.getResetPasswordEmail(body.getToken());
 
         Optional<User> optionalUser = userRepository.findByEmailIgnoreCaseAndDeletedFalse(email);

@@ -45,7 +45,7 @@ public class AuthenticationController {
 
     // TODO: 7/20/2024 problem with password mismatch error msg 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @PasswordMatch @RequestBody RegistrationBody registrationBody, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException {
+    public ResponseEntity registerUser(@Valid @PasswordMatch @RequestBody RegistrationDTO registrationDTO, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException {
 
             if (result.hasErrors()) {
 
@@ -59,9 +59,9 @@ public class AuthenticationController {
             }
 
             User user = new User();
-            user.setUsername(registrationBody.getUsername());
-            user.setPassword(encryptionService.encryptPassword(registrationBody.getPassword()));
-            user.setEmail(registrationBody.getEmail());
+            user.setUsername(registrationDTO.getUsername());
+            user.setPassword(encryptionService.encryptPassword(registrationDTO.getPassword()));
+            user.setEmail(registrationDTO.getEmail());
 
             List<Role> roles = Collections.singletonList(roleService.findByIdAndDeletedFalse(1L));
             user.setRoles(roles);
@@ -71,16 +71,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginBody loginBody){
+    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginDTO loginDTO){
         String jwt = null;
 
         try {
-            jwt = userService.loginUser(loginBody);
+            jwt = userService.loginUser(loginDTO);
 
 
         } catch (UserNotVerifiedException exception) {
             LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setSuccsess(false);
+            loginResponse.setSuccess(false);
             String reason = "USER_NOT_VERIFIED";
             if (exception.isNewEmailSent()){
                 reason += "_EMAIL_RESENT";
@@ -99,7 +99,7 @@ public class AuthenticationController {
         }else {
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setJwt(jwt);
-            loginResponse.setSuccsess(true);
+            loginResponse.setSuccess(true);
 
 //            httpSession.setAttribute("jwt","Bearer " +jwt);
 
@@ -136,8 +136,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/reset")
-    public ResponseEntity resetPassword(@Valid @RequestBody PasswordResetBody body){
-        userService.resetPassword(body);
+    public ResponseEntity resetPassword(@Valid @RequestBody PasswordResetDTO passwordResetDTO){
+        userService.resetPassword(passwordResetDTO);
         return ResponseEntity.ok().build();
     }
 

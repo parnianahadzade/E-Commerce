@@ -1,7 +1,7 @@
 package com.mftplus.ecommerce.api.controller.order;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.mftplus.ecommerce.api.dto.OrderBody;
+import com.mftplus.ecommerce.api.dto.OrderSaveDTO;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.exception.UserNotIdentified;
 import com.mftplus.ecommerce.model.entity.*;
@@ -44,7 +44,7 @@ public class OrderController {
     // TODO: 7/30/2024 transactional 
     @Transactional(rollbackOn = {NoContentException.class})
     @PostMapping("/save")
-    public ResponseEntity saveOrder(@AuthenticationPrincipal User user, @RequestBody List<OrderBody> orderBodies) throws UserNotIdentified, NoContentException {
+    public ResponseEntity saveOrder(@AuthenticationPrincipal User user, @RequestBody List<OrderSaveDTO> orderSaveDTOS) throws UserNotIdentified, NoContentException {
         if (!user.isIdentified()){
             throw new UserNotIdentified("Logged in User is not Identified!");
         }
@@ -56,21 +56,21 @@ public class OrderController {
         orderService.save(order);
 
 
-        for (OrderBody orderBody : orderBodies) {
-            Inventory originalInventory = inventoryService.findByIdAndDeletedFalse(orderBody.getInventory().getId());
+        for (OrderSaveDTO orderSaveDTO : orderSaveDTOS) {
+            Inventory originalInventory = inventoryService.findByIdAndDeletedFalse(orderSaveDTO.getInventory().getId());
 
-            if (originalInventory.getQuantity() <= orderBody.getQuantity()){
+            if (originalInventory.getQuantity() <= orderSaveDTO.getQuantity()){
                 throw new NoContentException("not Enough inventory");
             }
 
             OrderInventory orderInventory = new OrderInventory();
             orderInventory.setOrder(order);
             orderInventory.setInventory(originalInventory);
-            orderInventory.setQuantity(orderBody.getQuantity());
+            orderInventory.setQuantity(orderSaveDTO.getQuantity());
 
             orderInventoryService.save(orderInventory);
 
-            Integer newInventoryQuantity = originalInventory.getQuantity() - orderBody.getQuantity();
+            Integer newInventoryQuantity = originalInventory.getQuantity() - orderSaveDTO.getQuantity();
             originalInventory.setQuantity(newInventoryQuantity);
             inventoryService.update(originalInventory);
 
