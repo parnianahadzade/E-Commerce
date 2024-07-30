@@ -126,6 +126,12 @@
             <version>1.6.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.github.mfathi91</groupId>
+            <artifactId>persian-date-time</artifactId>
+            <version>4.2.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
