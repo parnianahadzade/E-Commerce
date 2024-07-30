@@ -1,16 +1,16 @@
 package com.mftplus.ecommerce.api.validation;
 
-import com.mftplus.ecommerce.api.dto.RegistrationBody;
+import com.mftplus.ecommerce.api.dto.RegistrationDTO;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch, RegistrationBody> {
+public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch, RegistrationDTO> {
 
     @Override
-    public boolean isValid(RegistrationBody body, ConstraintValidatorContext context) {
-        if (body.getPassword() == null || body.getConfirmPassword() == null) {
+    public boolean isValid(RegistrationDTO registrationDTO, ConstraintValidatorContext context) {
+        if (registrationDTO.getPassword() == null || registrationDTO.getConfirmPassword() == null) {
             return false;
         }
-        return body.getPassword().equals(body.getConfirmPassword());
+        return registrationDTO.getPassword().equals(registrationDTO.getConfirmPassword());
     }
 }

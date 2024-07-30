@@ -97,4 +97,17 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, notAcceptable);
 
     }
+
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e){
+
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        return new ResponseEntity<>(apiException, notAcceptable);
+
+    }
 }
