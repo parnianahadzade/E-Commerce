@@ -18,4 +18,8 @@ public class Views {
     public static class Order {
 
     }
+
+    public static class PersonInfo {
+
+    }
 }

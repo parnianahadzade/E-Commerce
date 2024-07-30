@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -17,13 +18,14 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Entity(name = "addressEntity")
 @Table(name = "address_tbl")
+@JsonView(Views.PersonInfo.class)
 public class Address extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JsonView(Views.Order.class)
+    @JsonView({Views.Order.class,Views.PersonInfo.class})
     @Column(name = "a_address_line", nullable = false, length = 50)
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
     @Pattern(regexp = "^[A-Za-zآ-ی]{10,50}$",message = "آدرس نادرست است.")
@@ -34,6 +36,7 @@ public class Address extends Base{
     @Pattern(regexp = "^[0-9]{10}$",message = "کد پستی نادرست است.")
     private String postalCode;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "address", orphanRemoval = true)
     private Person person;
 
