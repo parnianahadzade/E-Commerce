@@ -36,6 +36,13 @@ public class JWTRequestFilter extends OncePerRequestFilter implements ChannelInt
         //token is in header
         String tokenHeader = request.getHeader("Authorization");
 
+//        String tokenHeader = "";
+//
+//        Object sessionAttribute = request.getSession().getAttribute("jwt");
+//        if (sessionAttribute != null) {
+//            tokenHeader = sessionAttribute.toString();
+//        }
+
         UsernamePasswordAuthenticationToken token = checkToken(tokenHeader);
 
         if (token != null){

@@ -42,8 +42,8 @@ public class SecurityConfig {
                         .requestMatchers("/admin","/api/product/admin/save")
                             .hasAuthority("admin")
 
-                        .requestMatchers("/api/auth/forgot","/api/auth/reset",
-                                "/websocket","/websocket/**","/api/order")
+                        .requestMatchers("/api/auth/forgot","/api/auth/reset","/api/auth/me",
+                                "/websocket","/websocket/**","/api/order","/api/order/save")
                                         .hasAuthority("user")
 
                         .anyRequest().authenticated()
