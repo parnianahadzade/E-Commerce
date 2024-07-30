@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 @Entity(name = "orderInventoryEntity")
-@Table(name = "order_inventory_tbl")
+@Table(name = "order_inventory_tbl", uniqueConstraints = {@UniqueConstraint(columnNames = {"order_id", "inventory_id"})})
 public class OrderInventory extends Base{
 
     //invoice item

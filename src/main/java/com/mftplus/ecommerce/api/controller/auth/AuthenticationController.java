@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("${apiPrefix}/auth")
 @Slf4j
+@CrossOrigin
 public class AuthenticationController {
 
     private final EncryptionService encryptionService;
@@ -32,6 +33,7 @@ public class AuthenticationController {
     private final RoleServiceImpl roleService;
 
     private final MessageSource messageSource;
+
 
     public AuthenticationController(EncryptionService encryptionService, UserServiceImpl userService, RoleServiceImpl roleService, MessageSource messageSource) {
         this.encryptionService = encryptionService;
@@ -98,6 +100,9 @@ public class AuthenticationController {
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setJwt(jwt);
             loginResponse.setSuccsess(true);
+
+//            httpSession.setAttribute("jwt","Bearer " +jwt);
+
             return ResponseEntity.ok(loginResponse);
         }
     }
