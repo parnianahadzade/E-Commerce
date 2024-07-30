@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OrderSaveDTO {
 
-    private OrderInventorySaveBody inventory;
+    private OrderInventorySaveDTO inventory;
 
     @Min(value = 0, message = "تعداد سفارش باید برابر یا بیشتر از صفر باشد.")
     private Integer quantity;
