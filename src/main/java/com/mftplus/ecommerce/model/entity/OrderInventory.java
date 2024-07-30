@@ -1,36 +1,46 @@
 package com.mftplus.ecommerce.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Getter
 @Setter
 @Entity(name = "orderInventoryEntity")
 @Table(name = "order_inventory_tbl")
 public class OrderInventory extends Base{
+
     //invoice item
 
-    // TODO: 7/23/2024  matching inventory quantity with the quantity here
-    @EmbeddedId
-    @JsonIgnore
-    private OrderInventoryPK pk;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
     @JsonView(Views.Order.class)
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @JsonView(Views.Order.class)
-    @Transient
-    public Inventory getInventory() {
-        return this.pk.getInventory();
-    }
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order;
+
+    @ToString.Exclude
+    @ManyToOne
+    @JoinColumn(name = "inventory_id")
+    private Inventory inventory;
+
+//    @JsonView(Views.Order.class)
+//    @Transient
+//    public Inventory getInventory() {
+//        return this.getInventory();
+//    }
 
     @JsonView(Views.Order.class)
     @Transient
@@ -42,21 +52,5 @@ public class OrderInventory extends Base{
         return finalPrice * getQuantity();
     }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    public OrderInventory(Order order, Inventory inventory, Integer quantity) {
-        pk = new OrderInventoryPK();
-        pk.setOrder(order);
-        pk.setInventory(inventory);
-        this.quantity = quantity;
-    }
 
 }

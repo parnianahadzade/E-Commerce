@@ -24,15 +24,15 @@ public class OrderInventoryServiceImpl implements OrderInventoryService {
 
     @Override
     public OrderInventory update(OrderInventory orderInventory) throws NoContentException {
-        orderInventoryRepository.findByPkOrderIdAndDeletedFalse(orderInventory.getPk().getOrder().getId()).orElseThrow(
-                () -> new NoContentException("No Active OrderInventory Found with id : " + orderInventory.getPk().getOrder().getId())
+        orderInventoryRepository.findByIdAndDeletedFalse(orderInventory.getId()).orElseThrow(
+                () -> new NoContentException("No Active OrderInventory Found with id : " + orderInventory.getId())
         );
         return orderInventoryRepository.save(orderInventory);
     }
 
     @Override
     public void logicalRemove(Long id) throws NoContentException {
-        orderInventoryRepository.findByPkOrderIdAndDeletedFalse(id).orElseThrow(
+        orderInventoryRepository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NoContentException("No Active OrderInventory Found with id : " + id)
         );
         orderInventoryRepository.logicalRemove(id);
@@ -54,8 +54,8 @@ public class OrderInventoryServiceImpl implements OrderInventoryService {
     }
 
     @Override
-    public OrderInventory findByPkOrderIdAndDeletedFalse(Long id) throws NoContentException {
-        return orderInventoryRepository.findByPkOrderIdAndDeletedFalse(id).orElseThrow(
+    public OrderInventory findByIdAndDeletedFalse(Long id) throws NoContentException {
+        return orderInventoryRepository.findByIdAndDeletedFalse(id).orElseThrow(
                 () -> new NoContentException("No Active OrderInventory Found with id : " + id)
         );
     }

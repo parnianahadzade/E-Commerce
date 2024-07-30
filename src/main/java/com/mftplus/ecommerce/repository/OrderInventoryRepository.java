@@ -11,8 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface OrderInventoryRepository extends JpaRepository<OrderInventory, Long> {
+    Optional<OrderInventory> findByIdAndDeletedFalse(Long id);
 
-    Optional<OrderInventory> findByPkOrderIdAndDeletedFalse(Long id);
 
     // TODO: 7/29/2024 findById 
 

@@ -1,14 +1,10 @@
 package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.model.entity.enums.OrderStatus;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -17,8 +13,10 @@ import java.util.List;
 
 @SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity(name = "orderEntity")
 @Table(name = "order_tbl")
 public class Order extends Base{
@@ -50,10 +48,7 @@ public class Order extends Base{
     @Column(name = "order_status")
     private OrderStatus orderStatus;
 
-    @JsonView(Views.Order.class)
-    @JsonManagedReference
-    @OneToMany(mappedBy = "pk.order")
-    @Valid
+    @OneToMany(mappedBy = "order", orphanRemoval = true)
     private List<OrderInventory> orderInventories = new ArrayList<>();
 
     @JsonView(Views.Order.class)

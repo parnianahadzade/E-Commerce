@@ -19,5 +19,4 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     @Modifying
     @Query("update inventoryEntity oo set oo.deleted=true where oo.id=:id")
     void logicalRemove(Long id);
-
 }

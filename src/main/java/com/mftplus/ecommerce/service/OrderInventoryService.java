@@ -17,7 +17,7 @@ public interface OrderInventoryService {
 
     OrderInventory findById(Long id) throws NoContentException;
 
-    OrderInventory findByPkOrderIdAndDeletedFalse(Long id) throws NoContentException;
+    OrderInventory findByIdAndDeletedFalse(Long id) throws NoContentException;
 
     List<OrderInventory> findAll();
 
