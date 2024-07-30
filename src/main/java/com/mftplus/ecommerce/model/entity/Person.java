@@ -30,12 +30,12 @@ public class Person extends Base{
     @Pattern(regexp = "^[0-9]{11}$",message = "incorrect phone number!")
     private String phoneNumber;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }

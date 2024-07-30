@@ -1,11 +1,11 @@
 -- Password : PasswordA123
 -- encrypted using https://www.javainuse.com/onlineBcrypt
 
-INSERT INTO user_tbl ( u_email, u_password, u_username, email_verified, deleted)
-VALUES ( 'UserA@junit.com', '$2a$10$hBn5gu6cGelJNiE6DDsaBOmZgyumCSzVwrOK/37FWgJ6aLIdZSSI2', 'UserA', true, false)
-    , ( 'Admin@junit.com', '$2a$10$hBn5gu6cGelJNiE6DDsaBOmZgyumCSzVwrOK/37FWgJ6aLIdZSSI2', 'Admin', true, false)
-     , ( 'UserB@junit.com', '$2a$10$TlYbg57fqOy/1LJjispkjuSIvFJXbh3fy0J9fvHnCpuntZOITAjVG', 'UserB', false , false)
-     , ('UserC@junit.com', '$2a$10$SYiYAIW80gDh39jwSaPyiuKGuhrLi7xTUjocL..NOx/1COWe5P03.', 'UserC', false, false);
+INSERT INTO user_tbl ( u_email, u_password, u_username, email_verified, deleted,u_is_identified)
+VALUES ( 'UserA@junit.com', '$2a$10$hBn5gu6cGelJNiE6DDsaBOmZgyumCSzVwrOK/37FWgJ6aLIdZSSI2', 'UserA', true, false,false)
+    , ( 'Admin@junit.com', '$2a$10$hBn5gu6cGelJNiE6DDsaBOmZgyumCSzVwrOK/37FWgJ6aLIdZSSI2', 'Admin', true, false,true)
+     , ( 'UserB@junit.com', '$2a$10$TlYbg57fqOy/1LJjispkjuSIvFJXbh3fy0J9fvHnCpuntZOITAjVG', 'UserB', false , false,false)
+     , ('UserC@junit.com', '$2a$10$SYiYAIW80gDh39jwSaPyiuKGuhrLi7xTUjocL..NOx/1COWe5P03.', 'UserC', false, false,false);
 
 INSERT INTO role_tbl ( role_name,deleted)
 VALUES ('user',false),
@@ -13,14 +13,14 @@ VALUES ('user',false),
 
 INSERT INTO user_role (user_id, role_id)
 VALUES (1,1),
-       (2,2);
+       (2,1),
+        (2,2);
 INSERT INTO address_tbl (address_line, city,postal_code, deleted)
 VALUES ('123 Tester Hill', 'Testerton', '1', false)
      , ('312 Spring Boot', 'Hibernate', '3', false);
 
-INSERT INTO person_tbl (p_first_name, p_last_name, p_phone_number, deleted,address_id)
-VALUES ('veze','vezeee','09365006724',false,1),
-       ('veze','vezeee','09365006724',false,2);
+INSERT INTO person_tbl (p_first_name, p_last_name, p_phone_number, deleted,address_id,user_id)
+VALUES ('veze','vezeee','09365006724',false,1,2);
 
 
 INSERT INTO brand_tbl (b_name, deleted)
@@ -86,22 +86,3 @@ VALUES (1, 5, false,0)
      , (8, 73, false,5)
      , (9, 73, false,5)
      , (10, 73, false,5);
-
-INSERT INTO order_tbl (address_id, user_id, deleted,date_created,order_status)
-VALUES (1, 1, false,localtime,0)
-     , (1, 1, false,localtime,0)
-     , (1, 1, false,localtime,0)
-     , (2, 3, false,localtime,0)
-     , (2, 3, false,localtime,0);
-
-INSERT INTO order_inventory_tbl (order_id, inventory_id, quantity, deleted)
-VALUES (1, 1, 5, false)
-     , (1, 2, 5, false)
-     , (2, 3, 5, false)
-     , (2, 2, 5, false)
-     , (2, 5, 5, false)
-     , (3, 3, 5, false)
-     , (4, 4, 5, false)
-     , (4, 2, 5, false)
-     , (5, 3, 5, false)
-     , (5, 1, 5, false);

@@ -101,6 +101,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByPersonIdAndDeletedFalse(Long id) throws NoContentException {
+        return userRepository.findByPersonIdAndDeletedFalse(id).orElseThrow(
+                () -> new NoContentException("No Active User Found with id : " + id)
+        );
+    }
+
+    @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }

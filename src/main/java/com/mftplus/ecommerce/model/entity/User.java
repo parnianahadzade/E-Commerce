@@ -55,7 +55,12 @@ public class User extends Base implements UserDetails {
             inverseJoinColumns = {@JoinColumn (name = "role_id", referencedColumnName = "id")})
     private List<Role> roles;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+
+
+    @Column(name = "u_is_identified", nullable = false)
+    private boolean isIdentified;
+
+    @OneToOne(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private Person person;
 
     //for user details

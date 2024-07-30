@@ -25,6 +25,8 @@ public interface UserService {
 
     User findByEmailIgnoreCaseAndDeletedFalse(String email) throws NoContentException;
 
+    User findByPersonIdAndDeletedFalse(Long id) throws NoContentException;
+
     List<User> findAll();
 
     List<User> findAllByDeletedFalse();
