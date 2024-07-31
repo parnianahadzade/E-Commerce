@@ -1,14 +1,16 @@
 package com.mftplus.ecommerce.api.controller.auth;
 
 import com.mftplus.ecommerce.api.dto.*;
-import com.mftplus.ecommerce.api.validation.PasswordMatch;
 import com.mftplus.ecommerce.exception.*;
+import com.mftplus.ecommerce.exception.component.ApiExceptionComponent;
+import com.mftplus.ecommerce.exception.dto.ApiExceptionResponse;
 import com.mftplus.ecommerce.model.entity.Role;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.service.EncryptionService;
 import com.mftplus.ecommerce.service.impl.RoleServiceImpl;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${apiPrefix}/auth")
@@ -43,19 +44,16 @@ public class AuthenticationController {
     }
 
 
-    // TODO: 7/20/2024 problem with password mismatch error msg 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @PasswordMatch @RequestBody RegistrationDTO registrationDTO, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException {
+    public ResponseEntity registerUser(@Valid @RequestBody RegistrationDTO registrationDTO, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException {
 
-            if (result.hasErrors()) {
+        ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
+            if (responseEntity != null) {
+                return responseEntity;
+            }
 
-                List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
-                        .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
-                        .collect(Collectors.toList());
-
-                ValidationResponse validationResponse = new ValidationResponse(fieldErrorList);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
-
+            if (!Objects.equals(registrationDTO.getPassword(), registrationDTO.getConfirmPassword())) {
+                throw new ValidationException("Passwords do not match.");
             }
 
             User user = new User();
@@ -71,7 +69,17 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginDTO loginDTO){
+    public ResponseEntity<Object> loginUser(@Valid @RequestBody LoginDTO loginDTO, BindingResult result){
+//        if (result.hasErrors()) {
+//
+//            List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
+//                    .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
+//                    .collect(Collectors.toList());
+//
+//            ValidationResponse validationResponse = new ValidationResponse(fieldErrorList);
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
+//
+//        }
         String jwt = null;
 
         try {

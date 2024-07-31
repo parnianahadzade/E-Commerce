@@ -14,10 +14,10 @@ import lombok.Setter;
 public class LoginDTO {
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-z-0-9]{2,50}$",message = "نام کاربری نادرست است.")
+    @Pattern(regexp = "^[A-Za-z-0-9]{5,50}$",message = "نام کاربری نادرست است.")
     private String username;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "حداقل 5 حرف ، حداقل یک حرف و یک عدد.")
+//    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "حداقل 5 حرف ، حداقل یک حرف و یک عدد.")
     private String password;
 }

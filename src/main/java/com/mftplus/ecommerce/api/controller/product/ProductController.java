@@ -9,7 +9,6 @@ import com.mftplus.ecommerce.model.entity.enums.Size;
 import com.mftplus.ecommerce.service.impl.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("${apiPrefix}/product")
@@ -91,16 +89,16 @@ public class ProductController {
             @RequestPart("mainFile")MultipartFile mainFile
             ) throws NoContentException, IOException, DuplicateException {
 
-        if (result.hasErrors()) {
-
-            List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
-                    .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
-                    .collect(Collectors.toList());
-
-            ValidationResponse validationResponse = new ValidationResponse(fieldErrorList);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
-
-        }
+//        if (result.hasErrors()) {
+//
+//            List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
+//                    .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
+//                    .collect(Collectors.toList());
+//
+//            ValidationResponse validationResponse = new ValidationResponse(fieldErrorList);
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
+//
+//        }
 
         Product product = new Product();
 

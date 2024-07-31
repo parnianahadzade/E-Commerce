@@ -31,7 +31,7 @@ public class User extends Base implements UserDetails {
     @JsonView(Views.Order.class)
     @Column(name = "u_username", nullable = false, unique = true, length = 50)
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-z-0-9]{2,50}$",message = "نام کاربری نادرست است.")
+    @Pattern(regexp = "^[A-Za-z-0-9]{5,50}$",message = "نام کاربری نادرست است.")
     private String username;
 
     // TODO: 7/31/2024

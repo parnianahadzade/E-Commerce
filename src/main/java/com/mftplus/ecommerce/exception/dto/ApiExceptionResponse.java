@@ -1,4 +1,4 @@
-package com.mftplus.ecommerce.api.dto;
+package com.mftplus.ecommerce.exception.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ValidationResponse {
+public class ApiExceptionResponse {
 
-    private List<InputFieldError> fieldErrors;
+    private List<ApiException> apiExceptions;
 }
