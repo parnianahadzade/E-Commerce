@@ -44,7 +44,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/api/auth/forgot","/api/auth/reset","/api/auth/me",
                                 "/websocket","/websocket/**","/api/order","/api/order/save",
-                                "/api/person")
+                                "/api/person","/api/person/save")
                                         .hasAuthority("user")
 
                         .anyRequest().authenticated()
