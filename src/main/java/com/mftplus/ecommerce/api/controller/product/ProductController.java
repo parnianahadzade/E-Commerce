@@ -172,7 +172,7 @@ public class ProductController {
 
         productService.save(product);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("success");
     }
 
 

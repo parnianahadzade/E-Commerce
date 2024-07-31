@@ -3,7 +3,7 @@ package com.mftplus.ecommerce.api.controller.order;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.OrderSaveDTO;
 import com.mftplus.ecommerce.exception.NoContentException;
-import com.mftplus.ecommerce.exception.UserNotIdentified;
+import com.mftplus.ecommerce.exception.UserIdentification;
 import com.mftplus.ecommerce.model.entity.*;
 import com.mftplus.ecommerce.model.entity.enums.OrderStatus;
 import com.mftplus.ecommerce.service.impl.InventoryServiceImpl;
@@ -44,9 +44,9 @@ public class OrderController {
     // TODO: 7/30/2024 transactional 
     @Transactional(rollbackOn = {NoContentException.class})
     @PostMapping("/save")
-    public ResponseEntity saveOrder(@AuthenticationPrincipal User user, @RequestBody List<OrderSaveDTO> orderSaveDTOS) throws UserNotIdentified, NoContentException {
+    public ResponseEntity saveOrder(@AuthenticationPrincipal User user, @RequestBody List<OrderSaveDTO> orderSaveDTOS) throws UserIdentification, NoContentException {
         if (!user.isIdentified()){
-            throw new UserNotIdentified("Logged in User is not Identified!");
+            throw new UserIdentification("Logged in User is not Identified!");
         }
         Order order = new Order();
         order.setUser(user);

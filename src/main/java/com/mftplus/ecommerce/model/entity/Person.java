@@ -15,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 @Entity(name = "personEntity")
 @Table(name = "person_tbl")
 public class Person extends Base{
+    @JsonView(Views.PersonInfo.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -35,7 +36,7 @@ public class Person extends Base{
     @JsonView(Views.PersonInfo.class)
     @Column(name = "p_phone_number", nullable = false, length = 11)
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[0-9]{11}$",message = "تلفن همراه نادرست است.")
+    @Pattern(regexp = "^09\\d{9}$",message = "تلفن همراه نادرست است.")
     private String phoneNumber;
 
     @JsonView(Views.PersonInfo.class)
@@ -43,7 +44,7 @@ public class Person extends Base{
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToOne(orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private User user;
 

@@ -85,8 +85,8 @@ public class ApiExceptionHandler {
 
     }
 
-    @ExceptionHandler(value = {UserNotIdentified.class})
-    public ResponseEntity<Object> handleUserNotIdentified(UserNotIdentified e){
+    @ExceptionHandler(value = {UserIdentification.class})
+    public ResponseEntity<Object> handleUserNotIdentified(UserIdentification e){
 
         ApiException apiException = new ApiException(
                 e.getMessage(),
