@@ -10,6 +10,7 @@ import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.service.EncryptionService;
 import com.mftplus.ecommerce.service.impl.RoleServiceImpl;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,7 @@ public class AuthenticationController {
 
 
     //user registration
+    @Transactional(rollbackOn = {NoContentException.class, DuplicateException.class, EmailFailureException.class})
     @PostMapping("/register")
     public ResponseEntity registerUser(@Valid @RequestBody RegistrationDTO registrationDTO, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException {
 
