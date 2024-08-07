@@ -22,4 +22,12 @@ public class ApiException {
 
     private ZonedDateTime time;
 
+    private String jwt;
+
+    public ApiException(String field, String message, HttpStatus httpStatus, ZonedDateTime time) {
+        this.field = field;
+        this.message = message;
+        this.httpStatus = httpStatus;
+        this.time = time;
+    }
 }

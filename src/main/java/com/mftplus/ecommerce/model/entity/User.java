@@ -34,11 +34,10 @@ public class User extends Base implements UserDetails {
     @Pattern(regexp = "^[A-Za-z-0-9]{5,50}$",message = "نام کاربری نادرست است.")
     private String username;
 
-    // TODO: 7/31/2024
     @JsonIgnore
     @Column(name = "u_password", nullable = false)
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-//    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "حداقل 5 حرف ، حداقل یک حرف و یک عدد.")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "حداقل 5 حرف ، حداقل یک حرف و یک عدد.")
     private String password;
 
     @Email(message = "ایمیل نادرست است.")

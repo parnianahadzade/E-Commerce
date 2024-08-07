@@ -6,6 +6,7 @@ import com.mftplus.ecommerce.exception.dto.ApiException;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -20,6 +21,8 @@ public class ApiExceptionHandler {
     HttpStatus internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
     HttpStatus notFound = HttpStatus.NOT_FOUND;
     HttpStatus notAcceptable = HttpStatus.NOT_ACCEPTABLE;
+
+    HttpStatus noAccess = HttpStatus.FORBIDDEN;
 
     //if we are catching ApiRequestException
     @ExceptionHandler(value = {ApiRequestException.class})
@@ -133,4 +136,38 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiExceptionResponse, notAcceptable);
 
     }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException e){
+
+        ApiException apiException = new ApiException(
+                null,
+                e.getMessage(),
+                HttpStatus.FORBIDDEN,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+
+        return new ResponseEntity<>(apiExceptionResponse, noAccess);
+
+    }
+
+    @ExceptionHandler(value = {UserAccessDeniedException.class})
+    public ResponseEntity<Object> handleUserAccessDeniedException(UserAccessDeniedException e){
+
+        ApiException apiException = new ApiException(
+                null,
+                e.getMessage(),
+                HttpStatus.FORBIDDEN,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+
+        return new ResponseEntity<>(apiExceptionResponse, noAccess);
+
+    }
+
+
 }

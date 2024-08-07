@@ -18,7 +18,7 @@ public class RegistrationDTO {
     private String username;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-//    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "حداقل 5 حرف ، حداقل یک حرف و یک عدد.")
+    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "حداقل 5 کاراکتر ، حداقل یک حرف و یک عدد.")
     private String password;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")

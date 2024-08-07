@@ -3,6 +3,7 @@ package com.mftplus.ecommerce.api.controller.auth;
 import com.mftplus.ecommerce.api.dto.*;
 import com.mftplus.ecommerce.exception.*;
 import com.mftplus.ecommerce.exception.component.ApiExceptionComponent;
+import com.mftplus.ecommerce.exception.dto.ApiException;
 import com.mftplus.ecommerce.exception.dto.ApiExceptionResponse;
 import com.mftplus.ecommerce.model.entity.Role;
 import com.mftplus.ecommerce.model.entity.User;
@@ -12,13 +13,14 @@ import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @RestController
@@ -33,53 +35,55 @@ public class AuthenticationController {
 
     private final RoleServiceImpl roleService;
 
-    private final MessageSource messageSource;
 
-
-    public AuthenticationController(EncryptionService encryptionService, UserServiceImpl userService, RoleServiceImpl roleService, MessageSource messageSource) {
+    public AuthenticationController(EncryptionService encryptionService, UserServiceImpl userService, RoleServiceImpl roleService) {
         this.encryptionService = encryptionService;
         this.userService = userService;
         this.roleService = roleService;
-        this.messageSource = messageSource;
     }
 
 
+    //user registration
     @PostMapping("/register")
     public ResponseEntity registerUser(@Valid @RequestBody RegistrationDTO registrationDTO, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException {
 
+        //validating inputs
         ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
             if (responseEntity != null) {
                 return responseEntity;
             }
 
+            //check if passwords match
             if (!Objects.equals(registrationDTO.getPassword(), registrationDTO.getConfirmPassword())) {
-                throw new ValidationException("Passwords do not match.");
+                throw new ValidationException("رمز عبور با تکرار آن برابر نیست.");
             }
 
+            //create user
             User user = new User();
             user.setUsername(registrationDTO.getUsername());
             user.setPassword(encryptionService.encryptPassword(registrationDTO.getPassword()));
             user.setEmail(registrationDTO.getEmail());
 
+            //set default user role for new users
             List<Role> roles = Collections.singletonList(roleService.findByIdAndDeletedFalse(1L));
             user.setRoles(roles);
+
+            //save user
             userService.save(user);
+
             return ResponseEntity.ok().build();
 
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Object> loginUser(@Valid @RequestBody LoginDTO loginDTO, BindingResult result){
-//        if (result.hasErrors()) {
-//
-//            List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
-//                    .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
-//                    .collect(Collectors.toList());
-//
-//            ValidationResponse validationResponse = new ValidationResponse(fieldErrorList);
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
-//
-//        }
+    public ResponseEntity loginUser(@Valid @RequestBody LoginDTO loginDTO, BindingResult result) throws UserAccessDeniedException {
+
+        //validating inputs
+        ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
+        if (responseEntity != null) {
+            return responseEntity;
+        }
+
         String jwt = null;
 
         try {
@@ -87,15 +91,22 @@ public class AuthenticationController {
 
 
         } catch (UserNotVerifiedException exception) {
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setSuccess(false);
-            String reason = "USER_NOT_VERIFIED";
-            if (exception.isNewEmailSent()){
-                reason += "_EMAIL_RESENT";
-            }
-            loginResponse.setFailureReason(reason);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(loginResponse);
+            ApiException apiException = new ApiException();
+            apiException.setJwt(null);
+            apiException.setField(null);
+            apiException.setHttpStatus(HttpStatus.FORBIDDEN);
+            apiException.setTime(ZonedDateTime.now(ZoneId.of("Z")));
+            apiException.setJwt(null);
 
+            String message = "اکانت کاربر فعال نشده ";
+            if (exception.isNewEmailSent()){
+                message += "ایمیل فعال سازی مجددا ارسال شد";
+            }
+
+            apiException.setMessage(message);
+
+            ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+            return new ResponseEntity<>(apiExceptionResponse, HttpStatus.FORBIDDEN);
 
         } catch (EmailFailureException exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -103,13 +114,11 @@ public class AuthenticationController {
 
 
         if (jwt == null){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            throw new UserAccessDeniedException("نام کاربری یا رمز عبور اشتباه است.");
         }else {
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setJwt(jwt);
             loginResponse.setSuccess(true);
-
-//            httpSession.setAttribute("jwt","Bearer " +jwt);
 
             return ResponseEntity.ok(loginResponse);
         }
