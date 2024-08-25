@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.UserIdentificationDTO;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.exception.UserIdentification;
+import com.mftplus.ecommerce.exception.component.ApiExceptionComponent;
+import com.mftplus.ecommerce.exception.dto.ApiExceptionResponse;
 import com.mftplus.ecommerce.model.entity.Address;
 import com.mftplus.ecommerce.model.entity.Person;
 import com.mftplus.ecommerce.model.entity.User;
@@ -42,24 +44,21 @@ public class PersonController {
         return personService.findByUserUsernameAndDeletedFalse(user.getUsername());
     }
 
+    //user profile creation
     @Transactional(rollbackOn = {NoContentException.class,UserIdentification.class})
     @PostMapping("/save")
     public ResponseEntity savePerson(@Valid @RequestBody UserIdentificationDTO userIdentificationDTO,
                                      BindingResult result, @AuthenticationPrincipal User user) throws UserIdentification, NoContentException {
+
         if (user.isIdentified()) {
             throw new UserIdentification("User is already identified.");
         }
 
-//        if (result.hasErrors()) {
-//
-//            List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
-//                    .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
-//                    .collect(Collectors.toList());
-//
-//            ValidationResponse validationResponse = new ValidationResponse(fieldErrorList);
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
-//
-//        }
+        //validating inputs
+        ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
+        if (responseEntity != null) {
+            return responseEntity;
+        }
 
         Address address = new Address();
         address.setAddressLine(userIdentificationDTO.getAddressLine());
@@ -78,7 +77,7 @@ public class PersonController {
 
         personService.save(person);
 
-        return ResponseEntity.ok("success");
+        return ResponseEntity.ok().build();
     }
 
 }
