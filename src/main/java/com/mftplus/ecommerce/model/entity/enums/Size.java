@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 @Getter
 public enum Size {
+    FREESIZE("FreeSize"),
     XS("XS"),
     S("S"),
     M("M"),
