@@ -20,13 +20,13 @@ import java.util.List;
 @Entity(name = "categoryEntity")
 @Table(name = "category_tbl")
 public class Category extends Base{
-    @JsonView({Views.singleProduct.class, Views.Category.class})
+    @JsonView({Views.singleProduct.class, Views.Category.class, Views.CategoryName.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JsonView({Views.singleProduct.class, Views.Category.class})
+    @JsonView({Views.singleProduct.class, Views.Category.class, Views.CategoryName.class})
     @Column(name = "c_name", nullable = false, unique = true, length = 20)
     private String name;
 

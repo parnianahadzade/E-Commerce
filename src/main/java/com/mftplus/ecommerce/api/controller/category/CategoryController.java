@@ -7,6 +7,8 @@ import com.mftplus.ecommerce.model.entity.Views;
 import com.mftplus.ecommerce.service.impl.CategoryServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("${apiPrefix}/category")
 public class CategoryController {
@@ -22,6 +24,12 @@ public class CategoryController {
     @GetMapping
     public Category findCategories() throws NoContentException {
         return categoryService.findByNameAndDeletedFalse("digikala");
+    }
+
+    @JsonView(Views.CategoryName.class)
+    @GetMapping("/name")
+    public List<Category> findCategoriesByNameStartsWith(@RequestParam(value = "categoryName") String categoryName) {
+        return categoryService.findByNameStartsWithIgnoreCaseAndDeletedFalse(categoryName);
     }
 
 }
