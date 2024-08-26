@@ -23,14 +23,14 @@ INSERT INTO person_tbl (p_first_name, p_last_name, p_phone_number, deleted,addre
 VALUES ('veze','vezeee','09365006724',false,1,2,0);
 
 
-INSERT INTO brand_tbl (b_name, deleted,version_id)
-VALUES ('lcwaikiki',0,0),
-       ('laboutin',0,0);
+INSERT INTO brand_tbl (b_name, deleted,version_id,b_explanation)
+VALUES ('lcwaikiki',0,0,'aaaaaaa'),
+       ('laboutin',0,0,'bbbbbbbb');
 
-INSERT INTO color_tbl (c_name,deleted,version_id)
-VALUES ('blue',0,0),
-       ('red',0,0),
-       ('purple',0,0);
+INSERT INTO color_tbl (c_name,deleted,version_id,hex_code)
+VALUES ('blue',0,0,'00000000'),
+       ('red',0,0,'1111111'),
+       ('purple',0,0,'3333333');
 
 INSERT INTO product_tbl (p_code,p_name, p_description, deleted,brand_id,color_id,p_price,p_off_percent,p_material,p_pattern,p_height,version_id)
 VALUES ('1','Product1', 'This is a very long description of product #1.', false,1,1,10,0,'material','pattern','height',0)

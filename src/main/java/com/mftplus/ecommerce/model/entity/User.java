@@ -3,9 +3,6 @@ package com.mftplus.ecommerce.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -30,20 +27,14 @@ public class User extends Base implements UserDetails {
 
     @JsonView(Views.Order.class)
     @Column(name = "u_username", nullable = false, unique = true, length = 50)
-    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-z-0-9]{5,50}$",message = "نام کاربری نادرست است.")
     private String username;
 
 
     //todo validation here causes problem
     @JsonIgnore
     @Column(name = "u_password", nullable = false)
-//    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-//    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{5,}$",message = "حداقل 5 حرف ، حداقل یک حرف و یک عدد.")
     private String password;
 
-    @Email(message = "ایمیل نادرست است.")
-    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
     @Column(name = "u_email", unique = true, length = 320)
     private String email;
 

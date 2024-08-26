@@ -3,7 +3,6 @@ package com.mftplus.ecommerce.model.entity;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.model.entity.enums.Size;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +26,6 @@ public class Inventory extends Base{
 
     @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
     @Column(name = "i_quantity", nullable = false)
-    @Min(value = 0, message = "تعداد کالا باید برابر یا بیشتر از صفر باشد.")
     private Integer quantity;
 
     @JsonView(Views.Order.class)

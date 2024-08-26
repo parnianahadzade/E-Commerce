@@ -2,8 +2,6 @@ package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +23,9 @@ public class Color extends Base{
     private Long id;
 
     @Column(name = "c_name", nullable = false, unique = true, length = 20)
-    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام رنگ نادرست است.")
     private String name;
 
+    @Column(name = "hex_code", nullable = false, unique = true, length = 20)
+    private String hexCode;
 
 }

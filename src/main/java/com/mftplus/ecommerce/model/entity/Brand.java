@@ -3,8 +3,6 @@ package com.mftplus.ecommerce.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,12 +27,13 @@ public class Brand extends Base{
     private Long id;
 
     @Column(name = "b_name", nullable = false, unique = true, length = 20)
-    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام برند نادرست است.")
     private String name;
 
     @JsonIgnore
     @OneToMany(mappedBy = "brand")
     private List<Product> products = new ArrayList<>();
+
+    @Column(name = "b_explanation", nullable = false, length = 100)
+    private String explanation;
 
 }
