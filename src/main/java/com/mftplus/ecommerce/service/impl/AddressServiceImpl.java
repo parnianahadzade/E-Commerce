@@ -23,10 +23,13 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address update(Address address) throws NoContentException {
-        addressRepository.findByIdAndDeletedFalse(address.getId()).orElseThrow(
+        Address existingAddress = addressRepository.findByIdAndDeletedFalse(address.getId()).orElseThrow(
                 () -> new NoContentException("No Active Address Found with id : " + address.getId())
         );
-        return addressRepository.save(address);
+        existingAddress.setAddressLine(address.getAddressLine());
+        existingAddress.setPostalCode(address.getPostalCode());
+
+        return addressRepository.save(existingAddress);
     }
 
     @Override
@@ -55,6 +58,13 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public Address findByIdAndDeletedFalse(Long id) throws NoContentException {
         return addressRepository.findByIdAndDeletedFalse(id).orElseThrow(
+                () -> new NoContentException("No Active Address Found with id : " + id)
+        );
+    }
+
+    @Override
+    public Address findByPersonIdAndDeletedFalse(Long id) throws NoContentException {
+        return addressRepository.findByPersonIdAndDeletedFalse(id).orElseThrow(
                 () -> new NoContentException("No Active Address Found with id : " + id)
         );
     }

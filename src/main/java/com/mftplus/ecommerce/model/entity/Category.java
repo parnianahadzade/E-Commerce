@@ -40,7 +40,7 @@ public class Category extends Base{
     private Category parentCategory;
 
     @JsonView(Views.Category.class)
-    @OneToMany(mappedBy = "parentCategory", orphanRemoval = true)
+    @OneToMany(mappedBy = "parentCategory")
     private List<Category> childCategories = new ArrayList<>();
 
     @JsonIgnore

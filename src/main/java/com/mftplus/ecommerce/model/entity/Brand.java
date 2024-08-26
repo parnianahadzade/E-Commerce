@@ -34,7 +34,7 @@ public class Brand extends Base{
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "brand", orphanRemoval = true)
+    @OneToMany(mappedBy = "brand")
     private List<Product> products = new ArrayList<>();
 
 }

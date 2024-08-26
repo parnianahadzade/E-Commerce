@@ -30,12 +30,12 @@ public class Order extends Base{
     private Long id;
 
     @JsonView(Views.Order.class)
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @JsonView(Views.Order.class)
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
@@ -60,7 +60,7 @@ public class Order extends Base{
     @Column(name = "order_status")
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order", orphanRemoval = true)
+    @OneToMany(mappedBy = "order")
     private List<OrderInventory> orderInventories = new ArrayList<>();
 
     @JsonView(Views.Order.class)

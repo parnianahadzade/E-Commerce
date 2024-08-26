@@ -37,7 +37,7 @@ public class Address extends Base{
     private String postalCode;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "address", orphanRemoval = true)
+    @OneToOne(mappedBy = "address")
     private Person person;
 
 }

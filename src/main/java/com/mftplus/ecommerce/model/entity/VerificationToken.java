@@ -30,7 +30,7 @@ public class VerificationToken {
     @Column(name = "v_created_time_stamp", nullable = false)
     private Timestamp createdTimeStamp;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

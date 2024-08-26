@@ -20,4 +20,6 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
     @Modifying
     @Query("update addressEntity oo set oo.deleted=true where oo.id=:id")
     void logicalRemove(Long id);
+
+    Optional<Address> findByPersonIdAndDeletedFalse(Long id);
 }

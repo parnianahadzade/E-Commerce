@@ -65,7 +65,7 @@ public class User extends Base implements UserDetails {
     @Column(name = "u_is_identified", nullable = false)
     private boolean isIdentified;
 
-    @OneToOne(mappedBy = "user", orphanRemoval = true)
+    @OneToOne(mappedBy = "user")
     private Person person;
 
 

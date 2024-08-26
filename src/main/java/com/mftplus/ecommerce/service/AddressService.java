@@ -19,6 +19,8 @@ public interface AddressService {
 
     Address findByIdAndDeletedFalse(Long id) throws NoContentException;
 
+    Address findByPersonIdAndDeletedFalse(Long id) throws NoContentException;
+
     List<Address> findAll();
 
     List<Address> findAllByDeletedFalse();

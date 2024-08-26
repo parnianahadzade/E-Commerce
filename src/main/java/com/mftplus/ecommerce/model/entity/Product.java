@@ -53,7 +53,7 @@ public class Product extends Base{
     private Brand brand;
 
     @JsonView({Views.ProductList.class,Views.Category.class})
-    @OneToMany(mappedBy = "product", orphanRemoval = true, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     private List<Inventory> inventories = new ArrayList<>();
 
     @JsonView({Views.singleProduct.class})
@@ -69,7 +69,7 @@ public class Product extends Base{
     private List<Image> images;
 
     @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
-    @OneToOne(orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "p_main_image_id")
     private Image mainImage;
 
