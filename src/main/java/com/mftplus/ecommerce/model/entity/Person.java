@@ -40,11 +40,11 @@ public class Person extends Base{
     private String phoneNumber;
 
     @JsonView(Views.PersonInfo.class)
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 

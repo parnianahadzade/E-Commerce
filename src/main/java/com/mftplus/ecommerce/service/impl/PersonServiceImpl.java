@@ -2,11 +2,14 @@ package com.mftplus.ecommerce.service.impl;
 
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Person;
+import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.repository.PersonRepository;
 import com.mftplus.ecommerce.service.PersonService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class PersonServiceImpl implements PersonService {
 
@@ -23,10 +26,15 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person update(Person person) throws NoContentException {
-        personRepository.findByIdAndDeletedFalse(person.getId()).orElseThrow(
+        Person existingPerson = personRepository.findByIdAndDeletedFalse(person.getId()).orElseThrow(
                 () -> new NoContentException("No Active Person Found with id : " + person.getId())
         );
-        return personRepository.save(person);
+        existingPerson.setFirstName(person.getFirstName());
+        existingPerson.setLastName(person.getLastName());
+        existingPerson.setPhoneNumber(person.getPhoneNumber());
+        existingPerson.setAddress(person.getAddress());
+
+        return personRepository.save(existingPerson);
     }
 
     @Override
@@ -74,5 +82,10 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public List<Person> findAllByDeletedFalse() {
         return personRepository.findAllByDeletedFalse();
+    }
+
+    @Override
+    public boolean userHasPermissionToPerson(User user, Long id) {
+        return Objects.equals(user.getPerson().getId(), id);
     }
 }

@@ -3,6 +3,7 @@ package com.mftplus.ecommerce.api.controller.person;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.UserIdentificationDTO;
 import com.mftplus.ecommerce.exception.NoContentException;
+import com.mftplus.ecommerce.exception.UserAccessDeniedException;
 import com.mftplus.ecommerce.exception.UserIdentification;
 import com.mftplus.ecommerce.exception.component.ApiExceptionComponent;
 import com.mftplus.ecommerce.exception.dto.ApiExceptionResponse;
@@ -78,6 +79,46 @@ public class PersonController {
         personService.save(person);
 
         return ResponseEntity.ok().build();
+    }
+
+
+    //user profile update
+    @Transactional(rollbackOn = {UserAccessDeniedException.class, NoContentException.class})
+    @PutMapping("/update/{personId}")
+    public ResponseEntity updatePerson(@Valid @RequestBody UserIdentificationDTO userIdentificationDTO,
+                                     BindingResult result, @AuthenticationPrincipal User user,
+                                     @PathVariable Long personId) throws NoContentException, UserAccessDeniedException {
+
+        if (!personService.userHasPermissionToPerson(user, personId)){
+            throw new UserAccessDeniedException("عدم دسترسی به اطلاعات کاربر");
+        }
+
+        //validating inputs
+        ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
+        if (responseEntity != null) {
+            return responseEntity;
+        }
+
+        Address existingAddress = addressService.findByPersonIdAndDeletedFalse(personId);
+        Address newAddress = new Address();
+        newAddress.setId(existingAddress.getId());
+        newAddress.setAddressLine(userIdentificationDTO.getAddressLine());
+        newAddress.setPostalCode(userIdentificationDTO.getPostalCode());
+        newAddress.setVersionId(existingAddress.getVersionId());
+//        addressService.update(newAddress);
+
+
+        Person newPerson = new Person();
+        newPerson.setId(personId);
+        newPerson.setFirstName(userIdentificationDTO.getFirstName());
+        newPerson.setLastName(userIdentificationDTO.getLastName());
+        newPerson.setPhoneNumber(userIdentificationDTO.getPhoneNumber());
+        newPerson.setAddress(newAddress);
+
+        personService.update(newPerson);
+
+        return ResponseEntity.ok().build();
+
     }
 
 }
