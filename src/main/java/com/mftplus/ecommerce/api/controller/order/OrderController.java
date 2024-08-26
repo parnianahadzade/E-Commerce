@@ -34,12 +34,34 @@ public class OrderController {
         this.orderInventoryService = orderInventoryService;
     }
 
-    @JsonView(Views.Order.class)
+    @JsonView(Views.OrderList.class)
     @PreAuthorize("hasRole('user')")
     @GetMapping
     public List<Order> findOrdersByUser(@AuthenticationPrincipal User user){
         return orderService.findByUserAndDeletedFalse(user);
     }
+
+    //waitingForPayment and successfulPayOrValidated
+    @JsonView(Views.OrderList.class)
+    @GetMapping("/current")
+    public List<Order> findOrderByUserAndCurrentOrderStatus(@AuthenticationPrincipal User user){
+        return orderService.findOrdersWaitingOrValidatedAndUserAndDeletedFalse(user);
+    }
+
+    //failedPayOrCanceled
+    @JsonView(Views.OrderList.class)
+    @GetMapping("/canceled")
+    public List<Order> findOrderByUserAndCanceledOrderStatus(@AuthenticationPrincipal User user){
+        return orderService.findCanceledOrdersAndUserAndDeletedFalse(user);
+    }
+
+    //delivered
+    @JsonView(Views.OrderList.class)
+    @GetMapping("/delivered")
+    public List<Order> findOrderByUserAndDeliveredOrderStatus(@AuthenticationPrincipal User user){
+        return orderService.findDeliveredOrdersAndUserAndDeletedFalse(user);
+    }
+
 
     // TODO: 7/30/2024 transactional 
     @Transactional(rollbackOn = {NoContentException.class})
@@ -52,7 +74,7 @@ public class OrderController {
         order.setUser(user);
         order.setAddress(user.getPerson().getAddress());
         order.setDateCreated(LocalDate.now());
-        order.setOrderStatus(OrderStatus.paying);
+        order.setOrderStatus(OrderStatus.waitingForPayment);
         orderService.save(order);
 
 

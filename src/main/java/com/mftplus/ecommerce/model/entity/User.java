@@ -1,7 +1,6 @@
 package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +24,6 @@ public class User extends Base implements UserDetails {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JsonView(Views.Order.class)
     @Column(name = "u_username", nullable = false, unique = true, length = 50)
     private String username;
 

@@ -22,7 +22,7 @@ public class OrderInventory extends Base{
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JsonView(Views.Order.class)
+    @JsonView(Views.OrderList.class)
     @Column(name = "o_quantity", nullable = false)
     private Integer quantity;
 
@@ -42,7 +42,7 @@ public class OrderInventory extends Base{
 //        return this.getInventory();
 //    }
 
-    @JsonView(Views.Order.class)
+    @JsonView(Views.OrderList.class)
     @Transient
     public Integer getTotalPrice(){
         Integer price = getInventory().getProduct().getPrice();

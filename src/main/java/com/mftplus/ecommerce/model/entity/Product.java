@@ -19,7 +19,7 @@ import java.util.List;
 @Entity(name = "productEntity")
 @Table(name = "product_tbl", uniqueConstraints = {@UniqueConstraint(columnNames = {"p_name", "color_id"})})
 public class Product extends Base{
-    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
+    @JsonView({Views.ProductList.class,Views.Category.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -29,7 +29,7 @@ public class Product extends Base{
     @Column(name = "p_code", length = 25, nullable = false)
     private String code;
 
-    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
+    @JsonView({Views.ProductList.class,Views.Category.class})
     @Column(name = "p_name", nullable = false, unique = true, length = 20)
     private String name;
 
@@ -58,7 +58,7 @@ public class Product extends Base{
     @JoinTable(name = "product_images_tbl")
     private List<Image> images;
 
-    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
+    @JsonView({Views.ProductList.class,Views.Category.class})
     @OneToOne
     @JoinColumn(name = "p_main_image_id")
     private Image mainImage;
@@ -68,11 +68,11 @@ public class Product extends Base{
     @JoinColumn(name = "color_id")
     private Color color;
 
-    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
+    @JsonView({Views.ProductList.class,Views.Category.class})
     @Column(name = "p_price",nullable = false)
     private Integer price;
 
-    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
+    @JsonView({Views.ProductList.class,Views.Category.class})
     @Column(name = "p_off_percent",nullable = false)
     private Integer offPercent;
 

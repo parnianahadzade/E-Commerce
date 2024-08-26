@@ -23,23 +23,20 @@ import java.util.List;
 public class Order extends Base{
     //invoice
 
-    @JsonView(Views.Order.class)
+    @JsonView(Views.OrderList.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JsonView(Views.Order.class)
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @JsonView(Views.Order.class)
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
-    @JsonView(Views.Order.class)
     @Column(name = "o_date_created", nullable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateCreated;
@@ -47,6 +44,7 @@ public class Order extends Base{
     @Transient
     private String faDateCreated;
 
+    @JsonView(Views.OrderList.class)
     public String getFaDateCreated() {
         return String.valueOf(PersianDate.fromGregorian(dateCreated));
     }
@@ -55,7 +53,7 @@ public class Order extends Base{
         this.dateCreated = PersianDate.parse(faDateCreated).toGregorian();
     }
 
-    @JsonView(Views.Order.class)
+    @JsonView(Views.OrderList.class)
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "order_status")
     private OrderStatus orderStatus;
@@ -63,7 +61,7 @@ public class Order extends Base{
     @OneToMany(mappedBy = "order")
     private List<OrderInventory> orderInventories = new ArrayList<>();
 
-    @JsonView(Views.Order.class)
+    @JsonView(Views.OrderList.class)
     @Transient
     public Integer getTotalOrderPrice(){
         Integer sum = 0;
@@ -74,7 +72,7 @@ public class Order extends Base{
         return sum;
     }
 
-    @JsonView(Views.Order.class)
+    @JsonView(Views.OrderList.class)
     @Transient
     public int getNumberOfProducts(){
         return this.orderInventories.size();

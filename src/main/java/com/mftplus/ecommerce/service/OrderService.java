@@ -26,4 +26,10 @@ public interface OrderService {
 
     List<Order> findByUserAndDeletedFalse(User user);
 
+    List<Order> findOrdersWaitingOrValidatedAndUserAndDeletedFalse(User user);
+
+    List<Order> findCanceledOrdersAndUserAndDeletedFalse(User user);
+
+    List<Order> findDeliveredOrdersAndUserAndDeletedFalse(User user);
+
 }

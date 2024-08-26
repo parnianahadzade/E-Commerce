@@ -16,24 +16,23 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Entity(name = "inventoryEntity")
 @Table(name = "inventory_tbl")
-@JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
+@JsonView({Views.ProductList.class,Views.Category.class})
 public class Inventory extends Base{
-    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
+    @JsonView({Views.ProductList.class,Views.Category.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
+    @JsonView({Views.ProductList.class,Views.Category.class})
     @Column(name = "i_quantity", nullable = false)
     private Integer quantity;
 
-    @JsonView(Views.Order.class)
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @JsonView({Views.ProductList.class,Views.Category.class,Views.Order.class})
+    @JsonView({Views.ProductList.class,Views.Category.class})
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "product_size")
     private Size size;

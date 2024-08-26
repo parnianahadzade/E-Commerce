@@ -4,9 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum OrderStatus {
-    paying("در حال پرداخت"),
-    successfulPay("پرداخت موفق"),
-    failedPay("پرداخت ناموفق")
+    waitingForPayment("در انتظار پرداخت"),
+    successfulPayOrValidated("تایید شده"),
+    failedPayOrCanceled("لغو شده"),
+    delivered("تحویل داده شده")
     ;
 
     private final String title;
