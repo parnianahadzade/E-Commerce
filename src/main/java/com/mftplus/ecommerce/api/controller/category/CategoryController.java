@@ -1,10 +1,16 @@
 package com.mftplus.ecommerce.api.controller.category;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.mftplus.ecommerce.api.dto.CategorySaveDTO;
 import com.mftplus.ecommerce.exception.NoContentException;
+import com.mftplus.ecommerce.exception.component.ApiExceptionComponent;
+import com.mftplus.ecommerce.exception.dto.ApiExceptionResponse;
 import com.mftplus.ecommerce.model.entity.Category;
 import com.mftplus.ecommerce.model.entity.Views;
 import com.mftplus.ecommerce.service.impl.CategoryServiceImpl;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +25,6 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-
     @JsonView(Views.Category.class)
     @GetMapping
     public Category findCategories() throws NoContentException {
@@ -30,6 +35,27 @@ public class CategoryController {
     @GetMapping("/name")
     public List<Category> findCategoriesByNameStartsWith(@RequestParam(value = "categoryName") String categoryName) {
         return categoryService.findByNameStartsWithIgnoreCaseAndDeletedFalse(categoryName);
+    }
+
+    @PostMapping("/admin/save")
+    public ResponseEntity saveCategory(@Valid @RequestBody CategorySaveDTO categorySaveDTO,
+                                       BindingResult result) throws NoContentException {
+
+        //validating inputs
+        ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
+        if (responseEntity != null) {
+            return responseEntity;
+        }
+
+        Category parentCategory = categoryService.findByIdAndDeletedFalse(categorySaveDTO.getParentId());
+        if (parentCategory != null) {
+            Category category = new Category();
+            category.setName(categorySaveDTO.getName());
+            category.setParentCategory(parentCategory);
+            categoryService.save(category);
+        }
+
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -12,4 +12,6 @@ public class CategorySaveDTO {
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
     @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام دسته بندی نادرست است.")
     private String name;
+
+    private Long parentId;
 }

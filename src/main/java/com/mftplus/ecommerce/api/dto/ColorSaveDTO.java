@@ -14,6 +14,6 @@ public class ColorSaveDTO {
     private String name;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-z-0-9]{1,20}$",message = "کد رنگ نادرست است.")
+    @Pattern(regexp = "^#(?:[0-9a-fA-F]{3}){1,2}$",message = "کد رنگ نادرست است.")
     private String hexCode;
 }
