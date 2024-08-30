@@ -27,4 +27,8 @@ public class Views {
     public static class PersonInfo {
 
     }
+
+    public static class ColorName {
+
+    }
 }

@@ -76,4 +76,9 @@ public class ColorServiceImpl implements ColorService {
     public List<Color> findAllByDeletedFalse() {
         return colorRepository.findAllByDeletedFalse();
     }
+
+    @Override
+    public List<Color> findByNameStartsWithIgnoreCaseAndDeletedFalse(String name) {
+        return colorRepository.findByNameStartsWithIgnoreCaseAndDeletedFalse(name);
+    }
 }

@@ -52,7 +52,7 @@ public class CategoryController {
 
         try {
             categoryService.findByNameAndDeletedFalse(categorySaveDTO.getName());
-            throw new DuplicateException("category name : " + categorySaveDTO.getName() + " already exists!");
+            throw new DuplicateException("دسته بندی با این نام وجود دارد.");
 
         } catch (NoContentException e) {
             Category category = new Category();

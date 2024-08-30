@@ -20,4 +20,6 @@ public interface ColorRepository extends JpaRepository<Color, Long> {
     @Modifying
     @Query("update colorEntity oo set oo.deleted=true where oo.id=:id")
     void logicalRemove(Long id);
+
+    List<Color> findByNameStartsWithIgnoreCaseAndDeletedFalse(String name);
 }

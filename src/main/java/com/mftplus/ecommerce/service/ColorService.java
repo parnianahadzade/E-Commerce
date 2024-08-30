@@ -24,4 +24,6 @@ public interface ColorService {
     List<Color> findAll();
 
     List<Color> findAllByDeletedFalse();
+
+    List<Color> findByNameStartsWithIgnoreCaseAndDeletedFalse(String name);
 }
