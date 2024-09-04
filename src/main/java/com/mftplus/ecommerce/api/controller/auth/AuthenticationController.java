@@ -2,9 +2,9 @@ package com.mftplus.ecommerce.api.controller.auth;
 
 import com.mftplus.ecommerce.api.dto.*;
 import com.mftplus.ecommerce.exception.*;
-import com.mftplus.ecommerce.exception.component.ApiExceptionComponent;
-import com.mftplus.ecommerce.exception.dto.ApiException;
-import com.mftplus.ecommerce.exception.dto.ApiExceptionResponse;
+import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
+import com.mftplus.ecommerce.exception.dto.ApiOverallError;
+import com.mftplus.ecommerce.exception.dto.ApiResponse;
 import com.mftplus.ecommerce.model.entity.Role;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.service.EncryptionService;
@@ -12,7 +12,6 @@ import com.mftplus.ecommerce.service.impl.RoleServiceImpl;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,29 +35,33 @@ public class AuthenticationController {
 
     private final RoleServiceImpl roleService;
 
+    private final ApiValidationComponent validationComponent;
 
-    public AuthenticationController(EncryptionService encryptionService, UserServiceImpl userService, RoleServiceImpl roleService) {
+
+    public AuthenticationController(EncryptionService encryptionService, UserServiceImpl userService, RoleServiceImpl roleService, ApiValidationComponent validationComponent) {
         this.encryptionService = encryptionService;
         this.userService = userService;
         this.roleService = roleService;
+        this.validationComponent = validationComponent;
     }
 
 
     //user registration
     @Transactional(rollbackOn = {NoContentException.class, DuplicateException.class, EmailFailureException.class})
     @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @RequestBody RegistrationDTO registrationDTO, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException {
+    public ResponseEntity registerUser(@Valid @RequestBody RegistrationDTO registrationDTO, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException, InvalidDataException {
 
-        //validating inputs
-        ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
-            if (responseEntity != null) {
-                return responseEntity;
-            }
+        //validation
+        ApiResponse response = validationComponent.handleValidationErrors(result);
 
-            //check if passwords match
-            if (!Objects.equals(registrationDTO.getPassword(), registrationDTO.getConfirmPassword())) {
-                throw new ValidationException("رمز عبور با تکرار آن برابر نیست.");
-            }
+        if (!response.getFieldErrors().isEmpty()) {
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        //check if passwords match
+        if (!Objects.equals(registrationDTO.getPassword(), registrationDTO.getConfirmPassword())) {
+            throw new InvalidDataException("رمز عبور با تکرار آن برابر نیست.");
+        }
 
             //create user
             User user = new User();
@@ -73,17 +76,23 @@ public class AuthenticationController {
             //save user
             userService.save(user);
 
-            return ResponseEntity.ok().build();
+            //setting response
+            response.setSuccess(true);
+            response.setSuccessMessage("حساب کاربری با موفقیت ایجاد شد.");
+            response.setData(user);
+
+            return ResponseEntity.ok(response);
 
     }
 
     @PostMapping("/login")
     public ResponseEntity loginUser(@Valid @RequestBody LoginDTO loginDTO, BindingResult result) throws UserAccessDeniedException {
 
-        //validating inputs
-        ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
-        if (responseEntity != null) {
-            return responseEntity;
+        //validation
+        ApiResponse response = validationComponent.handleValidationErrors(result);
+
+        if (!response.getFieldErrors().isEmpty()) {
+            return ResponseEntity.badRequest().body(response);
         }
 
         String jwt = null;
@@ -93,22 +102,26 @@ public class AuthenticationController {
 
 
         } catch (UserNotVerifiedException exception) {
-            ApiException apiException = new ApiException();
-            apiException.setJwt(null);
-            apiException.setField(null);
-            apiException.setHttpStatus(HttpStatus.FORBIDDEN);
-            apiException.setTime(ZonedDateTime.now(ZoneId.of("Z")));
-            apiException.setJwt(null);
 
             String message = "اکانت کاربر فعال نشده ";
             if (exception.isNewEmailSent()){
                 message += "ایمیل فعال سازی مجددا ارسال شد";
             }
 
-            apiException.setMessage(message);
+            ApiOverallError overallError = new ApiOverallError(
+                    message,
+                    HttpStatus.FORBIDDEN,
+                    ZonedDateTime.now(ZoneId.of("Z"))
+            );
 
-            ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
-            return new ResponseEntity<>(apiExceptionResponse, HttpStatus.FORBIDDEN);
+            response.setOverallError(overallError);
+            response.setSuccess(false);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("jwt", null);
+            response.setData(data);
+
+            return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
 
         } catch (EmailFailureException exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -118,11 +131,13 @@ public class AuthenticationController {
         if (jwt == null){
             throw new UserAccessDeniedException("نام کاربری یا رمز عبور اشتباه است.");
         }else {
-            LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setJwt(jwt);
-            loginResponse.setSuccess(true);
+            response.setSuccess(true);
+            response.setSuccessMessage("کاربر با موفقیت وارد شد.");
+            Map<String, Object> data = new HashMap<>();
+            data.put("jwt", jwt);
+            response.setData(data);
 
-            return ResponseEntity.ok(loginResponse);
+            return ResponseEntity.ok(response);
         }
     }
 

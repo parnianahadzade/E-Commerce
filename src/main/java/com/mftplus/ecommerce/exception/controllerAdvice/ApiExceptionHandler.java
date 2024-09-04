@@ -1,8 +1,8 @@
 package com.mftplus.ecommerce.exception.controllerAdvice;
 
-import com.mftplus.ecommerce.exception.dto.ApiExceptionResponse;
 import com.mftplus.ecommerce.exception.*;
-import com.mftplus.ecommerce.exception.dto.ApiException;
+import com.mftplus.ecommerce.exception.dto.ApiOverallError;
+import com.mftplus.ecommerce.exception.dto.ApiResponse;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Collections;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
@@ -24,148 +23,193 @@ public class ApiExceptionHandler {
 
     HttpStatus noAccess = HttpStatus.FORBIDDEN;
 
-    //if we are catching ApiRequestException
-    @ExceptionHandler(value = {ApiRequestException.class})
-    public ResponseEntity<Object> handleApiRequestException(ApiRequestException e){
-        //1. create payload containing exception details
-
-        ApiException apiException = new ApiException(
-                null,
-                e.getMessage(),
-                badRequest,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
-
-        //2. return response entity
-        return new ResponseEntity<>(apiException, badRequest);
-
-    }
 
     @ExceptionHandler(value = {DuplicateException.class})
     public ResponseEntity<Object> handleDuplicateException(DuplicateException e){
 
-        ApiException apiException = new ApiException(
-                null,
+        ApiOverallError apiOverallError = new ApiOverallError(
                 e.getMessage(),
                 conflict,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+        ApiResponse apiResponse = new ApiResponse(
+                null,
+                apiOverallError,
+                false,
+                null,
+                null
+        );
 
-        return new ResponseEntity<>(apiExceptionResponse, conflict);
+        return new ResponseEntity<>(apiResponse, conflict);
 
     }
 
     @ExceptionHandler(value = {EmailFailureException.class})
     public ResponseEntity<Object> handleEmailFailureException(EmailFailureException e){
 
-        ApiException apiException = new ApiException(
-                null,
+        ApiOverallError apiOverallError = new ApiOverallError(
                 e.getMessage(),
                 internalServerError,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+        ApiResponse apiResponse = new ApiResponse(
+                null,
+                apiOverallError,
+                false,
+                null,
+                null
+        );
 
-        return new ResponseEntity<>(apiExceptionResponse, internalServerError);
+        return new ResponseEntity<>(apiResponse, internalServerError);
 
     }
 
     @ExceptionHandler(value = {NoContentException.class})
     public ResponseEntity<Object> handleNoContentException(NoContentException e){
 
-        ApiException apiException = new ApiException(
-                null,
+        ApiOverallError apiOverallError = new ApiOverallError(
                 e.getMessage(),
                 notFound,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+        ApiResponse apiResponse = new ApiResponse(
+                null,
+                apiOverallError,
+                false,
+                null,
+                null
+        );
 
-        return new ResponseEntity<>(apiExceptionResponse, notFound);
+        return new ResponseEntity<>(apiResponse, notFound);
 
     }
 
     @ExceptionHandler(value = {ValidationException.class})
     public ResponseEntity<Object> handleValidationException(ValidationException e){
 
-        ApiException apiException = new ApiException(
-                null,
+        ApiOverallError apiOverallError = new ApiOverallError(
                 e.getMessage(),
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+        ApiResponse apiResponse = new ApiResponse(
+                null,
+                apiOverallError,
+                false,
+                null,
+                null
+        );
 
-        return new ResponseEntity<>(apiExceptionResponse, badRequest);
+        return new ResponseEntity<>(apiResponse, badRequest);
 
     }
 
     @ExceptionHandler(value = {UserIdentification.class})
     public ResponseEntity<Object> handleUserNotIdentified(UserIdentification e){
 
-        ApiException apiException = new ApiException(
-                null,
+        ApiOverallError apiOverallError = new ApiOverallError(
                 e.getMessage(),
                 notAcceptable,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+        ApiResponse apiResponse = new ApiResponse(
+                null,
+                apiOverallError,
+                false,
+                null,
+                null
+        );
 
-        return new ResponseEntity<>(apiExceptionResponse, notAcceptable);
+        return new ResponseEntity<>(apiResponse, notAcceptable);
 
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class})
     public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException e){
 
-        ApiException apiException = new ApiException(
-                null,
+        ApiOverallError apiOverallError = new ApiOverallError(
                 e.getMessage(),
-                HttpStatus.INTERNAL_SERVER_ERROR,
+                notAcceptable,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+        ApiResponse apiResponse = new ApiResponse(
+                null,
+                apiOverallError,
+                false,
+                null,
+                null
+        );
 
-        return new ResponseEntity<>(apiExceptionResponse, notAcceptable);
+        return new ResponseEntity<>(apiResponse, notAcceptable);
 
     }
 
     @ExceptionHandler(value = {AccessDeniedException.class})
     public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException e){
 
-        ApiException apiException = new ApiException(
-                null,
+        ApiOverallError apiOverallError = new ApiOverallError(
                 e.getMessage(),
-                HttpStatus.FORBIDDEN,
+                noAccess,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+        ApiResponse apiResponse = new ApiResponse(
+                null,
+                apiOverallError,
+                false,
+                null,
+                null
+        );
 
-        return new ResponseEntity<>(apiExceptionResponse, noAccess);
+        return new ResponseEntity<>(apiResponse, noAccess);
 
     }
 
     @ExceptionHandler(value = {UserAccessDeniedException.class})
     public ResponseEntity<Object> handleUserAccessDeniedException(UserAccessDeniedException e){
 
-        ApiException apiException = new ApiException(
-                null,
+        ApiOverallError apiOverallError = new ApiOverallError(
                 e.getMessage(),
-                HttpStatus.FORBIDDEN,
+                noAccess,
                 ZonedDateTime.now(ZoneId.of("Z"))
         );
 
-        ApiExceptionResponse apiExceptionResponse = new ApiExceptionResponse(Collections.singletonList(apiException));
+        ApiResponse apiResponse = new ApiResponse(
+                null,
+                apiOverallError,
+                false,
+                null,
+                null
+        );
 
-        return new ResponseEntity<>(apiExceptionResponse, noAccess);
+        return new ResponseEntity<>(apiResponse, noAccess);
+
+    }
+
+    @ExceptionHandler(value = {InvalidDataException.class})
+    public ResponseEntity<Object> handleInvalidDataException(InvalidDataException e){
+
+        ApiOverallError apiOverallError = new ApiOverallError(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        ApiResponse apiResponse = new ApiResponse(
+                null,
+                apiOverallError,
+                false,
+                null,
+                null
+        );
+
+        return new ResponseEntity<>(apiResponse, badRequest);
 
     }
 
