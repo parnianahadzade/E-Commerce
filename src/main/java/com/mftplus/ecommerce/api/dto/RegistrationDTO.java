@@ -13,8 +13,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RegistrationDTO {
-    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
+
     @Pattern(regexp = "^[A-Za-z-0-9]{5,50}$",message = "نام کاربری نادرست است.")
+    @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
     private String username;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")

@@ -40,6 +40,7 @@ public class ProductSaveDTO {
     @Pattern(regexp = "^[A-Za-zآ-ی]{3,10}$",message = "قد کالا نادرست است.")
     private String height;
 
+    //todo : categoryId
     private String categoryName;
 
     private Long brandId;
@@ -47,5 +48,9 @@ public class ProductSaveDTO {
     private Long colorId;
 
     private List<InventorySaveDTO> inventorySaveDTOS;
+
+    //todo mainImageId + mainImageIds
+
+
 
 }

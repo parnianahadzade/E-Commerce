@@ -13,6 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class InventorySaveDTO {
 
+    //todo enum type
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
     private String size;
 

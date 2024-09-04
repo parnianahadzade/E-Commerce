@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,5 +14,6 @@ public class CategorySaveDTO {
     @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام دسته بندی نادرست است.")
     private String name;
 
+    @NotNull(message = "لطفا این قسمت را خالی نگذازید.")
     private Long parentId;
 }
