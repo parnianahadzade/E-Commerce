@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.CategorySaveDTO;
 import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
-import com.mftplus.ecommerce.exception.component.ApiExceptionComponent;
-import com.mftplus.ecommerce.exception.dto.ApiExceptionResponse;
+import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
+import com.mftplus.ecommerce.exception.dto.ApiResponse;
 import com.mftplus.ecommerce.model.entity.Category;
 import com.mftplus.ecommerce.model.entity.Views;
 import com.mftplus.ecommerce.service.impl.CategoryServiceImpl;
@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${apiPrefix}/category")
@@ -22,8 +24,11 @@ public class CategoryController {
 
     private final CategoryServiceImpl categoryService;
 
-    public CategoryController(CategoryServiceImpl categoryService) {
+    private final ApiValidationComponent validationComponent;
+
+    public CategoryController(CategoryServiceImpl categoryService, ApiValidationComponent validationComponent) {
         this.categoryService = categoryService;
+        this.validationComponent = validationComponent;
     }
 
     @JsonView(Views.Category.class)
@@ -43,9 +48,10 @@ public class CategoryController {
                                        BindingResult result) throws NoContentException, DuplicateException {
 
         //validating inputs
-        ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
-        if (responseEntity != null) {
-            return responseEntity;
+        ApiResponse response = validationComponent.handleValidationErrors(result);
+
+        if (!response.getFieldErrors().isEmpty()) {
+            return ResponseEntity.badRequest().body(response);
         }
 
         Category parentCategory = categoryService.findByIdAndDeletedFalse(categorySaveDTO.getParentId());
@@ -59,9 +65,16 @@ public class CategoryController {
             category.setName(categorySaveDTO.getName());
             category.setParentCategory(parentCategory);
             categoryService.save(category);
+
+            response.setSuccess(true);
+            response.setSuccessMessage("دستبه بندی با موفقیت ایجاد شد.");
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("category", category);
+            response.setData(data);
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(response);
     }
 
 }

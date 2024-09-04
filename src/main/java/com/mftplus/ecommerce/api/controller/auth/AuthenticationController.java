@@ -79,7 +79,10 @@ public class AuthenticationController {
             //setting response
             response.setSuccess(true);
             response.setSuccessMessage("حساب کاربری با موفقیت ایجاد شد.");
-            response.setData(user);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("user", user);
+            response.setData(data);
 
             return ResponseEntity.ok(response);
 

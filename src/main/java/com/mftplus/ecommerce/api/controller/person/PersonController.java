@@ -5,8 +5,8 @@ import com.mftplus.ecommerce.api.dto.UserIdentificationDTO;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.exception.UserAccessDeniedException;
 import com.mftplus.ecommerce.exception.UserIdentification;
-import com.mftplus.ecommerce.exception.component.ApiExceptionComponent;
-import com.mftplus.ecommerce.exception.dto.ApiExceptionResponse;
+import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
+import com.mftplus.ecommerce.exception.dto.ApiResponse;
 import com.mftplus.ecommerce.model.entity.Address;
 import com.mftplus.ecommerce.model.entity.Person;
 import com.mftplus.ecommerce.model.entity.User;
@@ -21,6 +21,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("${apiPrefix}/person")
 @CrossOrigin
@@ -32,11 +35,14 @@ public class PersonController {
 
     private final UserServiceImpl userService;
 
+    private final ApiValidationComponent validationComponent;
 
-    public PersonController(PersonServiceImpl personService, AddressServiceImpl addressService, UserServiceImpl userService) {
+
+    public PersonController(PersonServiceImpl personService, AddressServiceImpl addressService, UserServiceImpl userService, ApiValidationComponent validationComponent) {
         this.personService = personService;
         this.addressService = addressService;
         this.userService = userService;
+        this.validationComponent = validationComponent;
     }
 
     @JsonView(Views.PersonInfo.class)
@@ -52,13 +58,14 @@ public class PersonController {
                                      BindingResult result, @AuthenticationPrincipal User user) throws UserIdentification, NoContentException {
 
         if (user.isIdentified()) {
-            throw new UserIdentification("User is already identified.");
+            throw new UserIdentification("پروفایل کاربر قبلا ساخته شده.");
         }
 
         //validating inputs
-        ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
-        if (responseEntity != null) {
-            return responseEntity;
+        ApiResponse response = validationComponent.handleValidationErrors(result);
+
+        if (!response.getFieldErrors().isEmpty()) {
+            return ResponseEntity.badRequest().body(response);
         }
 
         Address address = new Address();
@@ -78,7 +85,14 @@ public class PersonController {
 
         personService.save(person);
 
-        return ResponseEntity.ok().build();
+        response.setSuccess(true);
+        response.setSuccessMessage("پروفایل با موفقیت ایجاد شد.");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("person", person);
+        response.setData(data);
+
+        return ResponseEntity.ok(response);
     }
 
 
@@ -94,9 +108,10 @@ public class PersonController {
         }
 
         //validating inputs
-        ResponseEntity<ApiExceptionResponse> responseEntity = ApiExceptionComponent.handleValidationErrors(result);
-        if (responseEntity != null) {
-            return responseEntity;
+        ApiResponse response = validationComponent.handleValidationErrors(result);
+
+        if (!response.getFieldErrors().isEmpty()) {
+            return ResponseEntity.badRequest().body(response);
         }
 
         Address existingAddress = addressService.findByPersonIdAndDeletedFalse(personId);
@@ -117,7 +132,14 @@ public class PersonController {
 
         personService.update(newPerson);
 
-        return ResponseEntity.ok().build();
+        response.setSuccess(true);
+        response.setSuccessMessage("پروفایل با موفقیت بروزرسانی شد.");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("person", newPerson);
+        response.setData(data);
+
+        return ResponseEntity.ok(response);
 
     }
 
