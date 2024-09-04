@@ -1,32 +1,24 @@
 package com.mftplus.ecommerce.exception.component;
 
-import com.mftplus.ecommerce.exception.dto.ApiFieldError;
 import com.mftplus.ecommerce.exception.dto.ApiResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class ApiValidationComponent {
 
 
+
     public ApiResponse handleValidationErrors(BindingResult bindingResult) {
         ApiResponse response = new ApiResponse();
 
-        List<ApiFieldError> fieldErrors = new ArrayList<>();
-
         if (bindingResult.hasErrors()) {
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                fieldErrors.add(new ApiFieldError(error.getField(), error.getDefaultMessage()));
-            }
-        }
-
-        response.setFieldErrors(fieldErrors);
-
-        if (!fieldErrors.isEmpty()) {
+            Map<String, String> errors = new HashMap<>();
+            bindingResult.getFieldErrors().forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+            response.setFieldErrors(errors);
             response.setSuccess(false);
         }
 

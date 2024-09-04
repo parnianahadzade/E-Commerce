@@ -10,6 +10,7 @@ import com.mftplus.ecommerce.model.entity.Color;
 import com.mftplus.ecommerce.model.entity.Views;
 import com.mftplus.ecommerce.service.ColorService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("${apiPrefix}/color")
+@Slf4j
+@CrossOrigin
 public class ColorController {
 
     private final ColorService colorService;
@@ -44,7 +47,7 @@ public class ColorController {
         //validation
         ApiResponse response = validationComponent.handleValidationErrors(result);
 
-        if (!response.getFieldErrors().isEmpty()) {
+        if (response.getFieldErrors() != null) {
             return ResponseEntity.badRequest().body(response);
         }
 

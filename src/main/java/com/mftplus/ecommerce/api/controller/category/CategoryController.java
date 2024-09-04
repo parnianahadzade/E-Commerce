@@ -10,6 +10,7 @@ import com.mftplus.ecommerce.model.entity.Category;
 import com.mftplus.ecommerce.model.entity.Views;
 import com.mftplus.ecommerce.service.impl.CategoryServiceImpl;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("${apiPrefix}/category")
+@Slf4j
+@CrossOrigin
 public class CategoryController {
 
     private final CategoryServiceImpl categoryService;
@@ -50,7 +53,7 @@ public class CategoryController {
         //validating inputs
         ApiResponse response = validationComponent.handleValidationErrors(result);
 
-        if (!response.getFieldErrors().isEmpty()) {
+        if (response.getFieldErrors() != null) {
             return ResponseEntity.badRequest().body(response);
         }
 

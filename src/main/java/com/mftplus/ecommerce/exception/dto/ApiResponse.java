@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ApiResponse {
 
-    private List<ApiFieldError> fieldErrors;
+    private Map<String, String> fieldErrors;
 
     private ApiOverallError overallError;
 

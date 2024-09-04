@@ -10,6 +10,7 @@ import com.mftplus.ecommerce.service.impl.InventoryServiceImpl;
 import com.mftplus.ecommerce.service.impl.OrderInventoryServiceImpl;
 import com.mftplus.ecommerce.service.impl.OrderServiceImpl;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +21,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${apiPrefix}/order")
+@Slf4j
+@CrossOrigin
 public class OrderController {
 
     private final OrderServiceImpl orderService;

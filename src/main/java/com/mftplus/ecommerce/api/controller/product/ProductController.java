@@ -9,6 +9,7 @@ import com.mftplus.ecommerce.model.entity.enums.Size;
 import com.mftplus.ecommerce.service.impl.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("${apiPrefix}/product")
+@Slf4j
 @CrossOrigin
 public class ProductController {
 

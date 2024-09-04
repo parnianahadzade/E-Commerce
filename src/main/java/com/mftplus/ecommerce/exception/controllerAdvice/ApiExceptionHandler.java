@@ -10,6 +10,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -194,6 +195,27 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(value = {InvalidDataException.class})
     public ResponseEntity<Object> handleInvalidDataException(InvalidDataException e){
+
+        ApiOverallError apiOverallError = new ApiOverallError(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        ApiResponse apiResponse = new ApiResponse(
+                null,
+                apiOverallError,
+                false,
+                null,
+                null
+        );
+
+        return new ResponseEntity<>(apiResponse, badRequest);
+
+    }
+
+    @ExceptionHandler(value = {IOException.class})
+    public ResponseEntity<Object> handleIOException(IOException e){
 
         ApiOverallError apiOverallError = new ApiOverallError(
                 e.getMessage(),

@@ -16,6 +16,7 @@ import com.mftplus.ecommerce.service.impl.PersonServiceImpl;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("${apiPrefix}/person")
+@Slf4j
 @CrossOrigin
 public class PersonController {
 
@@ -64,7 +66,7 @@ public class PersonController {
         //validating inputs
         ApiResponse response = validationComponent.handleValidationErrors(result);
 
-        if (!response.getFieldErrors().isEmpty()) {
+        if (response.getFieldErrors() != null) {
             return ResponseEntity.badRequest().body(response);
         }
 

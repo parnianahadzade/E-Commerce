@@ -54,7 +54,7 @@ public class AuthenticationController {
         //validation
         ApiResponse response = validationComponent.handleValidationErrors(result);
 
-        if (!response.getFieldErrors().isEmpty()) {
+        if (response.getFieldErrors() != null) {
             return ResponseEntity.badRequest().body(response);
         }
 
@@ -94,7 +94,7 @@ public class AuthenticationController {
         //validation
         ApiResponse response = validationComponent.handleValidationErrors(result);
 
-        if (!response.getFieldErrors().isEmpty()) {
+        if (response.getFieldErrors() != null) {
             return ResponseEntity.badRequest().body(response);
         }
 
