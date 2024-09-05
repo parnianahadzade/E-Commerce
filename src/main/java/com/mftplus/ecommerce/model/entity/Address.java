@@ -23,11 +23,12 @@ public class Address extends Base{
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @JsonView(Views.PersonInfo.class)
     @Column(name = "a_address_line", nullable = false, length = 50)
+    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
     private String addressLine;
 
     @Column(name = "a_postal_code", nullable = false, length = 10)
+    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
     private String postalCode;
 
     @JsonIgnore

@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.api.controller.auth;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.*;
 import com.mftplus.ecommerce.exception.*;
 import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
@@ -7,6 +8,7 @@ import com.mftplus.ecommerce.exception.dto.ApiOverallError;
 import com.mftplus.ecommerce.exception.dto.ApiResponse;
 import com.mftplus.ecommerce.model.entity.Role;
 import com.mftplus.ecommerce.model.entity.User;
+import com.mftplus.ecommerce.model.entity.Views;
 import com.mftplus.ecommerce.service.EncryptionService;
 import com.mftplus.ecommerce.service.impl.RoleServiceImpl;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
@@ -154,7 +156,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/me")
-    public User getLoggedInUserProfile(@AuthenticationPrincipal User user){
+    @JsonView(Views.UserInfo.class)
+    public User getLoggedInUserProfile(@AuthenticationPrincipal User user) throws UserAccessDeniedException {
         return user;
     }
 

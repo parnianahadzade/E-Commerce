@@ -10,7 +10,7 @@ import lombok.Setter;
 public class ColorSaveDTO {
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام رنگ نادرست است.")
+    @Pattern(regexp = "^[A-Za-zآ-ی ]{3,20}$",message = "نام رنگ نادرست است.")
     private String name;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")

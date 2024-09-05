@@ -11,10 +11,12 @@ public class Views {
 
     }
 
+    //for viewing categories + child categories + category path
     public static class Category {
 
     }
 
+    //only for category name
     public static class CategoryName {
 
     }
@@ -29,6 +31,11 @@ public class Views {
     }
 
     public static class ColorName {
+
+    }
+
+    //view for showing info for the logged-in user
+    public static class UserInfo {
 
     }
 }

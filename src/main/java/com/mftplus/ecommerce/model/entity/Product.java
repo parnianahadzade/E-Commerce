@@ -82,7 +82,7 @@ public class Product extends Base{
     @Column(name = "p_pattern", length = 10, nullable = false)
     private String pattern;
 
-    @Column(name = "p_height", length = 10, nullable = false)
-    private String height;
+    @Column(name = "p_height", nullable = false)
+    private Integer height;
 
 }

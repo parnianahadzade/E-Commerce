@@ -14,11 +14,11 @@ import lombok.Setter;
 public class UserIdentificationDTO {
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام نادرست است.")
+    @Pattern(regexp = "^[A-Za-zآ-ی ]{3,20}$",message = "نام نادرست است.")
     private String firstName;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام خانوادگی نادرست است.")
+    @Pattern(regexp = "^[A-Za-zآ-ی ]{3,20}$",message = "نام خانوادگی نادرست است.")
     private String lastName;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
@@ -26,7 +26,7 @@ public class UserIdentificationDTO {
     private String phoneNumber;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی]{10,50}$",message = "آدرس نادرست است.")
+    @Pattern(regexp = "^[A-Za-zآ-ی ]{10,50}$",message = "آدرس نادرست است.")
     private String addressLine;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")

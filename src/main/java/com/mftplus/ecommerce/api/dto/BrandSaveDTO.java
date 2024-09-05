@@ -10,10 +10,10 @@ import lombok.Setter;
 public class BrandSaveDTO {
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی]{3,20}$",message = "نام برند نادرست است.")
+    @Pattern(regexp = "^[A-Za-zآ-ی ]{3,20}$",message = "نام برند نادرست است.")
     private String name;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی]{3,50}$",message = "توضیحات برند نادرست است.")
+    @Pattern(regexp = "^[A-Za-zآ-ی ]{3,50}$",message = "توضیحات برند نادرست است.")
     private String explanation;
 }

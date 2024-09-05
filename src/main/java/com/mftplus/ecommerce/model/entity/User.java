@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,9 +23,11 @@ public class User extends Base implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @JsonView(Views.UserInfo.class)
     private Long id;
 
     @Column(name = "u_username", nullable = false, unique = true, length = 50)
+    @JsonView(Views.UserInfo.class)
     private String username;
 
 
@@ -34,6 +37,7 @@ public class User extends Base implements UserDetails {
     private String password;
 
     @Column(name = "u_email", unique = true, length = 320)
+    @JsonView(Views.UserInfo.class)
     private String email;
 
     @JsonIgnore
@@ -42,6 +46,7 @@ public class User extends Base implements UserDetails {
     private List<VerificationToken> verificationTokens = new ArrayList<>();
 
     @Column(name = "email_verified", nullable = false)
+    @JsonView(Views.UserInfo.class)
     private Boolean emailVerified = false;
 
     @JsonIgnore
@@ -52,9 +57,11 @@ public class User extends Base implements UserDetails {
     private List<Role> roles;
 
     @Column(name = "u_is_identified", nullable = false)
+    @JsonView(Views.UserInfo.class)
     private boolean isIdentified;
 
     @OneToOne(mappedBy = "user")
+    @JsonView(Views.UserInfo.class)
     private Person person;
 
 

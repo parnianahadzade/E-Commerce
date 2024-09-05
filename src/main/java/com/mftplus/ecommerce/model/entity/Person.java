@@ -13,27 +13,27 @@ import lombok.experimental.SuperBuilder;
 @Entity(name = "personEntity")
 @Table(name = "person_tbl")
 public class Person extends Base{
-    @JsonView(Views.PersonInfo.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
     private Long id;
 
-    @JsonView(Views.PersonInfo.class)
     @Column(name = "p_first_name", nullable = false, length = 20)
+    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
     private String firstName;
 
-    @JsonView(Views.PersonInfo.class)
     @Column(name = "p_last_name", nullable = false, length = 20)
+    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
     private String lastName;
 
-    @JsonView(Views.PersonInfo.class)
     @Column(name = "p_phone_number", nullable = false, length = 11)
+    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
     private String phoneNumber;
 
-    @JsonView(Views.PersonInfo.class)
     @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "address_id")
+    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
     private Address address;
 
     @OneToOne

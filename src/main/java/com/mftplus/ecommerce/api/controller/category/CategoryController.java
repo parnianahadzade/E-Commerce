@@ -3,6 +3,7 @@ package com.mftplus.ecommerce.api.controller.category;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.CategorySaveDTO;
 import com.mftplus.ecommerce.exception.DuplicateException;
+import com.mftplus.ecommerce.exception.InvalidDataException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
 import com.mftplus.ecommerce.exception.dto.ApiResponse;
@@ -34,16 +35,26 @@ public class CategoryController {
         this.validationComponent = validationComponent;
     }
 
-    @JsonView(Views.Category.class)
     @GetMapping
+    @JsonView(Views.Category.class)
     public Category findCategories() throws NoContentException {
-        return categoryService.findByNameAndDeletedFalse("digikala");
+        return categoryService.findByNameAndDeletedFalse("دیجی کالا");
     }
 
-    @JsonView(Views.CategoryName.class)
     @GetMapping("/name")
-    public List<Category> findCategoriesByNameStartsWith(@RequestParam(value = "categoryName") String categoryName) {
-        return categoryService.findByNameStartsWithIgnoreCaseAndDeletedFalse(categoryName);
+    @JsonView(Views.CategoryName.class)
+    public List<Category> findCategoriesByNameStartsWith(@RequestParam(required = false, value = "categoryName") String categoryName) throws InvalidDataException, NoContentException {
+        if (categoryName == null) {
+            throw new InvalidDataException("نام دسته بندی وارد نشده است.");
+        }
+
+        List<Category> categories = categoryService.findByNameStartsWithIgnoreCaseAndDeletedFalse(categoryName);
+
+        if (categories.isEmpty()) {
+            throw new NoContentException("موردی یافت نشد.");
+        }
+
+        return categories;
     }
 
     @PostMapping("/admin/save")
