@@ -11,7 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SearchRequest {
 
-    private int pageNumber;
+    private Integer pageNumber;
 
     private String name;
 

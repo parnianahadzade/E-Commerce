@@ -16,7 +16,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Entity(name = "inventoryEntity")
 @Table(name = "inventory_tbl")
-@JsonView({Views.ProductList.class,Views.Category.class})
+@JsonView(Views.Category.class)
 public class Inventory extends Base{
     @JsonView({Views.ProductList.class,Views.Category.class})
     @Id

@@ -19,14 +19,15 @@ import java.util.List;
 @Setter
 @Entity(name = "brandEntity")
 @Table(name = "brand_tbl")
-@JsonView(Views.singleProduct.class)
 public class Brand extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @JsonView(Views.singleProduct.class)
     private Long id;
 
     @Column(name = "b_name", nullable = false, unique = true, length = 20)
+    @JsonView(Views.singleProduct.class)
     private String name;
 
     @JsonIgnore
@@ -34,6 +35,7 @@ public class Brand extends Base{
     private List<Product> products = new ArrayList<>();
 
     @Column(name = "b_explanation", nullable = false, length = 100)
+    @JsonView(Views.singleProduct.class)
     private String explanation;
 
 }

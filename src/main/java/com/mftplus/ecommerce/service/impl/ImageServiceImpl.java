@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.service.impl;
 
+import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Image;
 import com.mftplus.ecommerce.repository.ImageRepository;
 import com.mftplus.ecommerce.service.ImageService;
@@ -36,6 +37,13 @@ public class ImageServiceImpl implements ImageService {
                 .build();
 
         return imageRepository.save(image);
+    }
+
+    @Override
+    public Image findByIdAndDeletedFalse(Long id) throws NoContentException {
+        return imageRepository.findByIdAndDeletedFalse(id).orElseThrow(
+                () -> new NoContentException("No Active Image Found with id : " + id)
+        );
     }
 
 }

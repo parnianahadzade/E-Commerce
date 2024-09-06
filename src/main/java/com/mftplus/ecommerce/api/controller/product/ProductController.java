@@ -3,20 +3,20 @@ package com.mftplus.ecommerce.api.controller.product;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.*;
 import com.mftplus.ecommerce.exception.DuplicateException;
+import com.mftplus.ecommerce.exception.InvalidDataException;
 import com.mftplus.ecommerce.exception.NoContentException;
+import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
+import com.mftplus.ecommerce.exception.dto.ApiResponse;
 import com.mftplus.ecommerce.model.entity.*;
 import com.mftplus.ecommerce.model.entity.enums.Size;
 import com.mftplus.ecommerce.service.impl.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,17 +36,23 @@ public class ProductController {
 
     private final ImageServiceImpl imageService;
 
+    private final ApiValidationComponent validationComponent;
 
-    public ProductController(ProductServiceImpl productService, CategoryServiceImpl categoryService, BrandServiceImpl brandService, ColorServiceImpl colorService, ImageServiceImpl imageService) {
+    private final InventoryServiceImpl inventoryService;
+
+
+    public ProductController(ProductServiceImpl productService, CategoryServiceImpl categoryService, BrandServiceImpl brandService, ColorServiceImpl colorService, ImageServiceImpl imageService, ApiValidationComponent validationComponent, InventoryServiceImpl inventoryService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.brandService = brandService;
         this.colorService = colorService;
         this.imageService = imageService;
+        this.validationComponent = validationComponent;
+        this.inventoryService = inventoryService;
     }
 
-    @JsonView(Views.ProductList.class)
     @GetMapping
+    @JsonView(Views.ProductList.class)
     public List<Product> findProducts
             (@RequestParam(value = "categoryId", required = false) Integer categoryId,
              @RequestParam(value = "brand", required = false) String brandName,
@@ -54,7 +60,11 @@ public class ProductController {
              @RequestParam(value = "minPrice", required = false) Integer minPrice,
              @RequestParam(value = "maxPrice", required = false) Integer maxPrice,
              @RequestParam(value = "enableOff", required = false) boolean enableOff,
-             @RequestParam(value = "pageNumber")int pageNumber){
+             @RequestParam(value = "pageNumber", required = false)Integer pageNumber) throws InvalidDataException, NoContentException {
+
+        if (pageNumber == null) {
+            throw new InvalidDataException("شماره صفحه وارد نشده است.");
+        }
 
         SearchRequest request = new SearchRequest();
         request.setName(name);
@@ -65,14 +75,20 @@ public class ProductController {
         request.setEnableOff(enableOff);
         request.setPageNumber(pageNumber);
 
-        return productService.findAllByCriteria(request);
+        List<Product> products = productService.findAllByCriteria(request);
+
+        if (products.isEmpty()) {
+            throw new NoContentException("موردی یافت نشد.");
+        }
+
+        return products;
 
     }
 
-    @JsonView(Views.singleProduct.class)
     @GetMapping(value = "/id/{id}")
-    public Product findById(@PathVariable Long id) throws NoContentException {
-        return productService.findByIdAndDeletedFalse(id);
+    @JsonView(Views.singleProduct.class)
+    public Product findById(@PathVariable Long id) throws NoContentException, InvalidDataException {
+        return productService.findById(id);
     }
 
     @GetMapping(value = "/{id}/code/{code}")
@@ -81,26 +97,17 @@ public class ProductController {
     }
 
 
-    //todo : needs re check for efficiency
-    @Transactional(rollbackOn = {NoContentException.class, IOException.class, DuplicateException.class})
-    @PostMapping(value = "/admin/save", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity saveProduct(
-            @Valid @RequestPart("productBody") ProductSaveDTO productSaveDTO,
-            BindingResult result,
-            @RequestPart("files")MultipartFile[] files,
-            @RequestPart("mainFile")MultipartFile mainFile
-            ) throws NoContentException, IOException, DuplicateException {
+    @Transactional(rollbackOn = {NoContentException.class, DuplicateException.class})
+    @PostMapping(value = "/admin/save")
+    public ResponseEntity saveProduct(@Valid @RequestBody ProductSaveDTO productSaveDTO,
+                                      BindingResult result) throws NoContentException, DuplicateException {
 
-//        if (result.hasErrors()) {
-//
-//            List<InputFieldError> fieldErrorList = result.getFieldErrors().stream()
-//                    .map(error -> new InputFieldError(error.getField(), error.getDefaultMessage()))
-//                    .collect(Collectors.toList());
-//
-//            ValidationResponse validationResponse = new ValidationResponse(fieldErrorList);
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationResponse);
-//
-//        }
+        //validating inputs
+        ApiResponse response = validationComponent.handleValidationErrors(result);
+
+        if (response.getFieldErrors() != null) {
+            return ResponseEntity.badRequest().body(response);
+        }
 
         Product product = new Product();
 
@@ -115,29 +122,31 @@ public class ProductController {
         product.setPrice(productSaveDTO.getPrice());
         product.setOffPercent(productSaveDTO.getOffPercent());
 
-        //images
-        List<Image> images = new ArrayList<>();
-        for (MultipartFile file : files) {
-            Image image = imageService.uploadImageToFileSystem(file);
-            images.add(image);
-
-            product.setImages(images);
-        }
-
         //main image
-        Image mainImage = imageService.uploadImageToFileSystem(mainFile);
+        Image mainImage = imageService.findByIdAndDeletedFalse(productSaveDTO.getMainImageId());
+        productService.findByMainImageIdAndDeletedFalse(mainImage.getId());
         product.setMainImage(mainImage);
 
+        //images
+        List<Long> imageIds = productSaveDTO.getImageIds();
+        List<Image> images = new ArrayList<>();
+        for (Long imageId : imageIds) {
+            Image image = imageService.findByIdAndDeletedFalse(imageId);
+            productService.findByImagesIdAndDeletedFalse(image.getId());
+            images.add(image);
+        }
+        product.setImages(images);
+
         //category
-        String categoryName = productSaveDTO.getCategoryName();
-        Category mainCategory = categoryService.findByNameAndDeletedFalse(categoryName);
+        Long categoryId = productSaveDTO.getCategoryId();
+        Category mainCategory = categoryService.findByIdAndDeletedFalse(categoryId);
         List<Category> categories = new ArrayList<>();
         for (String categoryNameOriginal : mainCategory.getCategoryPath()) {
             Category category = categoryService.findByNameAndDeletedFalse(categoryNameOriginal);
             categories.add(category);
 
-            product.setCategories(categories);
         }
+        product.setCategories(categories);
 
         //brand
         Brand brand = brandService.findByIdAndDeletedFalse(productSaveDTO.getBrandId());
@@ -148,11 +157,11 @@ public class ProductController {
         product.setColor(color);
 
 
-        Product product1 = productService.save(product);
+        productService.save(product);
 
         //inventory
         List<InventorySaveDTO> inventorySaveDTOS = productSaveDTO.getInventorySaveDTOS();
-        List<Inventory> inventories = new ArrayList<>();
+//        List<Inventory> inventories = new ArrayList<>();
         for (InventorySaveDTO inventorySaveDTO : inventorySaveDTOS) {
 
             Inventory inventory = new Inventory();
@@ -163,16 +172,20 @@ public class ProductController {
             inventory.setSize(Size.valueOf(inventorySaveDTO.getSize()));
 
 
-            inventory.setProduct(product1);
+            inventory.setProduct(product);
 
-            inventories.add(inventory);
-
-            product.setInventories(inventories);
+            inventoryService.save(inventory);
+//            inventories.add(inventory);
+//
+//            product.setInventories(inventories);
         }
 
-        productService.save(product);
+//        productService.save(product);
 
-        return ResponseEntity.ok("success");
+        response.setSuccess(true);
+        response.setSuccessMessage("کالا با موفقیت ایجاد شد.");
+
+        return ResponseEntity.ok(response);
     }
 
 

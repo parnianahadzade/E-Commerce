@@ -15,15 +15,16 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Entity(name = "imageEntity")
 @Table(name = "image_tbl")
-@JsonView({Views.singleProduct.class,Views.Category.class})
-public class Image {
+public class Image extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @JsonView(Views.singleProduct.class)
     private Long id;
 
     @Lob
     @Column(name = "i_file_path",nullable = false)
+    @JsonView(Views.singleProduct.class)
     private String filePath;
 
 }

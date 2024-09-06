@@ -42,8 +42,7 @@ public class ProductSaveDTO {
     @Min(value = 1, message = "قد کالا باید بیشتر یا برابر یک باشد.")
     private Integer height;
 
-    //todo : categoryId
-    private String categoryName;
+    private Long categoryId;
 
     private Long brandId;
 
@@ -51,7 +50,9 @@ public class ProductSaveDTO {
 
     private List<InventorySaveDTO> inventorySaveDTOS;
 
-    //todo mainImageId + mainImageIds
+    private Long mainImageId;
+
+    private List<Long> imageIds;
 
 
 

@@ -19,70 +19,73 @@ import java.util.List;
 @Entity(name = "productEntity")
 @Table(name = "product_tbl", uniqueConstraints = {@UniqueConstraint(columnNames = {"p_name", "color_id"})})
 public class Product extends Base{
-    @JsonView({Views.ProductList.class,Views.Category.class})
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @JsonView(Views.ProductList.class)
     private Long id;
 
-    @JsonView({Views.singleProduct.class,Views.Category.class})
     @Column(name = "p_code", length = 25, nullable = false)
+    @JsonView(Views.singleProduct.class)
     private String code;
 
-    @JsonView({Views.ProductList.class,Views.Category.class})
     @Column(name = "p_name", nullable = false, unique = true, length = 20)
+    @JsonView(Views.ProductList.class)
     private String name;
 
-    @JsonView({Views.singleProduct.class,Views.Category.class})
     @Column(name = "p_description", nullable = false, length = 100)
+    @JsonView(Views.singleProduct.class)
     private String description;
 
-    @JsonView({Views.singleProduct.class,Views.Category.class})
     @ManyToOne
     @JoinColumn(name = "brand_id")
+    @JsonView(Views.singleProduct.class)
     private Brand brand;
 
-    @JsonView({Views.ProductList.class,Views.Category.class})
-    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @OneToMany(mappedBy = "product")
+    @JsonView(Views.ProductList.class)
     private List<Inventory> inventories = new ArrayList<>();
 
-    @JsonView({Views.singleProduct.class})
     @ManyToMany
     @JoinTable(name = "category_products_tbl",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "categories_id"))
+    @JsonView(Views.singleProduct.class)
     private List<Category> categories = new ArrayList<>();
 
-    @JsonView({Views.singleProduct.class,Views.Category.class})
     @OneToMany
     @JoinTable(name = "product_images_tbl")
+    @JsonView(Views.singleProduct.class)
     private List<Image> images;
 
-    @JsonView({Views.ProductList.class,Views.Category.class})
     @OneToOne
     @JoinColumn(name = "p_main_image_id")
+    @JsonView(Views.ProductList.class)
     private Image mainImage;
 
-    @JsonView({Views.singleProduct.class,Views.Category.class})
     @ManyToOne
     @JoinColumn(name = "color_id")
+    @JsonView(Views.singleProduct.class)
     private Color color;
 
-    @JsonView({Views.ProductList.class,Views.Category.class})
     @Column(name = "p_price",nullable = false)
+    @JsonView(Views.ProductList.class)
     private Integer price;
 
-    @JsonView({Views.ProductList.class,Views.Category.class})
     @Column(name = "p_off_percent",nullable = false)
+    @JsonView(Views.ProductList.class)
     private Integer offPercent;
 
     @Column(name = "p_material", length = 10, nullable = false)
+    @JsonView(Views.singleProduct.class)
     private String material;
 
     @Column(name = "p_pattern", length = 10, nullable = false)
+    @JsonView(Views.singleProduct.class)
     private String pattern;
 
     @Column(name = "p_height", nullable = false)
+    @JsonView(Views.singleProduct.class)
     private Integer height;
 
 }

@@ -22,5 +22,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByIdNotAndCode(Long id, String code);
 
+    Optional<Product> findByMainImageIdAndDeletedFalse(Long id);
 
+    Optional<Product> findByImagesIdAndDeletedFalse(Long id);
 }

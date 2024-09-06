@@ -90,4 +90,24 @@ public class ProductServiceImpl implements ProductService {
             throw new DuplicateException("A product with name : " + name + " already exists.");
         }
     }
+
+    @Override
+    public Optional<Product> findByMainImageIdAndDeletedFalse(Long id) throws DuplicateException {
+        Optional<Product> optional = productRepository.findByMainImageIdAndDeletedFalse(id);
+        if (optional.isEmpty()) {
+            return optional;
+        } else {
+            throw new DuplicateException("A product with mainImageId : " + id + " already exists.");
+        }
+    }
+
+    @Override
+    public Optional<Product> findByImagesIdAndDeletedFalse(Long id) throws DuplicateException {
+        Optional<Product> optional = productRepository.findByImagesIdAndDeletedFalse(id);
+        if (optional.isEmpty()) {
+            return optional;
+        } else {
+            throw new DuplicateException("A product with imageId : " + id + " already exists.");
+        }
+    }
 }

@@ -29,4 +29,8 @@ public interface ProductService {
     List<Product> findByIdNotAndCode(Long id, String code);
 
     Optional<Product> findByNameAndDeletedFalse(String name) throws DuplicateException;
+
+    Optional<Product> findByMainImageIdAndDeletedFalse(Long id) throws DuplicateException;
+
+    Optional<Product> findByImagesIdAndDeletedFalse(Long id) throws DuplicateException;
 }
