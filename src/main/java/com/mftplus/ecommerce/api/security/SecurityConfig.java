@@ -39,7 +39,7 @@ public class SecurityConfig {
                                 "/product/**","/api/product/id/**","/cart/**","/api/color/name")
                         .permitAll()
 
-                        .requestMatchers("/admin","/api/product/admin/save","/api/category/admin/save",
+                        .requestMatchers("/api/product/admin/save","/api/category/admin/save",
                                 "/api/image/upload")
                             .hasAuthority("admin")
 
