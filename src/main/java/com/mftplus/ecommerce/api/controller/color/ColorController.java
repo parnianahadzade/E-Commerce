@@ -3,6 +3,7 @@ package com.mftplus.ecommerce.api.controller.color;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.ColorSaveDTO;
 import com.mftplus.ecommerce.exception.DuplicateException;
+import com.mftplus.ecommerce.exception.InvalidDataException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
 import com.mftplus.ecommerce.exception.dto.ApiResponse;
@@ -35,9 +36,18 @@ public class ColorController {
     }
 
     @JsonView(Views.ColorName.class)
-    @GetMapping("/name/{colorName}")
-    public List<Color> findColorsByNameStartsWith(@PathVariable String colorName) {
-        return colorService.findByNameStartsWithIgnoreCaseAndDeletedFalse(colorName);
+    @GetMapping("/findBy")
+    public List<Color> findColorsByNameStartsWith(@RequestParam(required = false, value = "colorName") String colorName) throws NoContentException, InvalidDataException {
+        if (colorName == null) {
+            throw new InvalidDataException("نام دسته بندی وارد نشده است.");
+        }
+
+        List<Color> colors = colorService.findByNameStartsWithIgnoreCaseAndDeletedFalse(colorName);
+        if (colors.isEmpty()) {
+            throw new NoContentException("موردی یافت نشد.");
+        }
+
+        return colors;
     }
 
     @PostMapping("/admin/save")

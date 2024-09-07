@@ -42,7 +42,7 @@ public class CategoryController {
         return categoryService.findByNameAndDeletedFalse("دیجی کالا");
     }
 
-    @GetMapping("/name")
+    @GetMapping("/findBy")
     @JsonView(Views.CategoryName.class)
     public List<Category> findCategoriesByNameStartsWith(@RequestParam(required = false, value = "categoryName") String categoryName) throws InvalidDataException, NoContentException {
         if (categoryName == null) {
