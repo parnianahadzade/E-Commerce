@@ -51,7 +51,7 @@ public class AuthenticationController {
     //user registration
     @Transactional(rollbackOn = {NoContentException.class, DuplicateException.class, EmailFailureException.class})
     @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @RequestBody RegistrationDTO registrationDTO, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException, InvalidDataException {
+    public ResponseEntity<ApiResponse> registerUser(@Valid @RequestBody RegistrationDTO registrationDTO, BindingResult result) throws DuplicateException, EmailFailureException, NoContentException, InvalidDataException {
 
         //validation
         ApiResponse response = validationComponent.handleValidationErrors(result);
@@ -91,7 +91,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity loginUser(@Valid @RequestBody LoginDTO loginDTO, BindingResult result) throws UserAccessDeniedException {
+    public ResponseEntity<ApiResponse> loginUser(@Valid @RequestBody LoginDTO loginDTO, BindingResult result) throws UserAccessDeniedException {
 
         //validation
         ApiResponse response = validationComponent.handleValidationErrors(result);
@@ -128,7 +128,8 @@ public class AuthenticationController {
 
             return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
 
-        } catch (EmailFailureException exception) {
+        }
+        catch (EmailFailureException exception) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
@@ -157,7 +158,7 @@ public class AuthenticationController {
 
     @GetMapping("/me")
     @JsonView(Views.UserInfo.class)
-    public User getLoggedInUserProfile(@AuthenticationPrincipal User user) throws UserAccessDeniedException {
+    public User getLoggedInUserProfile(@AuthenticationPrincipal User user) {
         return user;
     }
 

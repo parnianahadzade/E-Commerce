@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -50,7 +51,7 @@ public class Product extends Base{
     @JoinTable(name = "category_products_tbl",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "categories_id"))
-    @JsonView(Views.singleProduct.class)
+    @JsonIgnore
     private List<Category> categories = new ArrayList<>();
 
     @OneToMany
@@ -87,5 +88,10 @@ public class Product extends Base{
     @Column(name = "p_height", nullable = false)
     @JsonView(Views.singleProduct.class)
     private Integer height;
+
+    @ManyToOne
+    @JoinColumn(name = "main_category_id")
+    @JsonView(Views.singleProduct.class)
+    private Category mainCategory;
 
 }

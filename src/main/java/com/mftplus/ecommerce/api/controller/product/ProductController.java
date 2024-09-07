@@ -140,6 +140,7 @@ public class ProductController {
         //category
         Long categoryId = productSaveDTO.getCategoryId();
         Category mainCategory = categoryService.findByIdAndDeletedFalse(categoryId);
+        product.setMainCategory(mainCategory);
         List<Category> categories = new ArrayList<>();
         for (String categoryNameOriginal : mainCategory.getCategoryPath()) {
             Category category = categoryService.findByNameAndDeletedFalse(categoryNameOriginal);
