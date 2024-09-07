@@ -5,7 +5,6 @@ import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Category;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CategoryService {
 
@@ -19,7 +18,7 @@ public interface CategoryService {
 
     Category findByNameAndDeletedFalse(String name) throws NoContentException;
 
-    Optional<Category> findByNameAndDeletedFalseWithReturn(String name) throws DuplicateException;
+    void findByNameAndDeletedFalseWithOutReturn(String name) throws DuplicateException;
 
     Category findById(Long id) throws NoContentException;
 

@@ -60,10 +60,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Optional<Category> findByNameAndDeletedFalseWithReturn(String name) throws DuplicateException {
+    public void findByNameAndDeletedFalseWithOutReturn(String name) throws DuplicateException {
         Optional<Category> optional = categoryRepository.findByNameAndDeletedFalse(name);
         if (optional.isEmpty()) {
-            return optional;
+
         } else {
             throw new DuplicateException("A category with name : " + name + " already exists.");
         }

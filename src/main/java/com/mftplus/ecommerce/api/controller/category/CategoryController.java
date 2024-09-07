@@ -71,7 +71,7 @@ public class CategoryController {
 
         Category parentCategory = categoryService.findByIdAndDeletedFalse(categorySaveDTO.getParentId());
 
-        categoryService.findByNameAndDeletedFalseWithReturn(categorySaveDTO.getName());
+        categoryService.findByNameAndDeletedFalseWithOutReturn(categorySaveDTO.getName());
 
         Category category = new Category();
         category.setName(categorySaveDTO.getName());
@@ -104,7 +104,7 @@ public class CategoryController {
         Category parentCategory = categoryService.findByIdAndDeletedFalse(categorySaveDTO.getParentId());
 
         if (!Objects.equals(category.getName(), categorySaveDTO.getName())) {
-            categoryService.findByNameAndDeletedFalseWithReturn(categorySaveDTO.getName());
+            categoryService.findByNameAndDeletedFalseWithOutReturn(categorySaveDTO.getName());
         }
 
         category.setId(category.getId());
