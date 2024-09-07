@@ -35,8 +35,8 @@ public class ColorController {
     }
 
     @JsonView(Views.ColorName.class)
-    @GetMapping("/name")
-    public List<Color> findColorsByNameStartsWith(@RequestParam(value = "colorName") String colorName) {
+    @GetMapping("/name/{colorName}")
+    public List<Color> findColorsByNameStartsWith(@PathVariable String colorName) {
         return colorService.findByNameStartsWithIgnoreCaseAndDeletedFalse(colorName);
     }
 
