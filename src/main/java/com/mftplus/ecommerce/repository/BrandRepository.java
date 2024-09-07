@@ -22,4 +22,5 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
     @Query("update brandEntity oo set oo.deleted=true where oo.id=:id")
     void logicalRemove(Long id);
 
+    List<Brand> findByNameStartsWithIgnoreCaseAndDeletedFalse(String name);
 }

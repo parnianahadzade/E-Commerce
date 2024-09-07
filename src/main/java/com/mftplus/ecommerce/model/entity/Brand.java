@@ -23,11 +23,11 @@ public class Brand extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @JsonView(Views.singleProduct.class)
+    @JsonView({Views.singleProduct.class,Views.BrandName.class})
     private Long id;
 
     @Column(name = "b_name", nullable = false, unique = true, length = 20)
-    @JsonView(Views.singleProduct.class)
+    @JsonView({Views.singleProduct.class,Views.BrandName.class})
     private String name;
 
     @JsonIgnore

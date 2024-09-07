@@ -24,4 +24,6 @@ public interface BrandService {
     List<Brand> findAll();
 
     List<Brand> findAllByDeletedFalse();
+
+    List<Brand> findByNameStartsWithIgnoreCaseAndDeletedFalse(String name);
 }

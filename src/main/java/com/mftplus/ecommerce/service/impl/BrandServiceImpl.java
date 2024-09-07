@@ -76,4 +76,9 @@ public class BrandServiceImpl implements BrandService {
     public List<Brand> findAllByDeletedFalse() {
         return brandRepository.findAllByDeletedFalse();
     }
+
+    @Override
+    public List<Brand> findByNameStartsWithIgnoreCaseAndDeletedFalse(String name) {
+        return brandRepository.findByNameStartsWithIgnoreCaseAndDeletedFalse(name);
+    }
 }
