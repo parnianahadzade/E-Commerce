@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.service.impl;
 
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Category;
 import com.mftplus.ecommerce.repository.CategoryRepository;
@@ -7,6 +8,7 @@ import com.mftplus.ecommerce.service.CategoryService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -25,10 +27,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category update(Category category) throws NoContentException {
-        categoryRepository.findByIdAndDeletedFalse(category.getId()).orElseThrow(
+        Category existingCategory = categoryRepository.findByIdAndDeletedFalse(category.getId()).orElseThrow(
                 () -> new NoContentException("No Active Category Found with id : " + category.getId())
         );
-        return categoryRepository.save(category);
+        existingCategory.setParentCategory(category.getParentCategory());
+        existingCategory.setName(category.getName());
+
+        return categoryRepository.save(existingCategory);
     }
 
     @Override
@@ -52,6 +57,16 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findByNameAndDeletedFalse(name).orElseThrow(
                 () -> new NoContentException("No Category Found with name : " + name)
         );
+    }
+
+    @Override
+    public Optional<Category> findByNameAndDeletedFalseWithReturn(String name) throws DuplicateException {
+        Optional<Category> optional = categoryRepository.findByNameAndDeletedFalse(name);
+        if (optional.isEmpty()) {
+            return optional;
+        } else {
+            throw new DuplicateException("A category with name : " + name + " already exists.");
+        }
     }
 
     @Override

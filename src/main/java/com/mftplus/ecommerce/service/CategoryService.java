@@ -1,9 +1,11 @@
 package com.mftplus.ecommerce.service;
 
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Category;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CategoryService {
 
@@ -16,6 +18,8 @@ public interface CategoryService {
     void remove(Long id) throws NoContentException;
 
     Category findByNameAndDeletedFalse(String name) throws NoContentException;
+
+    Optional<Category> findByNameAndDeletedFalseWithReturn(String name) throws DuplicateException;
 
     Category findById(Long id) throws NoContentException;
 

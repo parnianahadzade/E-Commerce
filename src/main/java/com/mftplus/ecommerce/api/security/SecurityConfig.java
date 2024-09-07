@@ -40,7 +40,7 @@ public class SecurityConfig {
                         .permitAll()
 
                         .requestMatchers("/api/product/admin/save","/api/category/admin/save",
-                                "/api/image/upload")
+                                "/api/image/upload", "/api/category/admin/update/")
                             .hasAuthority("admin")
 
                         .requestMatchers("/api/auth/forgot","/api/auth/reset","/api/auth/me",

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("${apiPrefix}/category")
@@ -58,7 +59,7 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/save")
-    public ResponseEntity saveCategory(@Valid @RequestBody CategorySaveDTO categorySaveDTO,
+    public ResponseEntity<ApiResponse> saveCategory(@Valid @RequestBody CategorySaveDTO categorySaveDTO,
                                        BindingResult result) throws NoContentException, DuplicateException {
 
         //validating inputs
@@ -70,25 +71,56 @@ public class CategoryController {
 
         Category parentCategory = categoryService.findByIdAndDeletedFalse(categorySaveDTO.getParentId());
 
-        try {
-            categoryService.findByNameAndDeletedFalse(categorySaveDTO.getName());
-            throw new DuplicateException("دسته بندی با این نام وجود دارد.");
+        categoryService.findByNameAndDeletedFalseWithReturn(categorySaveDTO.getName());
 
-        } catch (NoContentException e) {
-            Category category = new Category();
-            category.setName(categorySaveDTO.getName());
-            category.setParentCategory(parentCategory);
-            categoryService.save(category);
+        Category category = new Category();
+        category.setName(categorySaveDTO.getName());
+        category.setParentCategory(parentCategory);
+        categoryService.save(category);
 
-            response.setSuccess(true);
-            response.setSuccessMessage("دستبه بندی با موفقیت ایجاد شد.");
+        response.setSuccess(true);
+        response.setSuccessMessage("دستبه بندی با موفقیت ایجاد شد.");
 
-            Map<String, Object> data = new HashMap<>();
-            data.put("category", category);
-            response.setData(data);
-        }
+        Map<String, Object> data = new HashMap<>();
+        data.put("category", category);
+        response.setData(data);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/admin/update/{categoryId}")
+    public ResponseEntity<ApiResponse> updateCategory(@Valid @RequestBody CategorySaveDTO categorySaveDTO,
+                                         BindingResult result, @PathVariable Long categoryId) throws NoContentException, DuplicateException {
+
+        Category category = categoryService.findByIdAndDeletedFalse(categoryId);
+
+        //validating inputs
+        ApiResponse response = validationComponent.handleValidationErrors(result);
+
+        if (response.getFieldErrors() != null) {
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        Category parentCategory = categoryService.findByIdAndDeletedFalse(categorySaveDTO.getParentId());
+
+        if (!Objects.equals(category.getName(), categorySaveDTO.getName())) {
+            categoryService.findByNameAndDeletedFalseWithReturn(categorySaveDTO.getName());
+        }
+
+        category.setId(category.getId());
+        category.setName(categorySaveDTO.getName());
+        category.setParentCategory(parentCategory);
+        categoryService.update(category);
+
+        response.setSuccess(true);
+        response.setSuccessMessage("دستبه بندی با موفقیت بروزرسانی شد.");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("category", category);
+        response.setData(data);
+
+        return ResponseEntity.ok(response);
+
     }
 
 }
