@@ -38,4 +38,8 @@ public class Views {
     public static class UserInfo {
 
     }
+
+    public static class BrandName {
+
+    }
 }

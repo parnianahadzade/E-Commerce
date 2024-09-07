@@ -91,6 +91,7 @@ public class ProductController {
         return productService.findById(id);
     }
 
+    //todo : limit 10
     @GetMapping(value = "/{id}/code/{code}")
     public List<Product> findByIdNotAndCode(@PathVariable String code, @PathVariable Long id) {
         return productService.findByIdNotAndCode(id,code);
@@ -161,7 +162,7 @@ public class ProductController {
         productService.save(product);
 
         //inventory
-        List<InventorySaveDTO> inventorySaveDTOS = productSaveDTO.getInventorySaveDTOS();
+        List<InventorySaveDTO> inventorySaveDTOS = productSaveDTO.getInventories();
 //        List<Inventory> inventories = new ArrayList<>();
         for (InventorySaveDTO inventorySaveDTO : inventorySaveDTOS) {
 

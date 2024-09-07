@@ -48,7 +48,7 @@ public class ProductSaveDTO {
 
     private Long colorId;
 
-    private List<InventorySaveDTO> inventorySaveDTOS;
+    private List<InventorySaveDTO> inventories;
 
     private Long mainImageId;
 

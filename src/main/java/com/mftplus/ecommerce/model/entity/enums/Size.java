@@ -12,7 +12,7 @@ public enum Size {
     M("M"),
     L("L"),
     XL("XL"),
-    XL2("2XL"),
+    XL2("XL2"),
     XL3("3XL")
     ;
 
