@@ -36,12 +36,14 @@ public class CategoryController {
         this.validationComponent = validationComponent;
     }
 
+    //category find by first category
     @GetMapping
     @JsonView(Views.Category.class)
     public Category findCategories() throws NoContentException {
-        return categoryService.findByNameAndDeletedFalse("دیجی کالا");
+        return categoryService.findByIdAndDeletedFalse(1L);
     }
 
+    //category find by name
     @GetMapping("/findBy")
     @JsonView(Views.CategoryName.class)
     public List<Category> findCategoriesByNameStartsWith(@RequestParam(required = false, value = "categoryName") String categoryName) throws InvalidDataException, NoContentException {
@@ -58,6 +60,14 @@ public class CategoryController {
         return categories;
     }
 
+    //category find by id
+    @GetMapping("/id/{categoryId}")
+    @JsonView(Views.Category.class)
+    public Category findCategoryById(@PathVariable Long categoryId) throws NoContentException {
+        return categoryService.findByIdAndDeletedFalse(categoryId);
+    }
+
+    //category save
     @PostMapping("/admin/save")
     public ResponseEntity<ApiResponse> saveCategory(@Valid @RequestBody CategorySaveDTO categorySaveDTO,
                                        BindingResult result) throws NoContentException, DuplicateException {
@@ -88,6 +98,7 @@ public class CategoryController {
         return ResponseEntity.ok(response);
     }
 
+    //category update
     @PutMapping("/admin/update/{categoryId}")
     public ResponseEntity<ApiResponse> updateCategory(@Valid @RequestBody CategorySaveDTO categorySaveDTO,
                                          BindingResult result, @PathVariable Long categoryId) throws NoContentException, DuplicateException {
@@ -121,6 +132,24 @@ public class CategoryController {
 
         return ResponseEntity.ok(response);
 
+    }
+
+    //category logical remove
+    @DeleteMapping("/admin/delete/{categoryId}")
+    public ResponseEntity<ApiResponse> logicalRemoveCategory(@PathVariable Long categoryId) throws NoContentException {
+
+        ApiResponse response = new ApiResponse();
+
+        categoryService.logicalRemove(categoryId);
+
+        response.setSuccess(true);
+        response.setSuccessMessage("دسته بندی با موفقیت حذف شد.");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("categoryId", categoryId);
+        response.setData(data);
+
+        return ResponseEntity.ok(response);
     }
 
 }

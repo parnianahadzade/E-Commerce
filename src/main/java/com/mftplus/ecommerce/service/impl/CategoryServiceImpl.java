@@ -5,6 +5,7 @@ import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Category;
 import com.mftplus.ecommerce.repository.CategoryRepository;
 import com.mftplus.ecommerce.service.CategoryService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.save(existingCategory);
     }
 
+    @Transactional
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         categoryRepository.findByIdAndDeletedFalse(id).orElseThrow(

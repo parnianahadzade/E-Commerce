@@ -14,7 +14,6 @@ import lombok.experimental.SuperBuilder;
 @ToString
 @MappedSuperclass
 public class Base {
-    // TODO: 7/30/2024 version id
 
     @Version
     @JsonIgnore

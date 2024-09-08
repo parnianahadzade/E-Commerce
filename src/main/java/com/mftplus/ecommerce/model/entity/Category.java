@@ -35,9 +35,23 @@ public class Category extends Base{
     @JoinColumn(name = "category_id")
     private Category parentCategory;
 
-    @JsonView(Views.Category.class)
+    @JsonIgnore
     @OneToMany(mappedBy = "parentCategory")
     private List<Category> childCategories = new ArrayList<>();
+
+    @JsonView(Views.Category.class)
+    public List<Category> getChildCategories() {
+        List<Category> activeChildCategories = new ArrayList<>();
+
+        for (Category childCategory : childCategories) {
+            // Check if the child category is not deleted
+            if (!childCategory.isDeleted()) {
+                activeChildCategories.add(childCategory);
+            }
+        }
+
+        return activeChildCategories;
+    }
 
     @JsonIgnore
     @ManyToMany(mappedBy = "categories")

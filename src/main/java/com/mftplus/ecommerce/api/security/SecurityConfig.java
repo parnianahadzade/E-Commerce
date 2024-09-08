@@ -37,12 +37,13 @@ public class SecurityConfig {
                         .requestMatchers("/api/product","/search", "/api/auth/register", "/api/auth/login"
                                 ,"/error","/", "/api/auth/verify","/api/category", "/api/category/findBy",
                                 "/product/**","/api/product/id/*","/cart/**","/api/color/findBy",
-                                "/api/brand/findBy","/api/brand/id/*","/api/brand")
+                                "/api/brand/findBy","/api/brand/id/*","/api/brand", "/api/category/id/*")
                         .permitAll()
 
                         .requestMatchers("/api/product/admin/save","/api/category/admin/save",
                                 "/api/image/upload", "/api/category/admin/update/*", "/api/brand/admin/save",
-                                "/api/brand/admin/update/*","/api/brand/admin/delete/*")
+                                "/api/brand/admin/update/*","/api/brand/admin/delete/*",
+                                "/api/category/admin/delete/*")
                         .hasAuthority("admin")
 
                         .requestMatchers("/api/auth/forgot","/api/auth/reset","/api/auth/me",
