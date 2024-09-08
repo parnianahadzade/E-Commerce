@@ -63,9 +63,14 @@ public class BrandController {
     //brand find all pageable
     @GetMapping
     @JsonView(Views.BrandName.class)
-    public List<Brand> findBrands(@RequestParam(required = false, value = "pageNumber") Integer pageNumber) throws NoContentException, InvalidDataException {
+    public List<Brand> findBrands(@RequestParam(required = false, value = "pageNumber") Integer pageNumber,
+                                  @RequestParam(required = false, value = "brandName") String brandName) throws NoContentException, InvalidDataException {
         if (pageNumber == null) {
             throw new InvalidDataException("شماره صفحه وارد نشده است.");
+        }
+
+        if (brandName != null) {
+            return brandService.findByNameStartsWithIgnoreCaseAndDeletedFalse(brandName);
         }
 
         int pageSize = 10;

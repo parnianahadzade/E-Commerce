@@ -63,9 +63,14 @@ public class ColorController {
     //color find all pageable
     @GetMapping
     @JsonView(Views.Color.class)
-    public List<Color> findColors(@RequestParam(required = false, value = "pageNumber") Integer pageNumber) throws NoContentException, InvalidDataException {
+    public List<Color> findColors(@RequestParam(required = false, value = "pageNumber") Integer pageNumber,
+                                  @RequestParam(required = false, value = "colorName") String colorName) throws NoContentException, InvalidDataException {
         if (pageNumber == null) {
             throw new InvalidDataException("شماره صفحه وارد نشده است.");
+        }
+
+        if (colorName != null) {
+            return colorService.findByNameStartsWithIgnoreCaseAndDeletedFalse(colorName);
         }
 
         int pageSize = 10;
