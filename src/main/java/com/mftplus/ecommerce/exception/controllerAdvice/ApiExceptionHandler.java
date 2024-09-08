@@ -109,8 +109,8 @@ public class ApiExceptionHandler {
 
     }
 
-    @ExceptionHandler(value = {UserIdentification.class})
-    public ResponseEntity<Object> handleUserNotIdentified(UserIdentification e){
+    @ExceptionHandler(value = {UserIdentificationException.class})
+    public ResponseEntity<Object> handleUserNotIdentified(UserIdentificationException e){
 
         ApiOverallError apiOverallError = new ApiOverallError(
                 e.getMessage(),

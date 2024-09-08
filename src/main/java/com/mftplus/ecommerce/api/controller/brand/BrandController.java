@@ -62,7 +62,7 @@ public class BrandController {
 
     //brand find all pageable
     @GetMapping
-    @JsonView(Views.BrandName.class)
+    @JsonView(Views.Brand.class)
     public List<Brand> findBrands(@RequestParam(required = false, value = "pageNumber") Integer pageNumber,
                                   @RequestParam(required = false, value = "brandName") String brandName) throws NoContentException, InvalidDataException {
         if (pageNumber == null) {

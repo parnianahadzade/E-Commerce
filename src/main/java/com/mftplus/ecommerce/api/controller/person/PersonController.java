@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.UserIdentificationDTO;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.exception.UserAccessDeniedException;
-import com.mftplus.ecommerce.exception.UserIdentification;
+import com.mftplus.ecommerce.exception.UserIdentificationException;
 import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
 import com.mftplus.ecommerce.exception.dto.ApiResponse;
 import com.mftplus.ecommerce.model.entity.*;
@@ -57,12 +57,12 @@ public class PersonController {
 
     //person save or user profile creation, admin has no access
     @PostMapping("/save")
-    @Transactional(rollbackOn = {NoContentException.class,UserIdentification.class})
+    @Transactional(rollbackOn = {NoContentException.class, UserIdentificationException.class})
     public ResponseEntity<ApiResponse> savePerson(@Valid @RequestBody UserIdentificationDTO userIdentificationDTO,
-                                     BindingResult result, @AuthenticationPrincipal User user) throws UserIdentification, NoContentException {
+                                     BindingResult result, @AuthenticationPrincipal User user) throws UserIdentificationException, NoContentException {
 
         if (user.isIdentified()) {
-            throw new UserIdentification("پروفایل کاربر قبلا ساخته شده.");
+            throw new UserIdentificationException("پروفایل کاربر قبلا ساخته شده.");
         }
 
         //validating inputs
