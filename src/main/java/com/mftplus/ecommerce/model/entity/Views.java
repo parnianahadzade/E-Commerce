@@ -34,6 +34,10 @@ public class Views {
 
     }
 
+    public static class Color extends ColorName {
+
+    }
+
     //view for showing info for the logged-in user
     public static class UserInfo {
 

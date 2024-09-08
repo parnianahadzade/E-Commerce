@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.service;
 
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Color;
 
@@ -17,6 +18,8 @@ public interface ColorService {
 
     Color findByNameAndDeletedFalse(String name) throws NoContentException;
 
+    void findByNameAndDeletedFalseWithOutReturn(String name) throws DuplicateException;
+
     Color findById(Long id) throws NoContentException;
 
     Color findByIdAndDeletedFalse(Long id) throws NoContentException;
@@ -24,6 +27,8 @@ public interface ColorService {
     List<Color> findAll();
 
     List<Color> findAllByDeletedFalse();
+
+    List<Color> findAllByDeletedFalse(Integer pageNumber, Integer pageSize);
 
     List<Color> findByNameStartsWithIgnoreCaseAndDeletedFalse(String name);
 }

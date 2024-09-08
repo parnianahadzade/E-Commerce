@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("${apiPrefix}/color")
@@ -35,14 +36,16 @@ public class ColorController {
         this.validationComponent = validationComponent;
     }
 
-    @JsonView(Views.ColorName.class)
+    //color find by name
     @GetMapping("/findBy")
+    @JsonView(Views.ColorName.class)
     public List<Color> findColorsByNameStartsWith(@RequestParam(required = false, value = "colorName") String colorName) throws NoContentException, InvalidDataException {
         if (colorName == null) {
-            throw new InvalidDataException("نام دسته بندی وارد نشده است.");
+            throw new InvalidDataException("نام رنگ وارد نشده است.");
         }
 
         List<Color> colors = colorService.findByNameStartsWithIgnoreCaseAndDeletedFalse(colorName);
+
         if (colors.isEmpty()) {
             throw new NoContentException("موردی یافت نشد.");
         }
@@ -50,8 +53,35 @@ public class ColorController {
         return colors;
     }
 
+    //color find by id
+    @GetMapping("/id/{colorId}")
+    @JsonView(Views.Color.class)
+    public Color findColorById(@PathVariable Long colorId) throws NoContentException {
+        return colorService.findByIdAndDeletedFalse(colorId);
+    }
+
+    //color find all pageable
+    @GetMapping
+    @JsonView(Views.Color.class)
+    public List<Color> findColors(@RequestParam(required = false, value = "pageNumber") Integer pageNumber) throws NoContentException, InvalidDataException {
+        if (pageNumber == null) {
+            throw new InvalidDataException("شماره صفحه وارد نشده است.");
+        }
+
+        int pageSize = 10;
+
+        List<Color> colors = colorService.findAllByDeletedFalse(pageNumber, pageSize);
+
+        if (colors.isEmpty()) {
+            throw new NoContentException("موردی یافت نشد.");
+        }
+
+        return colors;
+    }
+
+    //color save
     @PostMapping("/admin/save")
-    public ResponseEntity saveColor(@Valid @RequestBody ColorSaveDTO colorSaveDTO,
+    public ResponseEntity<ApiResponse> saveColor(@Valid @RequestBody ColorSaveDTO colorSaveDTO,
                                        BindingResult result) throws DuplicateException {
 
         //validation
@@ -61,23 +91,71 @@ public class ColorController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        try {
-            colorService.findByNameAndDeletedFalse(colorSaveDTO.getName());
-            throw new DuplicateException("رنگ با این نام وجود دارد.");
+        colorService.findByNameAndDeletedFalseWithOutReturn(colorSaveDTO.getName());
 
-        } catch (NoContentException e) {
-            Color color = new Color();
-            color.setName(colorSaveDTO.getName());
-            color.setHexCode(colorSaveDTO.getHexCode());
-            colorService.save(color);
+        Color color = new Color();
+        color.setName(colorSaveDTO.getName());
+        color.setHexCode(colorSaveDTO.getHexCode());
+        colorService.save(color);
 
-            response.setSuccess(true);
-            response.setSuccessMessage("رنگ با موفقیت ایجاد شد.");
+        response.setSuccess(true);
+        response.setSuccessMessage("رنگ با موفقیت ایجاد شد.");
 
-            Map<String, Object> data = new HashMap<>();
-            data.put("color", color);
-            response.setData(data);
+        Map<String, Object> data = new HashMap<>();
+        data.put("color", color);
+        response.setData(data);
+
+        return ResponseEntity.ok(response);
+    }
+
+    //color update
+    @PutMapping("/admin/update/{colorId}")
+    public ResponseEntity<ApiResponse> updateColor(@Valid @RequestBody ColorSaveDTO colorSaveDTO,
+                                                   BindingResult result, @PathVariable Long colorId) throws NoContentException, DuplicateException {
+
+        Color color = colorService.findByIdAndDeletedFalse(colorId);
+
+        //validating inputs
+        ApiResponse response = validationComponent.handleValidationErrors(result);
+
+        if (response.getFieldErrors() != null) {
+            return ResponseEntity.badRequest().body(response);
         }
+
+        if (!Objects.equals(color.getName(), colorSaveDTO.getName())) {
+            colorService.findByNameAndDeletedFalseWithOutReturn(colorSaveDTO.getName());
+        }
+
+        color.setId(color.getId());
+        color.setName(colorSaveDTO.getName());
+        color.setHexCode(colorSaveDTO.getHexCode());
+        colorService.update(color);
+
+        response.setSuccess(true);
+        response.setSuccessMessage("رنگ با موفقیت بروزرسانی شد.");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("color", color);
+        response.setData(data);
+
+        return ResponseEntity.ok(response);
+
+    }
+
+    //color logical remove
+    @DeleteMapping("/admin/delete/{colorId}")
+    public ResponseEntity<ApiResponse> logicalRemoveColor(@PathVariable Long colorId) throws NoContentException {
+
+        ApiResponse response = new ApiResponse();
+
+        colorService.logicalRemove(colorId);
+
+        response.setSuccess(true);
+        response.setSuccessMessage("رنگ با موفقیت حذف شد.");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("colorId", colorId);
+        response.setData(data);
 
         return ResponseEntity.ok(response);
     }

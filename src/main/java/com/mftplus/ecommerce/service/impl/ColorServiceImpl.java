@@ -1,12 +1,17 @@
 package com.mftplus.ecommerce.service.impl;
 
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Color;
 import com.mftplus.ecommerce.repository.ColorRepository;
 import com.mftplus.ecommerce.service.ColorService;
+import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ColorServiceImpl implements ColorService {
@@ -24,12 +29,16 @@ public class ColorServiceImpl implements ColorService {
 
     @Override
     public Color update(Color color) throws NoContentException {
-        colorRepository.findByIdAndDeletedFalse(color.getId()).orElseThrow(
+        Color existingColor = colorRepository.findByIdAndDeletedFalse(color.getId()).orElseThrow(
                 () -> new NoContentException("No Active Color Found with id : " + color.getId())
         );
-        return colorRepository.save(color);
+        existingColor.setName(color.getName());
+        existingColor.setHexCode(color.getHexCode());
+
+        return colorRepository.save(existingColor);
     }
 
+    @Transactional
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         colorRepository.findByIdAndDeletedFalse(id).orElseThrow(
@@ -54,6 +63,16 @@ public class ColorServiceImpl implements ColorService {
     }
 
     @Override
+    public void findByNameAndDeletedFalseWithOutReturn(String name) throws DuplicateException {
+        Optional<Color> optional = colorRepository.findByNameAndDeletedFalse(name);
+        if (optional.isEmpty()) {
+
+        } else {
+            throw new DuplicateException("A color with name : " + name + " already exists.");
+        }
+    }
+
+    @Override
     public Color findById(Long id) throws NoContentException {
         return colorRepository.findById(id).orElseThrow(
                 () -> new NoContentException("No Color Found with id : " + id)
@@ -75,6 +94,12 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public List<Color> findAllByDeletedFalse() {
         return colorRepository.findAllByDeletedFalse();
+    }
+
+    @Override
+    public List<Color> findAllByDeletedFalse(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return colorRepository.findAllByDeletedFalse(pageable);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class Color extends Base{
     private String name;
 
     @Column(name = "hex_code", nullable = false, length = 20)
-    @JsonView({Views.ColorName.class,Views.singleProduct.class})
+    @JsonView({Views.Color.class,Views.singleProduct.class})
     private String hexCode;
 
 }
