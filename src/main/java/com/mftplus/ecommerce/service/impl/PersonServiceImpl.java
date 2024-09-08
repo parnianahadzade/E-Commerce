@@ -15,8 +15,11 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
 
-    public PersonServiceImpl(PersonRepository personRepository) {
+    private final RoleServiceImpl roleService;
+
+    public PersonServiceImpl(PersonRepository personRepository, RoleServiceImpl roleService) {
         this.personRepository = personRepository;
+        this.roleService = roleService;
     }
 
     @Override
@@ -85,7 +88,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean userHasPermissionToPerson(User user, Long id) {
-        return Objects.equals(user.getPerson().getId(), id);
+    public boolean userHasPermissionToPerson(User user, Long id) throws NoContentException{
+        return Objects.equals(user.getPerson().getId(), id) || Objects.equals(user.getRoles(), roleService.findByIdAndDeletedFalse(2L));
     }
 }

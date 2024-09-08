@@ -16,19 +16,19 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @Entity(name = "addressEntity")
 @Table(name = "address_tbl")
-@JsonView(Views.PersonInfo.class)
 public class Address extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
     private Long id;
 
     @Column(name = "a_address_line", nullable = false, length = 50)
-    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
     private String addressLine;
 
     @Column(name = "a_postal_code", nullable = false, length = 10)
-    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
     private String postalCode;
 
     @JsonIgnore

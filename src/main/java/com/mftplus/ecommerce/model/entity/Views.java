@@ -26,7 +26,8 @@ public class Views {
 
     }
 
-    public static class PersonInfo {
+    //for displaying complete person information
+    public static class PersonAndUserInfo {
 
     }
 

@@ -16,28 +16,29 @@ public class Person extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
     private Long id;
 
     @Column(name = "p_first_name", nullable = false, length = 20)
-    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
     private String firstName;
 
     @Column(name = "p_last_name", nullable = false, length = 20)
-    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
     private String lastName;
 
     @Column(name = "p_phone_number", nullable = false, length = 11)
-    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
     private String phoneNumber;
 
     @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "address_id")
-    @JsonView({Views.PersonInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
     private Address address;
 
     @OneToOne
     @JoinColumn(name = "user_id")
+    @JsonView(Views.PersonAndUserInfo.class)
     private User user;
 
 }

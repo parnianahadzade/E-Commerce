@@ -7,10 +7,7 @@ import com.mftplus.ecommerce.exception.UserAccessDeniedException;
 import com.mftplus.ecommerce.exception.UserIdentification;
 import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
 import com.mftplus.ecommerce.exception.dto.ApiResponse;
-import com.mftplus.ecommerce.model.entity.Address;
-import com.mftplus.ecommerce.model.entity.Person;
-import com.mftplus.ecommerce.model.entity.User;
-import com.mftplus.ecommerce.model.entity.Views;
+import com.mftplus.ecommerce.model.entity.*;
 import com.mftplus.ecommerce.service.impl.AddressServiceImpl;
 import com.mftplus.ecommerce.service.impl.PersonServiceImpl;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
@@ -47,16 +44,21 @@ public class PersonController {
         this.validationComponent = validationComponent;
     }
 
-    @JsonView(Views.PersonInfo.class)
+    //person find by user
     @GetMapping
-    public Person findByUser(@AuthenticationPrincipal User user) throws NoContentException {
+    @JsonView(Views.PersonAndUserInfo.class)
+    public Person findPersonByUser(@AuthenticationPrincipal User user) throws NoContentException {
         return personService.findByUserUsernameAndDeletedFalse(user.getUsername());
     }
 
-    //user profile creation
-    @Transactional(rollbackOn = {NoContentException.class,UserIdentification.class})
+
+    //todo : findAll (criteria)
+
+
+    //person save or user profile creation, admin has no access
     @PostMapping("/save")
-    public ResponseEntity savePerson(@Valid @RequestBody UserIdentificationDTO userIdentificationDTO,
+    @Transactional(rollbackOn = {NoContentException.class,UserIdentification.class})
+    public ResponseEntity<ApiResponse> savePerson(@Valid @RequestBody UserIdentificationDTO userIdentificationDTO,
                                      BindingResult result, @AuthenticationPrincipal User user) throws UserIdentification, NoContentException {
 
         if (user.isIdentified()) {
@@ -98,10 +100,10 @@ public class PersonController {
     }
 
 
-    //user profile update
-    @Transactional(rollbackOn = {UserAccessDeniedException.class, NoContentException.class})
+    //person update or user profile update , admin also has access
     @PutMapping("/update/{personId}")
-    public ResponseEntity updatePerson(@Valid @RequestBody UserIdentificationDTO userIdentificationDTO,
+    @Transactional(rollbackOn = {UserAccessDeniedException.class, NoContentException.class})
+    public ResponseEntity<ApiResponse> updatePerson(@Valid @RequestBody UserIdentificationDTO userIdentificationDTO,
                                      BindingResult result, @AuthenticationPrincipal User user,
                                      @PathVariable Long personId) throws NoContentException, UserAccessDeniedException {
 
@@ -112,7 +114,7 @@ public class PersonController {
         //validating inputs
         ApiResponse response = validationComponent.handleValidationErrors(result);
 
-        if (!response.getFieldErrors().isEmpty()) {
+        if (response.getFieldErrors() != null) {
             return ResponseEntity.badRequest().body(response);
         }
 
@@ -122,8 +124,6 @@ public class PersonController {
         newAddress.setAddressLine(userIdentificationDTO.getAddressLine());
         newAddress.setPostalCode(userIdentificationDTO.getPostalCode());
         newAddress.setVersionId(existingAddress.getVersionId());
-//        addressService.update(newAddress);
-
 
         Person newPerson = new Person();
         newPerson.setId(personId);

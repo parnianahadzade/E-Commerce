@@ -23,11 +23,11 @@ public class User extends Base implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @JsonView(Views.UserInfo.class)
+    @JsonView({Views.PersonAndUserInfo.class,Views.UserInfo.class})
     private Long id;
 
     @Column(name = "u_username", nullable = false, unique = true, length = 50)
-    @JsonView(Views.UserInfo.class)
+    @JsonView({Views.UserInfo.class,Views.PersonAndUserInfo.class})
     private String username;
 
 
@@ -37,7 +37,7 @@ public class User extends Base implements UserDetails {
     private String password;
 
     @Column(name = "u_email", unique = true, length = 320)
-    @JsonView(Views.UserInfo.class)
+    @JsonView({Views.UserInfo.class,Views.PersonAndUserInfo.class})
     private String email;
 
     @JsonIgnore
@@ -46,7 +46,6 @@ public class User extends Base implements UserDetails {
     private List<VerificationToken> verificationTokens = new ArrayList<>();
 
     @Column(name = "email_verified", nullable = false)
-    @JsonView(Views.UserInfo.class)
     private Boolean emailVerified = false;
 
     @JsonIgnore
@@ -57,7 +56,6 @@ public class User extends Base implements UserDetails {
     private List<Role> roles;
 
     @Column(name = "u_is_identified", nullable = false)
-    @JsonView(Views.UserInfo.class)
     private boolean isIdentified;
 
     @OneToOne(mappedBy = "user")
