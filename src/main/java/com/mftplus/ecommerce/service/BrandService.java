@@ -28,5 +28,7 @@ public interface BrandService {
 
     List<Brand> findAllByDeletedFalse();
 
+    List<Brand> findAllByDeletedFalse(Integer pageNumber, Integer pageSize);
+
     List<Brand> findByNameStartsWithIgnoreCaseAndDeletedFalse(String name);
 }

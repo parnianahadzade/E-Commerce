@@ -5,6 +5,9 @@ import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Brand;
 import com.mftplus.ecommerce.repository.BrandRepository;
 import com.mftplus.ecommerce.service.BrandService;
+import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +35,7 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.save(brand);
     }
 
+    @Transactional
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         brandRepository.findByIdAndDeletedFalse(id).orElseThrow(
@@ -87,6 +91,12 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public List<Brand> findAllByDeletedFalse() {
         return brandRepository.findAllByDeletedFalse();
+    }
+
+    @Override
+    public List<Brand> findAllByDeletedFalse(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return brandRepository.findAllByDeletedFalse(pageable);
     }
 
     @Override

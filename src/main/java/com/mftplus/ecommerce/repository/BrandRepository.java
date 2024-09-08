@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.repository;
 
 import com.mftplus.ecommerce.model.entity.Brand;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,8 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     List<Brand> findAllByDeletedFalse();
 
+    List<Brand> findAllByDeletedFalse(Pageable pageable);
+
     Optional<Brand> findByIdAndDeletedFalse(Long id);
 
     @Modifying
@@ -23,4 +26,5 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
     void logicalRemove(Long id);
 
     List<Brand> findByNameStartsWithIgnoreCaseAndDeletedFalse(String name);
+
 }

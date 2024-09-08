@@ -35,7 +35,7 @@ public class Brand extends Base{
     private List<Product> products = new ArrayList<>();
 
     @Column(name = "b_explanation", nullable = false, length = 100)
-    @JsonView(Views.singleProduct.class)
+    @JsonView(Views.Brand.class)
     private String explanation;
 
 }

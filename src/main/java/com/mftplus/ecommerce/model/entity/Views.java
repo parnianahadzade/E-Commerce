@@ -39,7 +39,12 @@ public class Views {
 
     }
 
+    //only for brand name
     public static class BrandName {
+
+    }
+
+    public static class Brand extends BrandName{
 
     }
 }

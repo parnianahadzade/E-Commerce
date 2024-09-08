@@ -36,6 +36,7 @@ public class BrandController {
         this.validationComponent = validationComponent;
     }
 
+    //brand find by name
     @GetMapping("/findBy")
     @JsonView(Views.BrandName.class)
     public List<Brand> findBrandsByNameStartsWith(@RequestParam(required = false, value = "brandName") String brandName) throws InvalidDataException, NoContentException {
@@ -52,6 +53,34 @@ public class BrandController {
         return brands;
     }
 
+    //brand find by id
+    @GetMapping("/id/{brandId}")
+    @JsonView(Views.Brand.class)
+    public Brand findBrandById(@PathVariable Long brandId) throws NoContentException {
+        return brandService.findByIdAndDeletedFalse(brandId);
+    }
+
+    //brand find all pageable
+    @GetMapping
+    @JsonView(Views.BrandName.class)
+    public List<Brand> findBrands(@RequestParam(required = false, value = "pageNumber") Integer pageNumber) throws NoContentException, InvalidDataException {
+        if (pageNumber == null) {
+            throw new InvalidDataException("شماره صفحه وارد نشده است.");
+        }
+
+        int pageSize = 10;
+
+        List<Brand> brands = brandService.findAllByDeletedFalse(pageNumber, pageSize);
+
+        if (brands.isEmpty()) {
+            throw new NoContentException("موردی یافت نشد.");
+        }
+
+        return brands;
+    }
+
+
+    //brand save
     @PostMapping("/admin/save")
     public ResponseEntity<ApiResponse> saveBrand(@Valid @RequestBody BrandSaveDTO brandSaveDTO,
                                                  BindingResult result) throws DuplicateException {
@@ -79,6 +108,7 @@ public class BrandController {
         return ResponseEntity.ok(response);
     }
 
+    //brand update
     @PutMapping("/admin/update/{brandId}")
     public ResponseEntity<ApiResponse> updateBrand(@Valid @RequestBody BrandSaveDTO brandSaveDTO,
                                                       BindingResult result, @PathVariable Long brandId) throws NoContentException, DuplicateException {
@@ -110,5 +140,23 @@ public class BrandController {
 
         return ResponseEntity.ok(response);
 
+    }
+
+    //brand logical remove
+    @DeleteMapping("/admin/delete/{brandId}")
+    public ResponseEntity<ApiResponse> logicalRemoveBrand(@PathVariable Long brandId) throws NoContentException {
+
+        ApiResponse response = new ApiResponse();
+
+        brandService.logicalRemove(brandId);
+
+        response.setSuccess(true);
+        response.setSuccessMessage("برند با موفقیت حذف شد.");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("brandId", brandId);
+        response.setData(data);
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -36,18 +36,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/product","/search", "/api/auth/register", "/api/auth/login"
                                 ,"/error","/", "/api/auth/verify","/api/category", "/api/category/findBy",
-                                "/product/**","/api/product/id/**","/cart/**","/api/color/findBy",
-                                "/api/brand//findBy")
+                                "/product/**","/api/product/id/*","/cart/**","/api/color/findBy",
+                                "/api/brand/findBy","/api/brand/id/*","/api/brand")
                         .permitAll()
 
                         .requestMatchers("/api/product/admin/save","/api/category/admin/save",
-                                "/api/image/upload", "/api/category/admin/update/", "/api/brand/admin/save")
-                            .hasAuthority("admin")
+                                "/api/image/upload", "/api/category/admin/update/*", "/api/brand/admin/save",
+                                "/api/brand/admin/update/*","/api/brand/admin/delete/*")
+                        .hasAuthority("admin")
 
                         .requestMatchers("/api/auth/forgot","/api/auth/reset","/api/auth/me",
                                 "/websocket","/websocket/**","/api/order","/api/order/save",
                                 "/api/person","/api/person/save")
-                                        .hasAuthority("user")
+                        .hasAuthority("user")
 
                         .anyRequest().authenticated()
                 )
