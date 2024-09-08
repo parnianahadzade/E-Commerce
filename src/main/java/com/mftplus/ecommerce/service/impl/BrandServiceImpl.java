@@ -29,10 +29,13 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public Brand update(Brand brand) throws NoContentException {
-        brandRepository.findByIdAndDeletedFalse(brand.getId()).orElseThrow(
+        Brand existingBrand = brandRepository.findByIdAndDeletedFalse(brand.getId()).orElseThrow(
                 () -> new NoContentException("No Active Brand Found with id : " + brand.getId())
         );
-        return brandRepository.save(brand);
+        existingBrand.setName(brand.getName());
+        existingBrand.setExplanation(brand.getExplanation());
+
+        return brandRepository.save(existingBrand);
     }
 
     @Transactional
