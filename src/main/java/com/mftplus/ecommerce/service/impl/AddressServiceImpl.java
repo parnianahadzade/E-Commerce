@@ -4,6 +4,7 @@ import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Address;
 import com.mftplus.ecommerce.repository.AddressRepository;
 import com.mftplus.ecommerce.service.AddressService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.save(existingAddress);
     }
 
+    @Transactional
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         addressRepository.findByIdAndDeletedFalse(id).orElseThrow(

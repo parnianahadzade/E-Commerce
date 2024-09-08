@@ -4,6 +4,7 @@ import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.OrderInventory;
 import com.mftplus.ecommerce.repository.OrderInventoryRepository;
 import com.mftplus.ecommerce.service.OrderInventoryService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class OrderInventoryServiceImpl implements OrderInventoryService {
         return orderInventoryRepository.save(orderInventory);
     }
 
+    @Transactional
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         orderInventoryRepository.findByIdAndDeletedFalse(id).orElseThrow(

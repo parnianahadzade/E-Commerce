@@ -4,6 +4,7 @@ import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Role;
 import com.mftplus.ecommerce.repository.RoleRepository;
 import com.mftplus.ecommerce.service.RoleService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class RoleServiceImpl implements RoleService {
         return roleRepository.save(role);
     }
 
+    @Transactional
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         roleRepository.findByIdAndDeletedFalse(id).orElseThrow(

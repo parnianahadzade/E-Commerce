@@ -6,6 +6,7 @@ import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.model.entity.enums.OrderStatus;
 import com.mftplus.ecommerce.repository.OrderRepository;
 import com.mftplus.ecommerce.service.OrderService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(order);
     }
 
+    @Transactional
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         orderRepository.findByIdAndDeletedFalse(id).orElseThrow(

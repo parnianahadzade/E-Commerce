@@ -5,6 +5,7 @@ import com.mftplus.ecommerce.model.entity.Person;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.repository.PersonRepository;
 import com.mftplus.ecommerce.service.PersonService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.save(existingPerson);
     }
 
+    @Transactional
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         personRepository.findByIdAndDeletedFalse(id).orElseThrow(

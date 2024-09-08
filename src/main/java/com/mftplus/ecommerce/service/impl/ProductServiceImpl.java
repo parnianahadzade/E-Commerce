@@ -7,6 +7,7 @@ import com.mftplus.ecommerce.model.entity.Product;
 import com.mftplus.ecommerce.repository.ProductRepository;
 import com.mftplus.ecommerce.repository.ProductSearchRepository;
 import com.mftplus.ecommerce.service.ProductService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
 
+    @Transactional
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         productRepository.findByIdAndDeletedFalse(id).orElseThrow(
