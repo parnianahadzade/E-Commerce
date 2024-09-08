@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.service;
 
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Brand;
 
@@ -16,6 +17,8 @@ public interface BrandService {
     void remove(Long id) throws NoContentException;
 
     Brand findByNameAndDeletedFalse(String name) throws NoContentException;
+
+    void findByNameAndDeletedFalseWithOutReturn(String name) throws DuplicateException;
 
     Brand findById(Long id) throws NoContentException;
 

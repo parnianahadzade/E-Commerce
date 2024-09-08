@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.service.impl;
 
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Brand;
 import com.mftplus.ecommerce.repository.BrandRepository;
@@ -7,6 +8,7 @@ import com.mftplus.ecommerce.service.BrandService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -51,6 +53,16 @@ public class BrandServiceImpl implements BrandService {
         return brandRepository.findByNameAndDeletedFalse(name).orElseThrow(
                 () -> new NoContentException("No Brand Found with name : " + name)
         );
+    }
+
+    @Override
+    public void findByNameAndDeletedFalseWithOutReturn(String name) throws DuplicateException {
+        Optional<Brand> optional = brandRepository.findByNameAndDeletedFalse(name);
+        if (optional.isEmpty()) {
+
+        } else {
+            throw new DuplicateException("A brand with name : " + name + " already exists.");
+        }
     }
 
     @Override

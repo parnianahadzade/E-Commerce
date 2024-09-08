@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.api.controller.brand;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.BrandSaveDTO;
+import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.InvalidDataException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
@@ -12,9 +13,12 @@ import com.mftplus.ecommerce.service.BrandService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${apiPrefix}/brand")
@@ -48,7 +52,29 @@ public class BrandController {
     }
 
     @PostMapping("/admin/save")
-    public ResponseEntity<ApiResponse> saveBrand(@Valid @RequestBody BrandSaveDTO brandSaveDTO) {
-        return null;
+    public ResponseEntity<ApiResponse> saveBrand(@Valid @RequestBody BrandSaveDTO brandSaveDTO,
+                                                 BindingResult result) throws DuplicateException {
+        //validating inputs
+        ApiResponse response = validationComponent.handleValidationErrors(result);
+
+        if (response.getFieldErrors() != null) {
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        brandService.findByNameAndDeletedFalseWithOutReturn(brandSaveDTO.getName());
+
+        Brand brand = new Brand();
+        brand.setName(brandSaveDTO.getName());
+        brand.setExplanation(brandSaveDTO.getExplanation());
+        brandService.save(brand);
+
+        response.setSuccess(true);
+        response.setSuccessMessage("برند با موفقیت ایجاد شد.");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("brand", brand);
+        response.setData(data);
+
+        return ResponseEntity.ok(response);
     }
 }
