@@ -20,11 +20,11 @@ public class Person extends Base{
     private Long id;
 
     @Column(name = "p_first_name", nullable = false, length = 20)
-    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class, Views.OrderList.class})
     private String firstName;
 
     @Column(name = "p_last_name", nullable = false, length = 20)
-    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class, Views.OrderList.class})
     private String lastName;
 
     @Column(name = "p_phone_number", nullable = false, length = 11)

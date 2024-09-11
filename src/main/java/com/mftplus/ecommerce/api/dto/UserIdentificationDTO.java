@@ -26,7 +26,7 @@ public class UserIdentificationDTO {
     private String phoneNumber;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی ]{10,50}$",message = "آدرس نادرست است.")
+    @Pattern(regexp = "^[0-9-A-Za-zآ-ی ]{10,50}$",message = "آدرس نادرست است.")
     private String addressLine;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
