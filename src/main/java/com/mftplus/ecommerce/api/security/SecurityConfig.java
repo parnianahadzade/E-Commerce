@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/product","/search", "/api/auth/register", "/api/auth/login"
                                 ,"/error","/", "/api/auth/verify","/api/category", "/api/category/findBy",
-                                "/product/**","/api/product/id/*","/cart/**","/api/color/findBy",
+                                "/product/**","/api/product/id/*","/cart","/api/color/findBy",
                                 "/api/brand/findBy","/api/brand/id/*","/api/brand", "/api/category/id/*",
                                 "/api/color/id/*","/api/color")
                         .permitAll()
@@ -45,12 +45,12 @@ public class SecurityConfig {
                                 "/api/image/upload", "/api/category/admin/update/*", "/api/brand/admin/save",
                                 "/api/brand/admin/update/*","/api/brand/admin/delete/*",
                                 "/api/category/admin/delete/*", "/api/color/admin/save", "/api/color/admin/update/*",
-                                "/api/color/admin/delete/*")
+                                "/api/color/admin/delete/*", "/api/order/admin/all")
                         .hasAuthority("admin")
 
                         .requestMatchers("/api/auth/forgot","/api/auth/reset","/api/auth/me",
                                 "/websocket","/websocket/**","/api/order","/api/order/save",
-                                "/api/person","/api/person/save","/api/person/update/*")
+                                "/api/person","/api/person/save","/api/person/update/*","/payment")
                         .hasAuthority("user")
 
                         .anyRequest().authenticated()

@@ -1,17 +1,15 @@
 package com.mftplus.ecommerce.api.dto;
 
 import jakarta.validation.constraints.Min;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class OrderSaveDTO {
 
+    @NotBlank(message = "خالی نذارید")
     private OrderInventorySaveDTO inventory;
 
     @Min(value = 0, message = "تعداد سفارش باید برابر یا بیشتر از صفر باشد.")

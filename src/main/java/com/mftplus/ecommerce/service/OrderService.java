@@ -1,5 +1,6 @@
 package com.mftplus.ecommerce.service;
 
+import com.mftplus.ecommerce.api.dto.OrderSearchRequest;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Order;
 import com.mftplus.ecommerce.model.entity.User;
@@ -21,6 +22,8 @@ public interface OrderService {
     Order findByIdAndDeletedFalse(Long id) throws NoContentException;
 
     List<Order> findAll();
+
+    List<Order> findAllByCriteria(OrderSearchRequest request);
 
     List<Order> findAllByDeletedFalse();
 

@@ -2,8 +2,12 @@ package com.mftplus.ecommerce.api.controller.order;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mftplus.ecommerce.api.dto.OrderSaveDTO;
+import com.mftplus.ecommerce.api.dto.OrderSearchRequest;
+import com.mftplus.ecommerce.exception.InvalidDataException;
 import com.mftplus.ecommerce.exception.NoContentException;
-import com.mftplus.ecommerce.exception.UserIdentification;
+import com.mftplus.ecommerce.exception.UserIdentificationException;
+import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
+import com.mftplus.ecommerce.exception.dto.ApiResponse;
 import com.mftplus.ecommerce.model.entity.*;
 import com.mftplus.ecommerce.model.entity.enums.OrderStatus;
 import com.mftplus.ecommerce.service.impl.InventoryServiceImpl;
@@ -12,8 +16,8 @@ import com.mftplus.ecommerce.service.impl.OrderServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -31,17 +35,47 @@ public class OrderController {
 
     private final OrderInventoryServiceImpl orderInventoryService;
 
-    public OrderController(OrderServiceImpl orderService, InventoryServiceImpl inventoryService, OrderInventoryServiceImpl orderInventoryService) {
+    private final ApiValidationComponent validationComponent;
+
+    public OrderController(OrderServiceImpl orderService, InventoryServiceImpl inventoryService, OrderInventoryServiceImpl orderInventoryService, ApiValidationComponent validationComponent) {
         this.orderService = orderService;
         this.inventoryService = inventoryService;
         this.orderInventoryService = orderInventoryService;
+        this.validationComponent = validationComponent;
     }
 
-    @JsonView(Views.OrderList.class)
-    @PreAuthorize("hasRole('user')")
+    //order find by user
     @GetMapping
+    @JsonView(Views.OrderList.class)
     public List<Order> findOrdersByUser(@AuthenticationPrincipal User user){
         return orderService.findByUserAndDeletedFalse(user);
+    }
+
+    @GetMapping("/admin/all")
+    @JsonView(Views.OrderList.class)
+    public List<Order> findOrders
+            (@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
+             @RequestParam(value = "orderStatus", required = false) String orderStatus,
+             @RequestParam(value = "firstName", required = false) String firstName,
+             @RequestParam(value = "lastName", required = false) String lastName) throws InvalidDataException, NoContentException {
+
+        if (pageNumber == null) {
+            throw new InvalidDataException("شماره صفحه وارد نشده است.");
+        }
+
+        OrderSearchRequest request = new OrderSearchRequest();
+        request.setOrderStatus(orderStatus);
+        request.setPageNumber(pageNumber);
+        request.setFirstName(firstName);
+        request.setLastName(lastName);
+
+        List<Order> orders = orderService.findAllByCriteria(request);
+
+        if (orders.isEmpty()) {
+            throw new NoContentException("موردی یافت نشد.");
+        }
+
+        return orders;
     }
 
     //waitingForPayment and successfulPayOrValidated
@@ -65,14 +99,26 @@ public class OrderController {
         return orderService.findDeliveredOrdersAndUserAndDeletedFalse(user);
     }
 
-
-    // TODO: 7/30/2024 transactional 
-    @Transactional(rollbackOn = {NoContentException.class})
+    //order save
     @PostMapping("/save")
-    public ResponseEntity saveOrder(@AuthenticationPrincipal User user, @RequestBody List<OrderSaveDTO> orderSaveDTOS) throws UserIdentification, NoContentException {
+    @Transactional(rollbackOn = {NoContentException.class})
+    public ResponseEntity<ApiResponse> saveOrder(@RequestBody List<OrderSaveDTO> orderSaveDTOS,
+                                                 BindingResult result, @AuthenticationPrincipal User user) throws UserIdentificationException, NoContentException {
         if (!user.isIdentified()){
-            throw new UserIdentification("Logged in User is not Identified!");
+            throw new UserIdentificationException("پروفایل کاربر قبلا ساخته نشده.");
         }
+
+        //validating inputs
+        ApiResponse response = validationComponent.handleValidationErrors(result);
+
+        if (response.getFieldErrors() != null) {
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (orderSaveDTOS == null || orderSaveDTOS.isEmpty()) {
+            throw new NoContentException("سبد خرید شما خالی است.");
+        }
+
         Order order = new Order();
         order.setUser(user);
         order.setAddress(user.getPerson().getAddress());
@@ -84,14 +130,16 @@ public class OrderController {
         for (OrderSaveDTO orderSaveDTO : orderSaveDTOS) {
             Inventory originalInventory = inventoryService.findByIdAndDeletedFalse(orderSaveDTO.getInventory().getId());
 
-            if (originalInventory.getQuantity() <= orderSaveDTO.getQuantity()){
-                throw new NoContentException("not Enough inventory");
+            if (originalInventory.getQuantity() < orderSaveDTO.getQuantity()){
+                throw new NoContentException(" موجودی برای " + originalInventory.getProduct().getName() + " کافی نمی باشد.");
             }
 
             OrderInventory orderInventory = new OrderInventory();
             orderInventory.setOrder(order);
             orderInventory.setInventory(originalInventory);
             orderInventory.setQuantity(orderSaveDTO.getQuantity());
+            orderInventory.setSingleProductPrice(originalInventory.getProduct().getPrice());
+            orderInventory.setSingleProductOffPercent(originalInventory.getProduct().getOffPercent());
 
             orderInventoryService.save(orderInventory);
 
@@ -101,6 +149,9 @@ public class OrderController {
 
         }
 
-        return ResponseEntity.ok().build();
+        response.setSuccess(true);
+        response.setSuccessMessage("سفارش با موفقیت ثبت شد.");
+
+        return ResponseEntity.ok(response);
     }
 }

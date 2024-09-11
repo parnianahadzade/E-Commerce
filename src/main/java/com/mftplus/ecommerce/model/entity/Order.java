@@ -17,20 +17,20 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @Entity(name = "orderEntity")
 @Table(name = "order_tbl")
 public class Order extends Base{
     //invoice
 
-    @JsonView(Views.OrderList.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @JsonView(Views.OrderList.class)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonView(Views.OrderList.class)
     private User user;
 
     @ManyToOne
@@ -53,16 +53,17 @@ public class Order extends Base{
         this.dateCreated = PersianDate.parse(faDateCreated).toGregorian();
     }
 
-    @JsonView(Views.OrderList.class)
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "order_status")
+    @JsonView(Views.OrderList.class)
     private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order")
     private List<OrderInventory> orderInventories = new ArrayList<>();
 
-    @JsonView(Views.OrderList.class)
+
     @Transient
+    @JsonView(Views.OrderList.class)
     public Integer getTotalOrderPrice(){
         Integer sum = 0;
         orderInventories = getOrderInventories();
@@ -72,8 +73,19 @@ public class Order extends Base{
         return sum;
     }
 
-    @JsonView(Views.OrderList.class)
     @Transient
+    @JsonView(Views.OrderList.class)
+    public Integer getTotalOrderOffPrice(){
+        Integer sum = 0;
+        orderInventories = getOrderInventories();
+        for (OrderInventory orderInventory : orderInventories) {
+            sum += orderInventory.getTotalOffPrice();
+        }
+        return sum;
+    }
+
+    @Transient
+    @JsonView(Views.OrderList.class)
     public int getNumberOfProducts(){
         return this.orderInventories.size();
     }

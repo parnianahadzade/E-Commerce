@@ -36,20 +36,36 @@ public class OrderInventory extends Base{
     @JoinColumn(name = "inventory_id")
     private Inventory inventory;
 
+    @Column(name = "single_product_price", nullable = false)
+    private Integer singleProductPrice;
+
+    @Column(name = "single_product_off_percent", nullable = false)
+    private Integer singleProductOffPercent;
+
 //    @JsonView(Views.Order.class)
 //    @Transient
 //    public Inventory getInventory() {
 //        return this.getInventory();
 //    }
 
-    @JsonView(Views.OrderList.class)
+
     @Transient
+//    @JsonView(Views.OrderList.class)
     public Integer getTotalPrice(){
-        Integer price = getInventory().getProduct().getPrice();
-        Integer offPercent = getInventory().getProduct().getOffPercent();
+        Integer price = getSingleProductPrice();
+        Integer offPercent = getSingleProductOffPercent();
         Integer finalPrice = (price - (price*offPercent)/100);
 
         return finalPrice * getQuantity();
+    }
+
+    @Transient
+    public Integer getTotalOffPrice(){
+        Integer price = getSingleProductPrice();
+        Integer offPercent = getSingleProductOffPercent();
+        Integer finalOffPrice = (price*offPercent)/100;
+
+        return finalOffPrice * getQuantity();
     }
 
 

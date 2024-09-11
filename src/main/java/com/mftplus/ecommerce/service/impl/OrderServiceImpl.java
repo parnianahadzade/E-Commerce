@@ -1,10 +1,12 @@
 package com.mftplus.ecommerce.service.impl;
 
+import com.mftplus.ecommerce.api.dto.OrderSearchRequest;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Order;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.model.entity.enums.OrderStatus;
 import com.mftplus.ecommerce.repository.OrderRepository;
+import com.mftplus.ecommerce.repository.OrderSearchRepository;
 import com.mftplus.ecommerce.service.OrderService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,11 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository) {
+    private final OrderSearchRepository orderSearchRepository;
+
+    public OrderServiceImpl(OrderRepository orderRepository, OrderSearchRepository orderSearchRepository) {
         this.orderRepository = orderRepository;
+        this.orderSearchRepository = orderSearchRepository;
     }
 
 
@@ -68,6 +73,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findAll() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    public List<Order> findAllByCriteria(OrderSearchRequest request) {
+        return orderSearchRepository.findAllByCriteria(request);
     }
 
     @Override
