@@ -1,6 +1,6 @@
 package com.mftplus.ecommerce.service.impl;
 
-import com.mftplus.ecommerce.api.dto.SearchRequest;
+import com.mftplus.ecommerce.api.dto.ProductSearchRequest;
 import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Product;
@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findAllByCriteria(SearchRequest request) {
+    public List<Product> findAllByCriteria(ProductSearchRequest request) {
         return productSearchRepository.findAllByCriteria(request);
     }
 
@@ -94,20 +94,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findByMainImageIdAndDeletedFalse(Long id) throws DuplicateException {
+    public void findByMainImageIdAndDeletedFalse(Long id) throws DuplicateException {
         Optional<Product> optional = productRepository.findByMainImageIdAndDeletedFalse(id);
         if (optional.isEmpty()) {
-            return optional;
         } else {
             throw new DuplicateException("A product with mainImageId : " + id + " already exists.");
         }
     }
 
     @Override
-    public Optional<Product> findByImagesIdAndDeletedFalse(Long id) throws DuplicateException {
+    public void findByImagesIdAndDeletedFalse(Long id) throws DuplicateException {
         Optional<Product> optional = productRepository.findByImagesIdAndDeletedFalse(id);
         if (optional.isEmpty()) {
-            return optional;
         } else {
             throw new DuplicateException("A product with imageId : " + id + " already exists.");
         }

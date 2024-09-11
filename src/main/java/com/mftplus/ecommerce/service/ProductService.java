@@ -1,6 +1,6 @@
 package com.mftplus.ecommerce.service;
 
-import com.mftplus.ecommerce.api.dto.SearchRequest;
+import com.mftplus.ecommerce.api.dto.ProductSearchRequest;
 import com.mftplus.ecommerce.exception.DuplicateException;
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Product;
@@ -22,7 +22,7 @@ public interface ProductService {
 
     Product findByIdAndDeletedFalse(Long id) throws NoContentException;
 
-    List<Product> findAllByCriteria(SearchRequest request);
+    List<Product> findAllByCriteria(ProductSearchRequest request);
 
     List<Product> findByCodeAndDeletedFalse(String code);
 
@@ -30,7 +30,7 @@ public interface ProductService {
 
     Optional<Product> findByNameAndDeletedFalse(String name) throws DuplicateException;
 
-    Optional<Product> findByMainImageIdAndDeletedFalse(Long id) throws DuplicateException;
+    void findByMainImageIdAndDeletedFalse(Long id) throws DuplicateException;
 
-    Optional<Product> findByImagesIdAndDeletedFalse(Long id) throws DuplicateException;
+    void findByImagesIdAndDeletedFalse(Long id) throws DuplicateException;
 }

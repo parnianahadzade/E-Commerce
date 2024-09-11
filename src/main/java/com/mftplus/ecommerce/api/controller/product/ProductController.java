@@ -66,7 +66,7 @@ public class ProductController {
             throw new InvalidDataException("شماره صفحه وارد نشده است.");
         }
 
-        SearchRequest request = new SearchRequest();
+        ProductSearchRequest request = new ProductSearchRequest();
         request.setName(name);
         request.setCategoryId(categoryId);
         request.setBrandName(brandName);

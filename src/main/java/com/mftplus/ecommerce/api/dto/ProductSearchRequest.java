@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SearchRequest {
+public class ProductSearchRequest {
 
     private Integer pageNumber;
 
