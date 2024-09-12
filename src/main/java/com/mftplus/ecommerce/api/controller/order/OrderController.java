@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("${apiPrefix}/order")
@@ -124,7 +125,9 @@ public class OrderController {
         order.setAddress(user.getPerson().getAddress());
         order.setDateCreated(LocalDate.now());
         order.setOrderStatus(OrderStatus.waitingForPayment);
+        order.setTrackingCode(UUID.randomUUID().toString());
         orderService.save(order);
+
 
 
         for (OrderSaveDTO orderSaveDTO : orderSaveDTOS) {
