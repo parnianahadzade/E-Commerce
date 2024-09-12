@@ -14,6 +14,6 @@ public class BrandSaveDTO {
     private String name;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی ]{3,50}$",message = "توضیحات برند نادرست است.")
+    @Pattern(regexp = "^[.-A-Za-zآ-ی ]{3,100}$",message = "توضیحات برند نادرست است.")
     private String explanation;
 }

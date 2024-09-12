@@ -18,7 +18,7 @@ public class ProductSaveDTO {
     private String productName;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی ]{10,100}$",message = "توضیحات کالا نادرست است.")
+    @Pattern(regexp = "^[.-A-Za-zآ-ی ]{10,100}$",message = "توضیحات کالا نادرست است.")
     private String description;
 
     @Min(value = 1, message = "قیمت کالا باید بیشتر یا برابر یک باشد.")
