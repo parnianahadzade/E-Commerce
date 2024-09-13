@@ -50,6 +50,14 @@ public class OrderSearchRepository {
         }
 
 
+        // Add predicate for trackingCode
+        if (request.getTrackingCode() != null) {
+            Predicate trackingCodePredicate =
+                    criteriaBuilder.equal(root.get("trackingCode"), request.getTrackingCode());
+            predicates.add(trackingCodePredicate);
+        }
+
+
         // Add predicate for firstName
         if (request.getFirstName() != null) {
             Predicate firstNamePredicate =

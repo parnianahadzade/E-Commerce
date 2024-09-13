@@ -58,7 +58,8 @@ public class OrderController {
             (@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
              @RequestParam(value = "orderStatus", required = false) String orderStatus,
              @RequestParam(value = "firstName", required = false) String firstName,
-             @RequestParam(value = "lastName", required = false) String lastName) throws InvalidDataException, NoContentException {
+             @RequestParam(value = "lastName", required = false) String lastName,
+             @RequestParam(value = "trackingCode", required = false) String trackingCode) throws InvalidDataException, NoContentException {
 
         if (pageNumber == null) {
             throw new InvalidDataException("شماره صفحه وارد نشده است.");
@@ -69,6 +70,7 @@ public class OrderController {
         request.setPageNumber(pageNumber);
         request.setFirstName(firstName);
         request.setLastName(lastName);
+        request.setTrackingCode(trackingCode);
 
         List<Order> orders = orderService.findAllByCriteria(request);
 

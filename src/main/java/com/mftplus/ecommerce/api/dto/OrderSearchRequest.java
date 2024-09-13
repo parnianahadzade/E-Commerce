@@ -18,4 +18,6 @@ public class OrderSearchRequest {
     private String firstName;
 
     private String lastName;
+
+    private String trackingCode;
 }
