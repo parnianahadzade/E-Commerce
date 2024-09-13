@@ -42,6 +42,7 @@ public class ProductSearchRepository {
         }
 
         //categories
+        //this type of join is used because of the many-to-many relationship
         if (request.getCategoryId() != null){
             Integer categoryId = request.getCategoryId();
 

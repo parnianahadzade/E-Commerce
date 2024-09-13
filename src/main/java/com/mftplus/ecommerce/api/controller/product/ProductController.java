@@ -18,7 +18,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("${apiPrefix}/product")
@@ -51,6 +53,7 @@ public class ProductController {
         this.inventoryService = inventoryService;
     }
 
+    //product find all by criteria
     @GetMapping
     @JsonView(Views.ProductList.class)
     public List<Product> findProducts
@@ -85,22 +88,28 @@ public class ProductController {
 
     }
 
+    //product find by id
     @GetMapping(value = "/id/{id}")
     @JsonView(Views.singleProduct.class)
     public Product findById(@PathVariable Long id) throws NoContentException, InvalidDataException {
         return productService.findById(id);
     }
 
-    //todo : limit 10
-    @GetMapping(value = "/{id}/code/{code}")
+    //product find by id not and code, used for finding similar products
+    @GetMapping(value = "/id/{id}/code/{code}")
+    @JsonView(Views.ProductList.class)
     public List<Product> findByIdNotAndCode(@PathVariable String code, @PathVariable Long id) {
-        return productService.findByIdNotAndCode(id,code);
+        Integer pageNumber = 1;
+        Integer pageSize = 10;
+
+        return productService.findByIdNotAndCode(id,code,pageNumber,pageSize);
     }
 
 
-    @Transactional(rollbackOn = {NoContentException.class, DuplicateException.class})
+    //product save
     @PostMapping(value = "/admin/save")
-    public ResponseEntity saveProduct(@Valid @RequestBody ProductSaveDTO productSaveDTO,
+    @Transactional(rollbackOn = {NoContentException.class, DuplicateException.class})
+    public ResponseEntity<ApiResponse> saveProduct(@Valid @RequestBody ProductSaveDTO productSaveDTO,
                                       BindingResult result) throws NoContentException, DuplicateException {
 
         //validating inputs
@@ -163,7 +172,6 @@ public class ProductController {
 
         //inventory
         List<InventorySaveDTO> inventorySaveDTOS = productSaveDTO.getInventories();
-//        List<Inventory> inventories = new ArrayList<>();
         for (InventorySaveDTO inventorySaveDTO : inventorySaveDTOS) {
 
             Inventory inventory = new Inventory();
@@ -177,15 +185,34 @@ public class ProductController {
             inventory.setProduct(product);
 
             inventoryService.save(inventory);
-//            inventories.add(inventory);
-//
-//            product.setInventories(inventories);
         }
-
-//        productService.save(product);
 
         response.setSuccess(true);
         response.setSuccessMessage("کالا با موفقیت ایجاد شد.");
+
+        return ResponseEntity.ok(response);
+    }
+
+    //product update
+    @PutMapping("/admin/update/{productId}")
+    public ResponseEntity<ApiResponse> updateProduct(@PathVariable Long productId) {
+        return null;
+    }
+
+    //product logical remove
+    @DeleteMapping("/admin/delete/{productId}")
+    public ResponseEntity<ApiResponse> logicalRemoveProduct(@PathVariable Long productId) throws NoContentException {
+
+        ApiResponse response = new ApiResponse();
+
+        productService.logicalRemove(productId);
+
+        response.setSuccess(true);
+        response.setSuccessMessage("کالا با موفقیت حذف شد.");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("productId", productId);
+        response.setData(data);
 
         return ResponseEntity.ok(response);
     }

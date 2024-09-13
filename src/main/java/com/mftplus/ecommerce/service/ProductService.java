@@ -24,9 +24,7 @@ public interface ProductService {
 
     List<Product> findAllByCriteria(ProductSearchRequest request);
 
-    List<Product> findByCodeAndDeletedFalse(String code);
-
-    List<Product> findByIdNotAndCode(Long id, String code);
+    List<Product> findByIdNotAndCode(Long id, String code, Integer pageNumber, Integer pageSize);
 
     Optional<Product> findByNameAndDeletedFalse(String name) throws DuplicateException;
 

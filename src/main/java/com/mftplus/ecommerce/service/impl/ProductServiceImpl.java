@@ -8,6 +8,8 @@ import com.mftplus.ecommerce.repository.ProductRepository;
 import com.mftplus.ecommerce.repository.ProductSearchRepository;
 import com.mftplus.ecommerce.service.ProductService;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,10 +33,26 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product update(Product product) throws NoContentException {
-        productRepository.findByIdAndDeletedFalse(product.getId()).orElseThrow(
+        Product existingProduct = productRepository.findByIdAndDeletedFalse(product.getId()).orElseThrow(
                 () -> new NoContentException("No Active Product Found with id : " + product.getId())
         );
-        return productRepository.save(product);
+        existingProduct.setName(product.getName());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setCode(product.getCode());
+        existingProduct.setBrand(product.getBrand());
+        existingProduct.setCategories(product.getCategories());
+        existingProduct.setColor(product.getColor());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setOffPercent(product.getOffPercent());
+        existingProduct.setMaterial(product.getMaterial());
+        existingProduct.setPattern(product.getPattern());
+        existingProduct.setHeight(product.getHeight());
+        existingProduct.setMainCategory(product.getMainCategory());
+        existingProduct.setImages(product.getImages());
+        existingProduct.setMainImage(product.getMainImage());
+
+        return productRepository.save(existingProduct);
     }
 
     @Transactional
@@ -74,13 +92,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByCodeAndDeletedFalse(String code) {
-        return productRepository.findByCodeAndDeletedFalse(code);
-    }
-
-    @Override
-    public List<Product> findByIdNotAndCode(Long id, String code) {
-        return productRepository.findByIdNotAndCode(id,code);
+    public List<Product> findByIdNotAndCode(Long id, String code, Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return productRepository.findByIdNotAndCodeAndDeletedFalse(id,code,pageable);
     }
 
     @Override

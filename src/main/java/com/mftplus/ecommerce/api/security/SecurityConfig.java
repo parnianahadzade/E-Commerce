@@ -38,14 +38,15 @@ public class SecurityConfig {
                                 ,"/error","/", "/api/auth/verify","/api/category", "/api/category/findBy",
                                 "/product/**","/api/product/id/*","/cart","/api/color/findBy",
                                 "/api/brand/findBy","/api/brand/id/*","/api/brand", "/api/category/id/*",
-                                "/api/color/id/*","/api/color")
+                                "/api/color/id/*","/api/color", "/api/product/id/*/code/*")
                         .permitAll()
 
                         .requestMatchers("/api/product/admin/save","/api/category/admin/save",
                                 "/api/image/upload", "/api/category/admin/update/*", "/api/brand/admin/save",
                                 "/api/brand/admin/update/*","/api/brand/admin/delete/*",
                                 "/api/category/admin/delete/*", "/api/color/admin/save", "/api/color/admin/update/*",
-                                "/api/color/admin/delete/*", "/api/order/admin/all")
+                                "/api/color/admin/delete/*", "/api/order/admin/all", "/api/product/admin/update/*",
+                                "/api/product/admin/delete/*")
                         .hasAuthority("admin")
 
                         .requestMatchers("/api/auth/forgot","/api/auth/reset","/api/auth/me",

@@ -25,10 +25,14 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public Inventory update(Inventory inventory) throws NoContentException {
-        inventoryRepository.findByIdAndDeletedFalse(inventory.getId()).orElseThrow(
+        Inventory existingInventory = inventoryRepository.findByIdAndDeletedFalse(inventory.getId()).orElseThrow(
                 () -> new NoContentException("No Active Inventory Found with id : " + inventory.getId())
         );
-        return inventoryRepository.save(inventory);
+        existingInventory.setQuantity(inventory.getQuantity());
+        existingInventory.setSize(inventory.getSize());
+        existingInventory.setProduct(inventory.getProduct());
+
+        return inventoryRepository.save(existingInventory);
     }
 
     @Transactional

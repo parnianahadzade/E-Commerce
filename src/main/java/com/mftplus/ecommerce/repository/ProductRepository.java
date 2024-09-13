@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.repository;
 
 import com.mftplus.ecommerce.model.entity.Product;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -18,9 +19,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("update productEntity oo set oo.deleted=true where oo.id=:id")
     void logicalRemove(Long id);
 
-    List<Product> findByCodeAndDeletedFalse(String code);
-
-    List<Product> findByIdNotAndCode(Long id, String code);
+    List<Product> findByIdNotAndCodeAndDeletedFalse(Long id, String code, Pageable pageable);
 
     Optional<Product> findByMainImageIdAndDeletedFalse(Long id);
 
