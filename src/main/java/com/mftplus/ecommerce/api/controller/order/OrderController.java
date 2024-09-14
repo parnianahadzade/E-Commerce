@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.api.controller.order;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.github.mfathi91.time.PersianDate;
 import com.mftplus.ecommerce.api.dto.OrderSaveDTO;
 import com.mftplus.ecommerce.api.dto.OrderSearchRequest;
 import com.mftplus.ecommerce.exception.InvalidDataException;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("${apiPrefix}/order")
@@ -59,7 +59,9 @@ public class OrderController {
              @RequestParam(value = "orderStatus", required = false) String orderStatus,
              @RequestParam(value = "firstName", required = false) String firstName,
              @RequestParam(value = "lastName", required = false) String lastName,
-             @RequestParam(value = "trackingCode", required = false) String trackingCode) throws InvalidDataException, NoContentException {
+             @RequestParam(value = "trackingCode", required = false) String trackingCode,
+             @RequestParam(value = "startFaDateCreated", required = false) String startFaDateCreated,
+             @RequestParam(value = "endFaDateCreated", required = false) String endFaDateCreated) throws InvalidDataException, NoContentException {
 
         if (pageNumber == null) {
             throw new InvalidDataException("شماره صفحه وارد نشده است.");
@@ -71,6 +73,11 @@ public class OrderController {
         request.setFirstName(firstName);
         request.setLastName(lastName);
         request.setTrackingCode(trackingCode);
+        if (startFaDateCreated != null && endFaDateCreated != null) {
+            request.setStartDateCreated(PersianDate.parse(startFaDateCreated).toGregorian());
+            request.setEndDateCreated(PersianDate.parse(endFaDateCreated).toGregorian());
+        }
+
 
         List<Order> orders = orderService.findAllByCriteria(request);
 
@@ -127,8 +134,11 @@ public class OrderController {
         order.setAddress(user.getPerson().getAddress());
         order.setDateCreated(LocalDate.now());
         order.setOrderStatus(OrderStatus.waitingForPayment);
-        order.setTrackingCode(UUID.randomUUID().toString());
         orderService.save(order);
+
+        //todo : recheck
+        order.setTrackingCode(String.valueOf(order.getDateCreated()).replace("-", "") + order.getId());
+        orderService.update(order);
 
 
 

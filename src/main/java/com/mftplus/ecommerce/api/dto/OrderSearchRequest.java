@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,4 +22,8 @@ public class OrderSearchRequest {
     private String lastName;
 
     private String trackingCode;
+
+    private LocalDate startDateCreated;
+
+    private LocalDate endDateCreated;
 }

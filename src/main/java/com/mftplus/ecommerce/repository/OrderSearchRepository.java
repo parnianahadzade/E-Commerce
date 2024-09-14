@@ -74,6 +74,21 @@ public class OrderSearchRepository {
         }
 
 
+        //dataCreated between
+        if (request.getStartDateCreated() != null && request.getEndDateCreated() != null){
+
+            Predicate dateCreatedPredicate = criteriaBuilder
+                    .between(root.get("dateCreated"),request.getStartDateCreated(),request.getEndDateCreated());
+            predicates.add(dateCreatedPredicate);
+        }
+
+
+        //deleted false
+        Predicate deletedFalse = criteriaBuilder
+                .equal(root.get("deleted"),false);
+        predicates.add(deletedFalse);
+
+
         criteriaQuery.where(
                 criteriaBuilder.and(predicates.toArray(new Predicate[0]))
         );

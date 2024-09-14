@@ -61,7 +61,7 @@ public class Order extends Base{
     @OneToMany(mappedBy = "order")
     private List<OrderInventory> orderInventories = new ArrayList<>();
 
-    @Column(name = "o_tracking_code", nullable = false, unique = true)
+    @Column(name = "o_tracking_code", unique = true)
     private String trackingCode;
 
     @Transient
