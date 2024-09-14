@@ -134,7 +134,6 @@ public class ProductController {
 
         //main image
         Image mainImage = imageService.findByIdAndDeletedFalse(productSaveDTO.getMainImageId());
-        productService.findByMainImageIdAndDeletedFalse(mainImage.getId());
         product.setMainImage(mainImage);
 
         //images
@@ -142,7 +141,6 @@ public class ProductController {
         List<Image> images = new ArrayList<>();
         for (Long imageId : imageIds) {
             Image image = imageService.findByIdAndDeletedFalse(imageId);
-            productService.findByImagesIdAndDeletedFalse(image.getId());
             images.add(image);
         }
         product.setImages(images);
