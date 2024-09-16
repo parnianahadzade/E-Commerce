@@ -35,4 +35,6 @@ public interface OrderService {
 
     List<Order> findDeliveredOrdersAndUserAndDeletedFalse(User user);
 
+    boolean userHasPermissionToOrder(User user, Long id);
+
 }

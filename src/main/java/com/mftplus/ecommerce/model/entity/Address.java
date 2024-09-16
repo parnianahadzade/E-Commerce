@@ -24,7 +24,7 @@ public class Address extends Base{
     private Long id;
 
     @Column(name = "a_address_line", nullable = false, length = 50)
-    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class, Views.singleOrder.class})
     private String addressLine;
 
     @Column(name = "a_postal_code", nullable = false, length = 10)

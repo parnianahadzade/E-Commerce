@@ -20,15 +20,15 @@ public class Person extends Base{
     private Long id;
 
     @Column(name = "p_first_name", nullable = false, length = 20)
-    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class, Views.OrderList.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class, Views.OrderListAdminOnly.class, Views.singleOrder.class})
     private String firstName;
 
     @Column(name = "p_last_name", nullable = false, length = 20)
-    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class, Views.OrderList.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class, Views.OrderListAdminOnly.class, Views.singleOrder.class})
     private String lastName;
 
     @Column(name = "p_phone_number", nullable = false, length = 11)
-    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class, Views.singleOrder.class, Views.singleOrder.class})
     private String phoneNumber;
 
     @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})

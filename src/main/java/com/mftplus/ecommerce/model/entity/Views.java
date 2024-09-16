@@ -22,7 +22,15 @@ public class Views {
     }
 
     //todo
-    public static class OrderList{
+    public static class OrderList {
+
+    }
+
+    public static class OrderListAdminOnly extends OrderList{
+
+    }
+
+    public static class singleOrder extends OrderList {
 
     }
 
@@ -49,7 +57,7 @@ public class Views {
 
     }
 
-    public static class Brand extends BrandName{
+    public static class Brand extends BrandName {
 
     }
 }

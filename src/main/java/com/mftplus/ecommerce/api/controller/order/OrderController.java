@@ -6,6 +6,7 @@ import com.mftplus.ecommerce.api.dto.OrderSaveDTO;
 import com.mftplus.ecommerce.api.dto.OrderSearchRequest;
 import com.mftplus.ecommerce.exception.InvalidDataException;
 import com.mftplus.ecommerce.exception.NoContentException;
+import com.mftplus.ecommerce.exception.UserAccessDeniedException;
 import com.mftplus.ecommerce.exception.UserIdentificationException;
 import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
 import com.mftplus.ecommerce.exception.dto.ApiResponse;
@@ -30,6 +31,8 @@ import java.util.List;
 @CrossOrigin
 public class OrderController {
 
+    //todo : image
+
     private final OrderServiceImpl orderService;
 
     private final InventoryServiceImpl inventoryService;
@@ -52,8 +55,21 @@ public class OrderController {
         return orderService.findByUserAndDeletedFalse(user);
     }
 
+    //order find by id
+    @GetMapping("/id/{orderId}")
+    @JsonView(Views.singleOrder.class)
+    public Order findOrderById(@AuthenticationPrincipal User user, @PathVariable Long orderId) throws NoContentException, UserAccessDeniedException {
+        Order order = orderService.findByIdAndDeletedFalse(orderId);
+
+        if (!orderService.userHasPermissionToOrder(user, order.getUser().getId())){
+            throw new UserAccessDeniedException("عدم دسترسی به اطلاعات کاربر");
+        }
+
+        return order;
+    }
+
     @GetMapping("/admin/all")
-    @JsonView(Views.OrderList.class)
+    @JsonView(Views.OrderListAdminOnly.class)
     public List<Order> findOrders
             (@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
              @RequestParam(value = "orderStatus", required = false) String orderStatus,
@@ -88,21 +104,21 @@ public class OrderController {
         return orders;
     }
 
-    //waitingForPayment and successfulPayOrValidated
+    //find orders by user, waitingForPayment and successfulPayOrValidated
     @JsonView(Views.OrderList.class)
     @GetMapping("/current")
     public List<Order> findOrderByUserAndCurrentOrderStatus(@AuthenticationPrincipal User user){
         return orderService.findOrdersWaitingOrValidatedAndUserAndDeletedFalse(user);
     }
 
-    //failedPayOrCanceled
+    //find orders by user, failedPayOrCanceled
     @JsonView(Views.OrderList.class)
     @GetMapping("/canceled")
     public List<Order> findOrderByUserAndCanceledOrderStatus(@AuthenticationPrincipal User user){
         return orderService.findCanceledOrdersAndUserAndDeletedFalse(user);
     }
 
-    //delivered
+    //find orders by user, delivered
     @JsonView(Views.OrderList.class)
     @GetMapping("/delivered")
     public List<Order> findOrderByUserAndDeliveredOrderStatus(@AuthenticationPrincipal User user){

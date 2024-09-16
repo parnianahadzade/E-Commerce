@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.github.mfathi91.time.PersianDate;
 import com.mftplus.ecommerce.model.entity.enums.OrderStatus;
 import jakarta.persistence.*;
@@ -30,11 +31,12 @@ public class Order extends Base{
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonView(Views.OrderList.class)
+    @JsonView({Views.OrderListAdminOnly.class, Views.singleOrder.class})
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "address_id", nullable = false)
+    @JsonView(Views.singleOrder.class)
     private Address address;
 
     @Column(name = "o_date_created", nullable = false)
@@ -56,12 +58,15 @@ public class Order extends Base{
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "order_status")
     @JsonView(Views.OrderList.class)
+    @JsonSerialize(using = OrderStatusSerializer.class)
     private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order")
+    @JsonView(Views.OrderList.class)
     private List<OrderInventory> orderInventories = new ArrayList<>();
 
     @Column(name = "o_tracking_code", unique = true)
+    @JsonView(Views.OrderList.class)
     private String trackingCode;
 
     @Transient

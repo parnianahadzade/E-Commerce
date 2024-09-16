@@ -26,5 +26,5 @@ public interface PersonService {
 
     List<Person> findAllByDeletedFalse();
 
-    boolean userHasPermissionToPerson(User user, Long id) throws NoContentException;
+    boolean userHasPermissionToPerson(User user, Long id);
 }

@@ -59,7 +59,7 @@ public class User extends Base implements UserDetails {
     private boolean isIdentified;
 
     @OneToOne(mappedBy = "user")
-    @JsonView({Views.UserInfo.class,Views.OrderList.class})
+    @JsonView({Views.UserInfo.class, Views.OrderListAdminOnly.class, Views.singleOrder.class})
     private Person person;
 
 

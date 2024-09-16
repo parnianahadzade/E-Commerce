@@ -31,7 +31,7 @@ public class Product extends Base{
     private String code;
 
     @Column(name = "p_name", nullable = false, unique = true, length = 20)
-    @JsonView(Views.ProductList.class)
+    @JsonView({Views.ProductList.class, Views.singleOrder.class})
     private String name;
 
     @Column(name = "p_description", nullable = false, length = 100)
@@ -61,12 +61,12 @@ public class Product extends Base{
 
     @OneToOne
     @JoinColumn(name = "p_main_image_id")
-    @JsonView(Views.ProductList.class)
+    @JsonView({Views.ProductList.class, Views.OrderList.class})
     private Image mainImage;
 
     @ManyToOne
     @JoinColumn(name = "color_id")
-    @JsonView(Views.singleProduct.class)
+    @JsonView({Views.singleProduct.class, Views.singleOrder.class})
     private Color color;
 
     @Column(name = "p_price",nullable = false)

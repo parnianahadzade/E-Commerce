@@ -30,6 +30,7 @@ public class Inventory extends Base{
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonView(Views.OrderList.class)
     private Product product;
 
     @Enumerated(EnumType.ORDINAL)

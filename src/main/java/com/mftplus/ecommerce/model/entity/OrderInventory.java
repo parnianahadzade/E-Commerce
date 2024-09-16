@@ -8,7 +8,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Getter
 @Setter
 @Entity(name = "orderInventoryEntity")
@@ -26,20 +25,21 @@ public class OrderInventory extends Base{
     @Column(name = "o_quantity", nullable = false)
     private Integer quantity;
 
-    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
 
-    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "inventory_id")
+    @JsonView(Views.OrderList.class)
     private Inventory inventory;
 
     @Column(name = "single_product_price", nullable = false)
+    @JsonView(Views.singleOrder.class)
     private Integer singleProductPrice;
 
     @Column(name = "single_product_off_percent", nullable = false)
+    @JsonView(Views.singleOrder.class)
     private Integer singleProductOffPercent;
 
 //    @JsonView(Views.Order.class)
