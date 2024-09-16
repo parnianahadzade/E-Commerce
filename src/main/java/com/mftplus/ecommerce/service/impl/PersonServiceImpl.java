@@ -2,6 +2,7 @@ package com.mftplus.ecommerce.service.impl;
 
 import com.mftplus.ecommerce.exception.NoContentException;
 import com.mftplus.ecommerce.model.entity.Person;
+import com.mftplus.ecommerce.model.entity.Role;
 import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.repository.PersonRepository;
 import com.mftplus.ecommerce.service.PersonService;
@@ -16,11 +17,8 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
 
-    private final RoleServiceImpl roleService;
-
-    public PersonServiceImpl(PersonRepository personRepository, RoleServiceImpl roleService) {
+    public PersonServiceImpl(PersonRepository personRepository) {
         this.personRepository = personRepository;
-        this.roleService = roleService;
     }
 
     @Override
@@ -90,7 +88,19 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean userHasPermissionToPerson(User user, Long id) throws NoContentException{
-        return Objects.equals(user.getPerson().getId(), id) || Objects.equals(user.getRoles(), roleService.findByIdAndDeletedFalse(2L));
+    public boolean userHasPermissionToPerson(User user, Long id) {
+        // Check if the user has an admin role
+        for (Role role : user.getRoles()) {
+            if (role.getId().equals(2L)) {
+                return true; // Admin users have access to all orders
+            }
+        }
+
+        // Check if the user ID matches the order ID
+        if (Objects.equals(user.getId(), id)) {
+            return true;
+        }
+
+        return false;
     }
 }
