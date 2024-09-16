@@ -101,7 +101,7 @@ public class PersonController {
 
 
     //person update or user profile update , admin also has access
-    @PutMapping("/update/{personId}")
+    @PostMapping("/update/{personId}")
     @Transactional(rollbackOn = {UserAccessDeniedException.class, NoContentException.class})
     public ResponseEntity<ApiResponse> updatePerson(@Valid @RequestBody UserIdentificationDTO userIdentificationDTO,
                                      BindingResult result, @AuthenticationPrincipal User user,

@@ -114,7 +114,7 @@ public class ColorController {
     }
 
     //color update
-    @PutMapping("/admin/update/{colorId}")
+    @PostMapping("/admin/update/{colorId}")
     public ResponseEntity<ApiResponse> updateColor(@Valid @RequestBody ColorSaveDTO colorSaveDTO,
                                                    BindingResult result, @PathVariable Long colorId) throws NoContentException, DuplicateException {
 

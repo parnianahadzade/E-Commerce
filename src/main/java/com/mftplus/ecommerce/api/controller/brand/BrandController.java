@@ -114,7 +114,7 @@ public class BrandController {
     }
 
     //brand update
-    @PutMapping("/admin/update/{brandId}")
+    @PostMapping("/admin/update/{brandId}")
     public ResponseEntity<ApiResponse> updateBrand(@Valid @RequestBody BrandSaveDTO brandSaveDTO,
                                                       BindingResult result, @PathVariable Long brandId) throws NoContentException, DuplicateException {
 

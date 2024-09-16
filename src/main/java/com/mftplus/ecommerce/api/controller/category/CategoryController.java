@@ -99,7 +99,7 @@ public class CategoryController {
     }
 
     //category update
-    @PutMapping("/admin/update/{categoryId}")
+    @PostMapping("/admin/update/{categoryId}")
     public ResponseEntity<ApiResponse> updateCategory(@Valid @RequestBody CategorySaveDTO categorySaveDTO,
                                          BindingResult result, @PathVariable Long categoryId) throws NoContentException, DuplicateException {
 
