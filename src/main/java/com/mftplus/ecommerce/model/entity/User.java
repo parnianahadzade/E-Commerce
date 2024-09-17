@@ -58,10 +58,9 @@ public class User extends Base implements UserDetails {
     @Column(name = "u_is_identified", nullable = false)
     private boolean isIdentified;
 
-    @OneToOne(mappedBy = "user")
-    @JsonView({Views.UserInfo.class, Views.OrderListAdminOnly.class, Views.singleOrder.class})
+    @OneToOne
+    @JoinColumn(name = "person_id")
     private Person person;
-
 
     //for user details
     @JsonIgnore

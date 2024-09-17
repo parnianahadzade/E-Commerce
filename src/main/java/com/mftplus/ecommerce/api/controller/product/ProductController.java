@@ -176,7 +176,7 @@ public class ProductController {
 
             inventory.setQuantity(inventorySaveDTO.getQuantity());
 
-            Size.findByTitle(inventorySaveDTO.getSize());
+//            Size.findByTitle(inventorySaveDTO.getSize());
             inventory.setSize(Size.valueOf(inventorySaveDTO.getSize()));
 
 

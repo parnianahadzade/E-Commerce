@@ -8,7 +8,6 @@ import com.mftplus.ecommerce.exception.UserIdentificationException;
 import com.mftplus.ecommerce.exception.component.ApiValidationComponent;
 import com.mftplus.ecommerce.exception.dto.ApiResponse;
 import com.mftplus.ecommerce.model.entity.*;
-import com.mftplus.ecommerce.service.impl.AddressServiceImpl;
 import com.mftplus.ecommerce.service.impl.PersonServiceImpl;
 import com.mftplus.ecommerce.service.impl.UserServiceImpl;
 import jakarta.transaction.Transactional;
@@ -30,16 +29,13 @@ public class PersonController {
 
     private final PersonServiceImpl personService;
 
-    private final AddressServiceImpl addressService;
-
     private final UserServiceImpl userService;
 
     private final ApiValidationComponent validationComponent;
 
 
-    public PersonController(PersonServiceImpl personService, AddressServiceImpl addressService, UserServiceImpl userService, ApiValidationComponent validationComponent) {
+    public PersonController(PersonServiceImpl personService, UserServiceImpl userService, ApiValidationComponent validationComponent) {
         this.personService = personService;
-        this.addressService = addressService;
         this.userService = userService;
         this.validationComponent = validationComponent;
     }
@@ -72,22 +68,18 @@ public class PersonController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        Address address = new Address();
-        address.setAddressLine(userIdentificationDTO.getAddressLine());
-        address.setPostalCode(userIdentificationDTO.getPostalCode());
-        addressService.save(address);
-
-        user.setIdentified(true);
-        userService.update(user);
-
         Person person = new Person();
-        person.setUser(user);
         person.setFirstName(userIdentificationDTO.getFirstName());
         person.setLastName(userIdentificationDTO.getLastName());
         person.setPhoneNumber(userIdentificationDTO.getPhoneNumber());
-        person.setAddress(address);
+        person.setAddressLine(userIdentificationDTO.getAddressLine());
+        person.setPostalCode(userIdentificationDTO.getPostalCode());
 
         personService.save(person);
+
+        user.setIdentified(true);
+        user.setPerson(person);
+        userService.update(user);
 
         response.setSuccess(true);
         response.setSuccessMessage("پروفایل با موفقیت ایجاد شد.");
@@ -118,27 +110,23 @@ public class PersonController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        Address existingAddress = addressService.findByPersonIdAndDeletedFalse(personId);
-        Address newAddress = new Address();
-        newAddress.setId(existingAddress.getId());
-        newAddress.setAddressLine(userIdentificationDTO.getAddressLine());
-        newAddress.setPostalCode(userIdentificationDTO.getPostalCode());
-        newAddress.setVersionId(existingAddress.getVersionId());
+        Person person = new Person();
+        person.setFirstName(userIdentificationDTO.getFirstName());
+        person.setLastName(userIdentificationDTO.getLastName());
+        person.setPhoneNumber(userIdentificationDTO.getPhoneNumber());
+        person.setAddressLine(userIdentificationDTO.getAddressLine());
+        person.setPostalCode(userIdentificationDTO.getPostalCode());
 
-        Person newPerson = new Person();
-        newPerson.setId(personId);
-        newPerson.setFirstName(userIdentificationDTO.getFirstName());
-        newPerson.setLastName(userIdentificationDTO.getLastName());
-        newPerson.setPhoneNumber(userIdentificationDTO.getPhoneNumber());
-        newPerson.setAddress(newAddress);
+        personService.save(person);
 
-        personService.update(newPerson);
+        user.setPerson(person);
+        userService.update(user);
 
         response.setSuccess(true);
         response.setSuccessMessage("پروفایل با موفقیت بروزرسانی شد.");
 
         Map<String, Object> data = new HashMap<>();
-        data.put("person", newPerson);
+        data.put("person", person);
         response.setData(data);
 
         return ResponseEntity.ok(response);

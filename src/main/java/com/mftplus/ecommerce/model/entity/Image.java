@@ -19,12 +19,12 @@ public class Image extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @JsonView({Views.ProductList.class, Views.OrderList.class})
+    @JsonView({Views.ProductList.class, Views.OrderList.class, Views.singleProduct.class})
     private Long id;
 
     @Lob
     @Column(name = "i_file_path",nullable = false)
-    @JsonView({Views.ProductList.class, Views.OrderList.class})
+    @JsonView({Views.ProductList.class, Views.OrderList.class, Views.singleProduct.class})
     private String filePath;
 
 }

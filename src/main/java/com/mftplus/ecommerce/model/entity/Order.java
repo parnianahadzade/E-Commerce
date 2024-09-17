@@ -31,13 +31,12 @@ public class Order extends Base{
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonView({Views.OrderListAdminOnly.class, Views.singleOrder.class})
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "address_id", nullable = false)
-    @JsonView(Views.singleOrder.class)
-    private Address address;
+    @JoinColumn(name = "person_id", nullable = false)
+    @JsonView({Views.singleOrder.class, Views.OrderListAdminOnly.class})
+    private Person person;
 
     @Column(name = "o_date_created", nullable = false)
     @JsonFormat(pattern = "dd/MM/yyyy")

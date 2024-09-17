@@ -23,7 +23,7 @@ public class Product extends Base{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    @JsonView(Views.ProductList.class)
+    @JsonView({Views.ProductList.class,Views.OrderList.class})
     private Long id;
 
     @Column(name = "p_code", length = 25, nullable = false)

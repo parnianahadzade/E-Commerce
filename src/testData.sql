@@ -15,128 +15,57 @@ INSERT INTO user_role (user_id, role_id)
 VALUES (1,1),
        (2,1),
         (2,2);
-INSERT INTO address_tbl (a_address_line,a_postal_code, deleted,version_id)
-VALUES ('123 Tester Hill', '1234567890', false,0)
-     , ('312 Spring Boot', '1234567890', false,0);
+# INSERT INTO address_tbl (a_address_line,a_postal_code, deleted,version_id)
+# VALUES ('123 Tester Hill', '1234567890', false,0)
+#      , ('312 Spring Boot', '1234567890', false,0);
 
-INSERT INTO person_tbl (p_first_name, p_last_name, p_phone_number, deleted,address_id,user_id,version_id)
-VALUES ('veze','vezeee','09365006724',false,1,2,0);
+# INSERT INTO person_tbl (p_first_name, p_last_name, p_phone_number, deleted,address_id,user_id,version_id)
+# VALUES ('veze','vezeee','09365006724',false,1,2,0);
 
 
-INSERT INTO brand_tbl (b_name, deleted,version_id,b_explanation)
-VALUES ('lcwaikiki',0,0,'aaaaaaa'),
-       ('laboutin',0,0,'bbbbbbbb');
+# INSERT INTO brand_tbl (b_name, deleted,version_id,b_explanation)
+# VALUES ('lcwaikiki',0,0,'aaaaaaa'),
+#        ('laboutin',0,0,'bbbbbbbb');
 
-INSERT INTO color_tbl (c_name,deleted,version_id,hex_code)
-VALUES ('blue',0,0,'00000000'),
-       ('red',0,0,'1111111'),
-       ('purple',0,0,'3333333');
-
-INSERT INTO product_tbl (p_code,p_name, p_description, deleted,brand_id,color_id,p_price,p_off_percent,p_material,p_pattern,p_height,version_id)
-VALUES ('1','Product1', 'This is a very long description of product #1.', false,1,1,10,0,'material','pattern',20,0)
-     , ('2','Product2', 'This is a very long description of product #2.' ,false,1,1,100,80,'material','pattern',30,0)
-     , ('3','Product3', 'This is a very long description of product #3.' ,false,1,2,1000,50,'material','pattern',40,0)
-     , ('4','Product4','This is a very long description of product #4.' ,false,2,2,10000,30,'material','pattern',50,0)
-     , ('5','Product5', 'This is a very long description of product #5.' ,false,2,3,100000,72,'material','pattern',60,0);
+# INSERT INTO color_tbl (c_name,deleted,version_id,hex_code)
+# VALUES ('blue',0,0,'00000000'),
+#        ('red',0,0,'1111111'),
+#        ('purple',0,0,'3333333');
+#
+# INSERT INTO product_tbl (p_code,p_name, p_description, deleted,brand_id,color_id,p_price,p_off_percent,p_material,p_pattern,p_height,version_id)
+# VALUES ('1','Product1', 'This is a very long description of product #1.', false,1,1,10,0,'material','pattern',20,0)
+#      , ('2','Product2', 'This is a very long description of product #2.' ,false,1,1,100,80,'material','pattern',30,0)
+#      , ('3','Product3', 'This is a very long description of product #3.' ,false,1,2,1000,50,'material','pattern',40,0)
+#      , ('4','Product4','This is a very long description of product #4.' ,false,2,2,10000,30,'material','pattern',50,0)
+#      , ('5','Product5', 'This is a very long description of product #5.' ,false,2,3,100000,72,'material','pattern',60,0);
 
 INSERT INTO category_tbl (c_name, deleted,version_id)
 VALUES ('دیجی کالا',0,0),
-       ('مردانه',0,0),
-       ('زنانه',0,0),
-       ('یونیسکس',0,0),
-       ('بلوز مردانه',0,0),
-       ('بلوز زنانه',0,0),
-       ('بلوز یونیسکس',0,0),
-       ('شلوار مردانه',0,0),
-       ('شلوار زنانه',0,0),
-       ('شلوار یونیسکس',0,0),
-       ('بافت مردانه',0,0),
-       ('بافت زنانه',0,0),
-       ('بافت یونیسکس',0,0),
-       ('هودی مردانه',0,0),
+       ('هودی',0,0),
        ('هودی زنانه',0,0),
-       ('هودی یونیسکس',0,0),
-       ('دورس مردانه',0,0),
-       ('دورس زنانه',0,0),
-       ('دورس یونیسکس',0,0),
-       ('تیشرت مردانه',0,0),
-       ('تیشرت زنانه',0,0),
-       ('تیشرت یونیسکس',0,0),
-       ('شومیز زنانه',0,0),
-       ('شومیز یونیسکس',0,0),
-       ('سوییشرت مردانه',0,0),
-       ('سوییشرت زنانه',0,0),
-       ('سوییشرت یونیسکس',0,0),
-       ('کراپ تاپ زنانه',0,0),
-       ('کراپ تاپ یونیسکس',0,0);
+       ('هودی مردانه',0,0),
+       ('هودی یونیسکس',0,0);
 
 # digikala
 UPDATE category_tbl SET category_id=1 where id=2;
 
-UPDATE category_tbl SET category_id=1 where id=3;
+UPDATE category_tbl SET category_id=2 where id=3;
 
-UPDATE category_tbl SET category_id=1 where id=4;
+UPDATE category_tbl SET category_id=2 where id=4;
 
 UPDATE category_tbl SET category_id=2 where id=5;
 
-UPDATE category_tbl SET category_id=3 where id=6;
-
-UPDATE category_tbl SET category_id=4 where id=7;
-
-UPDATE category_tbl SET category_id=2 where id=8;
-
-UPDATE category_tbl SET category_id=3 where id=9;
-
-UPDATE category_tbl SET category_id=4 where id=10;
-
-UPDATE category_tbl SET category_id=2 where id=11;
-
-UPDATE category_tbl SET category_id=3 where id=12;
-
-UPDATE category_tbl SET category_id=4 where id=13;
-
-UPDATE category_tbl SET category_id=2 where id=14;
-
-UPDATE category_tbl SET category_id=3 where id=15;
-
-UPDATE category_tbl SET category_id=4 where id=16;
-
-UPDATE category_tbl SET category_id=2 where id=17;
-
-UPDATE category_tbl SET category_id=3 where id=18;
-
-UPDATE category_tbl SET category_id=4 where id=19;
-
-UPDATE category_tbl SET category_id=2 where id=20;
-
-UPDATE category_tbl SET category_id=3 where id=21;
-
-UPDATE category_tbl SET category_id=4 where id=22;
-
-UPDATE category_tbl SET category_id=3 where id=23;
-
-UPDATE category_tbl SET category_id=4 where id=24;
-
-UPDATE category_tbl SET category_id=2 where id=25;
-
-UPDATE category_tbl SET category_id=3 where id=26;
-
-UPDATE category_tbl SET category_id=4 where id=27;
-
-UPDATE category_tbl SET category_id=3 where id=28;
-
-UPDATE category_tbl SET category_id=4 where id=29;
 
 
-INSERT INTO category_products_tbl (product_id, categories_id)
-VALUES (1,1),
-        (1,4),
-        (2,1);
-
-INSERT INTO inventory_tbl (product_id, i_quantity, deleted,product_size,version_id)
-VALUES (1, 5, false,0,0)
-     , (1,3,false,1,0)
-     , (2, 8, false,2,0)
-     , (3, 12, false,3,0)
-     , (4, 73, false,5,0)
-     , (5, 73, false,5,0);
+# INSERT INTO category_products_tbl (product_id, categories_id)
+# VALUES (1,1),
+#         (1,4),
+#         (2,1);
+#
+# INSERT INTO inventory_tbl (product_id, i_quantity, deleted,product_size,version_id)
+# VALUES (1, 5, false,0,0)
+#      , (1,3,false,1,0)
+#      , (2, 8, false,2,0)
+#      , (3, 12, false,3,0)
+#      , (4, 73, false,5,0)
+#      , (5, 73, false,5,0);

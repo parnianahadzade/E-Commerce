@@ -147,7 +147,7 @@ public class OrderController {
 
         Order order = new Order();
         order.setUser(user);
-        order.setAddress(user.getPerson().getAddress());
+        order.setPerson(user.getPerson());
         order.setDateCreated(LocalDate.now());
         order.setOrderStatus(OrderStatus.waitingForPayment);
         orderService.save(order);

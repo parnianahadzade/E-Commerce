@@ -34,7 +34,8 @@ public class PersonServiceImpl implements PersonService {
         existingPerson.setFirstName(person.getFirstName());
         existingPerson.setLastName(person.getLastName());
         existingPerson.setPhoneNumber(person.getPhoneNumber());
-        existingPerson.setAddress(person.getAddress());
+        existingPerson.setAddressLine(person.getAddressLine());
+        existingPerson.setPostalCode(person.getPostalCode());
 
         return personRepository.save(existingPerson);
     }

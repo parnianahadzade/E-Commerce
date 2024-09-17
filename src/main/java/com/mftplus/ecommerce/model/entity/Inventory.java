@@ -1,6 +1,7 @@
 package com.mftplus.ecommerce.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mftplus.ecommerce.model.entity.enums.Size;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,8 @@ public class Inventory extends Base{
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "product_size")
-    @JsonView({Views.ProductList.class,Views.Category.class})
+    @JsonView({Views.ProductList.class,Views.Category.class, Views.singleOrder.class})
+    @JsonSerialize(using = SizeSerializer.class)
     private Size size;
 
 }

@@ -3,7 +3,6 @@ package com.mftplus.ecommerce.repository;
 import com.mftplus.ecommerce.api.dto.OrderSearchRequest;
 import com.mftplus.ecommerce.model.entity.Order;
 import com.mftplus.ecommerce.model.entity.Person;
-import com.mftplus.ecommerce.model.entity.User;
 import com.mftplus.ecommerce.model.entity.enums.OrderStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -38,8 +37,8 @@ public class OrderSearchRepository {
         Root<Order> root = criteriaQuery.from(Order.class);
 
         // Join with User and Person
-        Join<Order, User> userJoin = root.join("user");
-        Join<User, Person> personJoin = userJoin.join("person");
+//        Join<Order, User> userJoin = root.join("user");
+        Join<Order, Person> personJoin = root.join("person");
 
 
         // Add predicate for orderStatus

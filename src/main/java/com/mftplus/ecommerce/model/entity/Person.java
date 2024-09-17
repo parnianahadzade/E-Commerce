@@ -31,14 +31,15 @@ public class Person extends Base{
     @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class, Views.singleOrder.class, Views.singleOrder.class})
     private String phoneNumber;
 
-    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
-    @JoinColumn(name = "address_id")
-    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
-    private Address address;
+    @Column(name = "p_address_line", nullable = false, length = 50)
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class, Views.singleOrder.class})
+    private String addressLine;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    @JsonView(Views.PersonAndUserInfo.class)
+    @Column(name = "p_postal_code", nullable = false, length = 10)
+    @JsonView({Views.PersonAndUserInfo.class, Views.UserInfo.class})
+    private String postalCode;
+
+    @OneToOne(mappedBy = "person")
     private User user;
 
 }
