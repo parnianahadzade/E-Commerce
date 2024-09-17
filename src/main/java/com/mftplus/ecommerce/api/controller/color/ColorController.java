@@ -39,12 +39,15 @@ public class ColorController {
     //color find by name
     @GetMapping("/findBy")
     @JsonView(Views.ColorName.class)
-    public List<Color> findColorsByNameStartsWith(@RequestParam(required = false, value = "colorName") String colorName) throws NoContentException, InvalidDataException {
-        if (colorName == null) {
-            throw new InvalidDataException("نام رنگ وارد نشده است.");
+    public List<Color> findColorsByNameStartsWith(@RequestParam(required = false, value = "colorName") String colorName) throws NoContentException {
+        if (colorName != null) {
+            return colorService.findByNameStartsWithIgnoreCaseAndDeletedFalse(colorName);
         }
 
-        List<Color> colors = colorService.findByNameStartsWithIgnoreCaseAndDeletedFalse(colorName);
+        int pageSize = 10;
+        int pageNumber = 1;
+
+        List<Color> colors = colorService.findAllByDeletedFalse(pageNumber, pageSize);
 
         if (colors.isEmpty()) {
             throw new NoContentException("موردی یافت نشد.");
