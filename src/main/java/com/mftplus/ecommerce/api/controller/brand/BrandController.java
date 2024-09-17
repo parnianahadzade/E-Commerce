@@ -39,12 +39,15 @@ public class BrandController {
     //brand find by name
     @GetMapping("/findBy")
     @JsonView(Views.BrandName.class)
-    public List<Brand> findBrandsByNameStartsWith(@RequestParam(required = false, value = "brandName") String brandName) throws InvalidDataException, NoContentException {
-        if (brandName == null) {
-            throw new InvalidDataException("نام دسته بندی وارد نشده است.");
+    public List<Brand> findBrandsByNameStartsWith(@RequestParam(required = false, value = "brandName") String brandName) throws NoContentException {
+        if (brandName != null) {
+            return brandService.findByNameStartsWithIgnoreCaseAndDeletedFalse(brandName);
         }
 
-        List<Brand> brands = brandService.findByNameStartsWithIgnoreCaseAndDeletedFalse(brandName);
+        int pageSize = 10;
+        int pageNumber = 1;
+
+        List<Brand> brands = brandService.findAllByDeletedFalse(pageNumber, pageSize);
 
         if (brands.isEmpty()) {
             throw new NoContentException("موردی یافت نشد.");
