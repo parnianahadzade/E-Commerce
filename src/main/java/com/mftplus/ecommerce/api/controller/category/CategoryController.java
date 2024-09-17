@@ -62,7 +62,7 @@ public class CategoryController {
 
     //category find by id
     @GetMapping("/id/{categoryId}")
-    @JsonView(Views.Category.class)
+    @JsonView(Views.singleCategory.class)
     public Category findCategoryById(@PathVariable Long categoryId) throws NoContentException {
         return categoryService.findByIdAndDeletedFalse(categoryId);
     }

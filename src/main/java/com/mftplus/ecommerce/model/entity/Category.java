@@ -30,9 +30,9 @@ public class Category extends Base{
     @JsonView({Views.singleProduct.class, Views.Category.class, Views.CategoryName.class})
     private String name;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @JsonView(Views.singleCategory.class)
     private Category parentCategory;
 
     @JsonIgnore
