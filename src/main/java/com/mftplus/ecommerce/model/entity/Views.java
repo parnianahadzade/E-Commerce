@@ -21,6 +21,10 @@ public class Views {
 
     }
 
+    public static class singleCategory extends CategoryName {
+
+    }
+
     //todo
     public static class OrderList {
 
