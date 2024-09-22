@@ -14,11 +14,11 @@ public class ProductSaveDTO {
     private String code;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[A-Za-zآ-ی ]{3,20}$",message = "نام کالا نادرست است.")
+    @Pattern(regexp = "^[A-Za-zآ-ی ]{3,}$",message = "نام کالا نادرست است.")
     private String productName;
 
     @NotBlank(message = "لطفا این قسمت را خالی نگذازید.")
-    @Pattern(regexp = "^[.-A-Za-zآ-ی ]{10,100}$",message = "توضیحات کالا نادرست است.")
+    @Pattern(regexp = "^[.-A-Za-zآ-ی ]{10,}$",message = "توضیحات کالا نادرست است.")
     private String description;
 
     @Min(value = 1, message = "قیمت کالا باید بیشتر یا برابر یک باشد.")

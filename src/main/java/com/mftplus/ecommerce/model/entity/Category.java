@@ -26,7 +26,7 @@ public class Category extends Base{
     @JsonView({Views.singleProduct.class, Views.Category.class, Views.CategoryName.class})
     private Long id;
 
-    @Column(name = "c_name", nullable = false, unique = true, length = 20)
+    @Column(name = "c_name", nullable = false, unique = true, length = 50)
     @JsonView({Views.singleProduct.class, Views.Category.class, Views.CategoryName.class})
     private String name;
 

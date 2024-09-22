@@ -52,7 +52,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/forgot","/api/auth/reset","/api/auth/me",
                                 "/websocket","/websocket/**","/api/order","/api/order/save",
                                 "/api/person","/api/person/save","/api/person/update/*","/payment",
-                                "/api/order/id/*")
+                                "/api/order/id/*", "/admin")
                         .hasAuthority("user")
 
                         .anyRequest().authenticated()

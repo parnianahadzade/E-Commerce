@@ -30,11 +30,11 @@ public class Product extends Base{
     @JsonView(Views.singleProduct.class)
     private String code;
 
-    @Column(name = "p_name", nullable = false, unique = true, length = 20)
+    @Column(name = "p_name", nullable = false, unique = true)
     @JsonView({Views.ProductList.class, Views.singleOrder.class})
     private String name;
 
-    @Column(name = "p_description", nullable = false, length = 100)
+    @Column(name = "p_description", nullable = false)
     @JsonView(Views.singleProduct.class)
     private String description;
 
