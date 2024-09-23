@@ -84,7 +84,8 @@
 
 [//]: # ([![]&#40;E:\JavaFinalProject\letter\docs\images\home.png&#41;]&#40;https://example.com&#41;)
 
-This project, is a friendly Online Shop which is perfectly easy to use. -- it is worth a try
+This project is a friendly Online Shop which is perfectly easy to use.
+It is also responsive so feel free to check it out on your desired device -- it is worth a try
 
 [//]: # (Here's why:)
 
@@ -111,6 +112,7 @@ Backend
 Frontend
 
 * React js
+* Tailwind
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
