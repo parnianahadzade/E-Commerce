@@ -38,7 +38,8 @@ public class SecurityConfig {
                                 ,"/error","/", "/api/auth/verify","/api/category", "/api/category/findBy",
                                 "/product/**","/api/product/id/*","/cart","/api/color/findBy",
                                 "/api/brand/findBy","/api/brand/id/*","/api/brand", "/api/category/id/*",
-                                "/api/color/id/*","/api/color", "/api/product/id/*/code/*","/api/test")
+                                "/api/color/id/*","/api/color", "/api/product/id/*/code/*","/api/test",
+                                "/admin/**")
                         .permitAll()
 
                         .requestMatchers("/api/product/admin/save","/api/category/admin/save",
@@ -52,7 +53,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/forgot","/api/auth/reset","/api/auth/me",
                                 "/websocket","/websocket/**","/api/order","/api/order/save",
                                 "/api/person","/api/person/save","/api/person/update/*","/payment",
-                                "/api/order/id/*", "/admin")
+                                "/api/order/id/*")
                         .hasAuthority("user")
 
                         .anyRequest().authenticated()

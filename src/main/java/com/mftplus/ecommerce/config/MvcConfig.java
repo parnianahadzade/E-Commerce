@@ -13,6 +13,7 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/product/**").setViewName("index");
         registry.addViewController("/cart").setViewName("index");
         registry.addViewController("/payment").setViewName("index");
+        registry.addViewController("/admin/**").setViewName("index");
     }
 
 }

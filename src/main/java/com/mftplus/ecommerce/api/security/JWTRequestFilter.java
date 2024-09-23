@@ -34,6 +34,8 @@ public class JWTRequestFilter extends OncePerRequestFilter implements ChannelInt
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //token is in header
+        //todo
+//        request.getRequestURL()
         String tokenHeader = request.getHeader("Authorization");
 
 //        String tokenHeader = "";
