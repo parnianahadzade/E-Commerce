@@ -13,8 +13,8 @@
   <h3 align="center">Elevi Shop</h3>
 
   <p align="center">
-    An ECommerce Shop using SpringBoot And React.js !
-    <br />
+    An ECommerce Shop using SpringBoot And React js 
+    <br /> <br />
     <a href="https://elevishop.onrender.com">View Demo</a>
     ·
     <a href="https://github.com/prparsa935/EleviShop">Frontend Repo</a>
