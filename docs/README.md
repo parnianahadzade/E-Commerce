@@ -173,8 +173,6 @@ Frontend
 <!-- CONTACT -->
 ## Contact
 
-Contact Us - ahadzadeparnian@gmail.com
-
 Project Links:
 
 * [Deployed Version](https://elevishop.onrender.com/)
