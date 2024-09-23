@@ -1,2 +1,2 @@
-vivit our website 
+visit our website 
 https://elevishop.onrender.com/
