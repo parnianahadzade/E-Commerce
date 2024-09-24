@@ -18,4 +18,6 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     @Modifying
     @Query("update roleEntity oo set oo.deleted=true where oo.id=:id")
     void logicalRemove(Long id);
+
+    Optional<Role> findByNameAndDeletedFalse(String name);
 }

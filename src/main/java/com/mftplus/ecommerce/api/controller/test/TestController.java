@@ -5,7 +5,6 @@ import com.mftplus.ecommerce.exception.EmailFailureException;
 import com.mftplus.ecommerce.model.entity.*;
 import com.mftplus.ecommerce.model.entity.enums.Size;
 import com.mftplus.ecommerce.repository.ImageRepository;
-import com.mftplus.ecommerce.repository.UserRepository;
 import com.mftplus.ecommerce.service.impl.*;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -23,12 +22,6 @@ import java.util.List;
 @CrossOrigin
 public class TestController {
 
-    private final UserRepository userRepository;
-
-    private final RoleServiceImpl roleService;
-
-    private final PersonServiceImpl personService;
-
     private final BrandServiceImpl brandService;
 
     private final CategoryServiceImpl categoryService;
@@ -42,10 +35,7 @@ public class TestController {
     private final InventoryServiceImpl inventoryService;
 
 
-    public TestController(UserRepository userRepository, RoleServiceImpl roleService, PersonServiceImpl personService, BrandServiceImpl brandService, CategoryServiceImpl categoryService, ColorServiceImpl colorService, ImageRepository imageRepository, ProductServiceImpl productService, InventoryServiceImpl inventoryService) {
-        this.userRepository = userRepository;
-        this.roleService = roleService;
-        this.personService = personService;
+    public TestController(BrandServiceImpl brandService, CategoryServiceImpl categoryService, ColorServiceImpl colorService, ImageRepository imageRepository, ProductServiceImpl productService, InventoryServiceImpl inventoryService) {
         this.brandService = brandService;
         this.categoryService = categoryService;
         this.colorService = colorService;
@@ -57,40 +47,6 @@ public class TestController {
     @Transactional
     @GetMapping
     public void test() throws DuplicateException, EmailFailureException {
-
-        //person
-        Person adminPerson = new Person();
-        adminPerson.setFirstName("ادمین");
-        adminPerson.setLastName("ادمین");
-        adminPerson.setPostalCode("1489633937");
-        adminPerson.setPhoneNumber("09123896543");
-        adminPerson.setAddressLine("دهکده المپیک، زیبا دششت، خ لاله");
-        personService.save(adminPerson);
-
-        //role
-        Role admin = new Role();
-        admin.setName("admin");
-        roleService.save(admin);
-
-        Role user = new Role();
-        user.setName("user");
-        roleService.save(user);
-
-        List<Role> roles = new ArrayList<>();
-        roles.add(admin);
-        roles.add(user);
-
-        //user
-        User adminUser = new User();
-        adminUser.setUsername("Admin");
-        adminUser.setPassword("$2a$10$hBn5gu6cGelJNiE6DDsaBOmZgyumCSzVwrOK/37FWgJ6aLIdZSSI2");
-        adminUser.setEmail("admin@email.com");
-        adminUser.setEmailVerified(true);
-        adminUser.setRoles(roles);
-        adminUser.setVersionId(0L);
-        adminUser.setPerson(adminPerson);
-        adminUser.setIdentified(true);
-        userRepository.save(adminUser);
 
         //brand
         Brand brand = new Brand();
@@ -790,13 +746,13 @@ public class TestController {
 
         Inventory inventory27 = new Inventory();
         inventory27.setQuantity(10);
-        inventory27.setProduct(product5);
+        inventory27.setProduct(product14);
         inventory27.setSize(Size.L);
         inventoryService.save(inventory27);
 
         Inventory inventory28 = new Inventory();
         inventory28.setQuantity(10);
-        inventory28.setProduct(product5);
+        inventory28.setProduct(product14);
         inventory28.setSize(Size.XL);
         inventoryService.save(inventory28);
 
