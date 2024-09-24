@@ -29,7 +29,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person update(Person person) throws NoContentException {
         Person existingPerson = personRepository.findByIdAndDeletedFalse(person.getId()).orElseThrow(
-                () -> new NoContentException("No Active Person Found with id : " + person.getId())
+                () -> new NoContentException("پروفایل مورد نظر یافت نشد.")
         );
         existingPerson.setFirstName(person.getFirstName());
         existingPerson.setLastName(person.getLastName());
@@ -44,7 +44,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         personRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Person Found with id : " + id)
+                () -> new NoContentException("پروفایل مورد نظر یافت نشد.")
         );
         personRepository.logicalRemove(id);
     }
@@ -52,7 +52,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void remove(Long id) throws NoContentException {
         personRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Person Found with id : " + id)
+                () -> new NoContentException("پروفایل مورد نظر یافت نشد.")
         );
         personRepository.deleteById(id);
     }
@@ -60,21 +60,21 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person findById(Long id) throws NoContentException {
         return personRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Person Found with id : " + id)
+                () -> new NoContentException("پروفایل مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public Person findByIdAndDeletedFalse(Long id) throws NoContentException {
         return personRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Person Found with id : " + id)
+                () -> new NoContentException("پروفایل مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public Person findByUserUsernameAndDeletedFalse(String username) throws NoContentException {
         return personRepository.findByUserUsernameAndDeletedFalse(username).orElseThrow(
-                () -> new NoContentException("No Active Person Found with username : " + username)
+                () -> new NoContentException("پروفایل مورد نظر یافت نشد.")
         );
     }
 

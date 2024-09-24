@@ -26,7 +26,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public Inventory update(Inventory inventory) throws NoContentException {
         Inventory existingInventory = inventoryRepository.findByIdAndDeletedFalse(inventory.getId()).orElseThrow(
-                () -> new NoContentException("No Active Inventory Found with id : " + inventory.getId())
+                () -> new NoContentException("موجودی مورد نظر یافت نشد.")
         );
         existingInventory.setQuantity(inventory.getQuantity());
         existingInventory.setSize(inventory.getSize());
@@ -39,7 +39,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         inventoryRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Inventory Found with id : " + id)
+                () -> new NoContentException("موجودی مورد نظر یافت نشد.")
         );
         inventoryRepository.logicalRemove(id);
     }
@@ -47,7 +47,7 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public void remove(Long id) throws NoContentException {
         inventoryRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Inventory Found with id : " + id)
+                () -> new NoContentException("موجودی مورد نظر یافت نشد.")
         );
         inventoryRepository.deleteById(id);
     }
@@ -55,14 +55,14 @@ public class InventoryServiceImpl implements InventoryService {
     @Override
     public Inventory findById(Long id) throws NoContentException {
         return inventoryRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Inventory Found with id : " + id)
+                () -> new NoContentException("موجودی مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public Inventory findByIdAndDeletedFalse(Long id) throws NoContentException {
         return inventoryRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Inventory Found with id : " + id)
+                () -> new NoContentException("موجودی مورد نظر یافت نشد.")
         );
     }
 

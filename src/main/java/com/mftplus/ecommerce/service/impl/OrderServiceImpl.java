@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order update(Order order) throws NoContentException {
         orderRepository.findByIdAndDeletedFalse(order.getId()).orElseThrow(
-                () -> new NoContentException("No Active Order Found with id : " + order.getId())
+                () -> new NoContentException("سفارش مورد نظر یافت نشد.")
         );
         return orderRepository.save(order);
     }
@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         orderRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Order Found with id : " + id)
+                () -> new NoContentException("سفارش مورد نظر یافت نشد.")
         );
         orderRepository.logicalRemove(id);
     }
@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void remove(Long id) throws NoContentException {
         orderRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Order Found with id : " + id)
+                () -> new NoContentException("سفارش مورد نظر یافت نشد.")
         );
         orderRepository.deleteById(id);
     }
@@ -61,14 +61,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findById(Long id) throws NoContentException {
         return orderRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Order Found with id : " + id)
+                () -> new NoContentException("سفارش مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public Order findByIdAndDeletedFalse(Long id) throws NoContentException {
         return orderRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Order Found with id : " + id)
+                () -> new NoContentException("سفارش مورد نظر یافت نشد.")
         );
     }
 

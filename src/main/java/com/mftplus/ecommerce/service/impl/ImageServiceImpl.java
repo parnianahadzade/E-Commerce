@@ -42,7 +42,7 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Image findByIdAndDeletedFalse(Long id) throws NoContentException {
         return imageRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Image Found with id : " + id)
+                () -> new NoContentException("عکس مورد نظر یافت نشد.")
         );
     }
 

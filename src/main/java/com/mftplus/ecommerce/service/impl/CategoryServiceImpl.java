@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category update(Category category) throws NoContentException {
         Category existingCategory = categoryRepository.findByIdAndDeletedFalse(category.getId()).orElseThrow(
-                () -> new NoContentException("No Active Category Found with id : " + category.getId())
+                () -> new NoContentException("دسته بندی مورد نظر یافت نشد.")
         );
         existingCategory.setParentCategory(category.getParentCategory());
         existingCategory.setName(category.getName());
@@ -41,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         categoryRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Category Found with id : " + id)
+                () -> new NoContentException("دسته بندی مورد نظر یافت نشد.")
         );
         categoryRepository.logicalRemove(id);
     }
@@ -49,7 +49,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void remove(Long id) throws NoContentException {
         categoryRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Category Found with id : " + id)
+                () -> new NoContentException("دسته بندی مورد نظر یافت نشد.")
         );
         categoryRepository.deleteById(id);
     }
@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category findByNameAndDeletedFalse(String name) throws NoContentException {
         return categoryRepository.findByNameAndDeletedFalse(name).orElseThrow(
-                () -> new NoContentException("No Category Found with name : " + name)
+                () -> new NoContentException("دسته بندی مورد نظر یافت نشد.")
         );
     }
 
@@ -67,21 +67,21 @@ public class CategoryServiceImpl implements CategoryService {
         if (optional.isEmpty()) {
 
         } else {
-            throw new DuplicateException("A category with name : " + name + " already exists.");
+            throw new DuplicateException("دسته بندی با این نام وجود دارد.");
         }
     }
 
     @Override
     public Category findById(Long id) throws NoContentException {
         return categoryRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Category Found with id : " + id)
+                () -> new NoContentException("دسته بندی مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public Category findByIdAndDeletedFalse(Long id) throws NoContentException {
         return categoryRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Category Found with id : " + id)
+                () -> new NoContentException("دسته بندی مورد نظر یافت نشد.")
         );
     }
 

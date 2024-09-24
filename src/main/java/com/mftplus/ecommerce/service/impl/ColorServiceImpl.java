@@ -30,7 +30,7 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public Color update(Color color) throws NoContentException {
         Color existingColor = colorRepository.findByIdAndDeletedFalse(color.getId()).orElseThrow(
-                () -> new NoContentException("No Active Color Found with id : " + color.getId())
+                () -> new NoContentException("رنگ مورد نظر یافت نشد.")
         );
         existingColor.setName(color.getName());
         existingColor.setHexCode(color.getHexCode());
@@ -42,7 +42,7 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         colorRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Color Found with id : " + id)
+                () -> new NoContentException("رنگ مورد نظر یافت نشد.")
         );
         colorRepository.logicalRemove(id);
     }
@@ -50,7 +50,7 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public void remove(Long id) throws NoContentException {
         colorRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Color Found with id : " + id)
+                () -> new NoContentException("رنگ مورد نظر یافت نشد.")
         );
         colorRepository.deleteById(id);
     }
@@ -58,7 +58,7 @@ public class ColorServiceImpl implements ColorService {
     @Override
     public Color findByNameAndDeletedFalse(String name) throws NoContentException{
         return colorRepository.findByNameAndDeletedFalse(name).orElseThrow(
-                () -> new NoContentException("No Active Color Found with name : " + name)
+                () -> new NoContentException("رنگ مورد نظر یافت نشد.")
         );
     }
 
@@ -68,21 +68,21 @@ public class ColorServiceImpl implements ColorService {
         if (optional.isEmpty()) {
 
         } else {
-            throw new DuplicateException("A color with name : " + name + " already exists.");
+            throw new DuplicateException("رنگ با این نام وجود دارد.");
         }
     }
 
     @Override
     public Color findById(Long id) throws NoContentException {
         return colorRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Color Found with id : " + id)
+                () -> new NoContentException("رنگ مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public Color findByIdAndDeletedFalse(Long id) throws NoContentException {
         return colorRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Color Found with id : " + id)
+                () -> new NoContentException("رنگ مورد نظر یافت نشد.")
         );
     }
 

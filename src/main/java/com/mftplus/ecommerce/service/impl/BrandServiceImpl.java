@@ -30,7 +30,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Brand update(Brand brand) throws NoContentException {
         Brand existingBrand = brandRepository.findByIdAndDeletedFalse(brand.getId()).orElseThrow(
-                () -> new NoContentException("No Active Brand Found with id : " + brand.getId())
+                () -> new NoContentException("برند مورد نظر یافت نشد.")
         );
         existingBrand.setName(brand.getName());
         existingBrand.setExplanation(brand.getExplanation());
@@ -42,7 +42,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         brandRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Brand Found with id : " + id)
+                () -> new NoContentException("برند مورد نظر یافت نشد.")
         );
         brandRepository.logicalRemove(id);
     }
@@ -50,7 +50,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public void remove(Long id) throws NoContentException {
         brandRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Brand Found with id : " + id)
+                () -> new NoContentException("برند مورد نظر یافت نشد.")
         );
         brandRepository.deleteById(id);
     }
@@ -58,7 +58,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Brand findByNameAndDeletedFalse(String name) throws NoContentException{
         return brandRepository.findByNameAndDeletedFalse(name).orElseThrow(
-                () -> new NoContentException("No Brand Found with name : " + name)
+                () -> new NoContentException("برند مورد نظر یافت نشد.")
         );
     }
 
@@ -68,21 +68,21 @@ public class BrandServiceImpl implements BrandService {
         if (optional.isEmpty()) {
 
         } else {
-            throw new DuplicateException("A brand with name : " + name + " already exists.");
+            throw new DuplicateException("برند با این نام وجود دارد.");
         }
     }
 
     @Override
     public Brand findById(Long id) throws NoContentException {
         return brandRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Brand Found with id : " + id)
+                () -> new NoContentException("برند مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public Brand findByIdAndDeletedFalse(Long id) throws NoContentException {
         return brandRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Brand Found with id : " + id)
+                () -> new NoContentException("برند مورد نظر یافت نشد.")
         );
     }
 

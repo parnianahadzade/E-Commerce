@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     public User save(User user) throws DuplicateException, EmailFailureException {
         if (userRepository.findByEmailIgnoreCaseAndDeletedFalse(user.getEmail()).isPresent()
         || userRepository.findByUsernameIgnoreCaseAndDeletedFalse(user.getUsername()).isPresent()){
-            throw new DuplicateException("User Already Exists");
+            throw new DuplicateException("کاربر با این نام کاربری یا ایمیل قبلا ساخته شده است.");
         }
 
         VerificationToken verificationToken = createVerificationToken(user);
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void update(User user) throws NoContentException {
         userRepository.findByIdAndDeletedFalse(user.getId()).orElseThrow(
-                () -> new NoContentException("No Active User Found with id : " + user.getId())
+                () -> new NoContentException("کاربر مورد نظر یافت نشد.")
         );
         userRepository.save(user);
     }
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         userRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active User Found with id : " + id)
+                () -> new NoContentException("کاربر مورد نظر یافت نشد.")
         );
         userRepository.logicalRemove(id);
     }
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void remove(Long id) throws NoContentException {
         userRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No User Found with id : " + id)
+                () -> new NoContentException("کاربر مورد نظر یافت نشد.")
         );
         userRepository.deleteById(id);
     }
@@ -75,35 +75,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(Long id) throws NoContentException {
         return userRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No User Found with id : " + id)
+                () -> new NoContentException("کاربر مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public User findByIdAndDeletedFalse(Long id) throws NoContentException {
         return userRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active User Found with id : " + id)
+                () -> new NoContentException("کاربر مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public User findByUsernameIgnoreCaseAndDeletedFalse(String username) throws NoContentException {
         return userRepository.findByUsernameIgnoreCaseAndDeletedFalse(username).orElseThrow(
-                () -> new NoContentException("No Active User Found with username : " + username)
+                () -> new NoContentException("کاربر مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public User findByEmailIgnoreCaseAndDeletedFalse(String email) throws NoContentException {
         return userRepository.findByEmailIgnoreCaseAndDeletedFalse(email).orElseThrow(
-                () -> new NoContentException("No Active User Found with email : " + email)
+                () -> new NoContentException("کاربر مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public User findByPersonIdAndDeletedFalse(Long id) throws NoContentException {
         return userRepository.findByPersonIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active User Found with id : " + id)
+                () -> new NoContentException("کاربر مورد نظر یافت نشد.")
         );
     }
 

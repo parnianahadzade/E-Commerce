@@ -26,7 +26,7 @@ public class OrderInventoryServiceImpl implements OrderInventoryService {
     @Override
     public OrderInventory update(OrderInventory orderInventory) throws NoContentException {
         orderInventoryRepository.findByIdAndDeletedFalse(orderInventory.getId()).orElseThrow(
-                () -> new NoContentException("No Active OrderInventory Found with id : " + orderInventory.getId())
+                () -> new NoContentException("موجودی سفارش مورد نظر یافت نشد.")
         );
         return orderInventoryRepository.save(orderInventory);
     }
@@ -35,7 +35,7 @@ public class OrderInventoryServiceImpl implements OrderInventoryService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         orderInventoryRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active OrderInventory Found with id : " + id)
+                () -> new NoContentException("موجودی سفارش مورد نظر یافت نشد.")
         );
         orderInventoryRepository.logicalRemove(id);
     }
@@ -43,7 +43,7 @@ public class OrderInventoryServiceImpl implements OrderInventoryService {
     @Override
     public void remove(Long id) throws NoContentException {
         orderInventoryRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No OrderInventory Found with id : " + id)
+                () -> new NoContentException("موجودی سفارش مورد نظر یافت نشد.")
         );
         orderInventoryRepository.logicalRemove(id);
     }
@@ -51,14 +51,14 @@ public class OrderInventoryServiceImpl implements OrderInventoryService {
     @Override
     public OrderInventory findById(Long id) throws NoContentException {
         return orderInventoryRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No OrderInventory Found with id : " + id)
+                () -> new NoContentException("موجودی سفارش مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public OrderInventory findByIdAndDeletedFalse(Long id) throws NoContentException {
         return orderInventoryRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active OrderInventory Found with id : " + id)
+                () -> new NoContentException("موجودی سفارش مورد نظر یافت نشد.")
         );
     }
 

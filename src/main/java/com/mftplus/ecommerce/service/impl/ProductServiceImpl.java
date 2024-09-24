@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product update(Product product) throws NoContentException {
         Product existingProduct = productRepository.findByIdAndDeletedFalse(product.getId()).orElseThrow(
-                () -> new NoContentException("No Active Product Found with id : " + product.getId())
+                () -> new NoContentException("کالای مورد نظر یافت نشد.")
         );
         existingProduct.setName(product.getName());
         existingProduct.setDescription(product.getDescription());
@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void logicalRemove(Long id) throws NoContentException {
         productRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Product Found with id : " + id)
+                () -> new NoContentException("کالای مورد نظر یافت نشد.")
         );
         productRepository.logicalRemove(id);
     }
@@ -67,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void remove(Long id) throws NoContentException {
         productRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Product Found with id : " + id)
+                () -> new NoContentException("کالای مورد نظر یافت نشد.")
         );
         productRepository.deleteById(id);
     }
@@ -75,14 +75,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product findById(Long id) throws NoContentException {
         return productRepository.findById(id).orElseThrow(
-                () -> new NoContentException("No Product Found with id : " + id)
+                () -> new NoContentException("کالای مورد نظر یافت نشد.")
         );
     }
 
     @Override
     public Product findByIdAndDeletedFalse(Long id) throws NoContentException {
         return productRepository.findByIdAndDeletedFalse(id).orElseThrow(
-                () -> new NoContentException("No Active Product Found with id : " + id)
+                () -> new NoContentException("کالای مورد نظر یافت نشد.")
         );
     }
 
@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
         if (optional.isEmpty()) {
             return optional;
         } else {
-            throw new DuplicateException("A product with name : " + name + " already exists.");
+            throw new DuplicateException("کالا با این نام وجود دارد.");
         }
     }
 
@@ -112,7 +112,7 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> optional = productRepository.findByMainImageIdAndDeletedFalse(id);
         if (optional.isEmpty()) {
         } else {
-            throw new DuplicateException("A product with mainImageId : " + id + " already exists.");
+            throw new DuplicateException("کالا با این عکس وجود دارد.");
         }
     }
 
@@ -121,7 +121,7 @@ public class ProductServiceImpl implements ProductService {
         Optional<Product> optional = productRepository.findByImagesIdAndDeletedFalse(id);
         if (optional.isEmpty()) {
         } else {
-            throw new DuplicateException("A product with imageId : " + id + " already exists.");
+            throw new DuplicateException("کالا با این عکس وجود دارد.");
         }
     }
 }
