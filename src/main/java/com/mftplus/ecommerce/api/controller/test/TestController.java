@@ -417,7 +417,7 @@ public class TestController {
         categories4.add(hudi);
         categories4.add(hudiU);
 
-        product4.setCode("2");
+        product4.setCode("4");
         product4.setName("هودی طرحدار عروسکی");
         product4.setDescription("توضیحات برای لباس مورد نظر، طرح آن و جنس آن.");
         product4.setBrand(brand);
@@ -453,13 +453,13 @@ public class TestController {
         categories5.add(tShirtU);
 
         product5.setCode("3");
-        product5.setName("تیشرت خرسی");
+        product5.setName("تیشرت مشکی طرحدار");
         product5.setDescription("توضیحات برای لباس مورد نظر، طرح آن و جنس آن.");
         product5.setBrand(brand1);
         product5.setCategories(categories5);
         product5.setMainCategory(tShirtU);
         product5.setMainImage(tShirtMeshki);
-        product5.setColor(white);
+        product5.setColor(black);
         product5.setPrice(1000000);
         product5.setOffPercent(10);
         product5.setMaterial("پشم");
@@ -597,7 +597,7 @@ public class TestController {
         categories9.add(hudi);
         categories9.add(hudiW);
 
-        product9.setCode("2");
+        product9.setCode("4");
         product9.setName("هودی زنانه طرح خرگوش");
         product9.setDescription("توضیحات برای لباس مورد نظر، طرح آن و جنس آن.");
         product9.setBrand(brand2);
@@ -764,6 +764,41 @@ public class TestController {
         inventory26.setProduct(product13);
         inventory26.setSize(Size.XL);
         inventoryService.save(inventory26);
+
+
+        //14
+        Product product14 = new Product();
+        List<Category> categories14 = new ArrayList<>();
+        categories14.add(digikala);
+        categories14.add(tShirt);
+        categories14.add(tShirtU);
+
+        product14.setCode("3");
+        product14.setName("تیشرت خرسی");
+        product14.setDescription("توضیحات برای لباس مورد نظر، طرح آن و جنس آن.");
+        product14.setBrand(brand1);
+        product14.setCategories(categories14);
+        product14.setMainCategory(tShirtU);
+        product14.setMainImage(tShirtKhersi);
+        product14.setColor(white);
+        product14.setPrice(1000000);
+        product14.setOffPercent(10);
+        product14.setMaterial("پشم");
+        product14.setHeight(65);
+        product14.setPattern("طرحدار");
+        productService.save(product14);
+
+        Inventory inventory27 = new Inventory();
+        inventory27.setQuantity(10);
+        inventory27.setProduct(product5);
+        inventory27.setSize(Size.L);
+        inventoryService.save(inventory27);
+
+        Inventory inventory28 = new Inventory();
+        inventory28.setQuantity(10);
+        inventory28.setProduct(product5);
+        inventory28.setSize(Size.XL);
+        inventoryService.save(inventory28);
 
 
     }

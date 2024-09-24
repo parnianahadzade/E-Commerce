@@ -22,7 +22,7 @@ public class Image extends Base{
     @JsonView({Views.ProductList.class, Views.OrderList.class, Views.singleProduct.class})
     private Long id;
 
-    @Lob
+//    @Lob
     @Column(name = "i_file_path",nullable = false)
     @JsonView({Views.ProductList.class, Views.OrderList.class, Views.singleProduct.class})
     private String filePath;
