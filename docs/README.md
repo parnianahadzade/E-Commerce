@@ -98,9 +98,20 @@ It is also responsive so feel free to check it out on your desired device -- it 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- Demo -->
+## Demo 
+
+* Check [Elevi Shop's Demo](https://elevishop.onrender.com/)
+* [Login](https://elevishop.onrender.com/login) with Admin/PasswordA123
+* Check  [Elevi Shop's Admin Panel](https://elevishop.onrender.com/admin)
+* View And Filter Products on [Elevi Shop's Search Page](https://elevishop.onrender.com/search)
+* Order something and view them on [Elevi Shop's Order Page](https://elevishop.onrender.com/profile/order)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-### Built With
+
+## Built With
 
 Backend 
 
