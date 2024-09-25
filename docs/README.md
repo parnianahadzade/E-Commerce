@@ -117,7 +117,7 @@ Backend
 
 * Java 17
 * Spring Boot
-* mySql Data Base
+* Postgres Data Base
 * Hibernate Orm
 
 Frontend
